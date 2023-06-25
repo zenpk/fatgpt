@@ -7,9 +7,9 @@
 
 .title {
   display: block;
-  font-size: var(--s-4);
+  font-size: var(--s-2);
   margin: 0 auto;
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   width: fit-content;
 }
 
@@ -18,8 +18,8 @@
 
   position: relative;
   background-color: var(--card-backgroud);
-  height: 85%;
-  margin: 0 30rem 2rem 30rem;
+  height: calc(100vh - var(--s-3) - 3rem);
+  margin: 0 2rem 2.5rem 2rem;
   border-radius: 0.5rem;
 }
 
