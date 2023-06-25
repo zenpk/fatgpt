@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Kalam:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap');
+
+/* reset */
+button,
+p {
+  all: unset;
+}
+
+button:hover{
+  cursor: pointer;
+}
+
+button:focus {
+  color: unset;
+}
+
+html {
+  font-family: "Noto Sans SC", sans-serif;
+  height: 100%;
+  overflow: auto;
+}
+
+body {
+  position: relative;
+  font-size: 100%;
+  min-height: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  display: block;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  display: block;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: var(--s-5);
+  margin: 1.5rem 0 1rem 0;
+  padding: 0;
+}
+
+h2 {
+  font-size: var(--s-4);
+  margin: 1rem 0;
+  padding: 0;
+}
+
+h3 {
+  font-size: var(--s-3);
+  margin: 1rem 0;
+  padding: 0;
+}
+
+h4 {
+  font-size: var(--s-2);
+  margin: 1rem 0;
+  padding: 0;
+}
+
+p {
+  display: block;
+  font-size: var(--s-1);
+  margin: 1rem 0;
+  padding: 0;
+  line-height: 2;
+}
+
+a {
+  font-weight: bold;
+  text-decoration: none;
+  transition: color var(--trans-speed) ease;
+}
+
+img {
+  object-fit: contain;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+}
+
+ul, ol {
+  display: block;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: var(--s-1);
+  line-height: 2;
+  list-style-position: inside;
+}

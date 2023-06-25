@@ -1,0 +1,57 @@
+html {
+  --width-sm: 640px;
+  --width-md: 768px;
+  --width-lg: 960px;
+  --width-xl: 1280px;
+
+  --black: #202123;
+  --grey: #ECECF1;
+  --grey-lighter: #aaaaaa;
+  --grey-darker: #555555;
+  --grey-secondary: #e2e3e5;
+  --grey-github: hsla(210, 18%, 87%, 1);
+  --ice: #e5efff;
+  --crew: #99bbdd;
+  --crew-rgba: 114, 192, 221;
+  --crew-darker: #7799bb;
+
+  --bg-grey: #f0f0f0;
+  --bg-grey-darker: #e0e0e0;
+  --bg-grey-very-dark: #bbbbbb;
+
+  --s-0: calc(0.6rem + 0.3vw);
+  --s-1: calc(0.8rem + 0.3vw);
+  --s-2: calc(1rem + 0.3vw);
+  --s-3: calc(1rem + 0.6vw);
+  --s-4: calc(1.3rem + 0.6vw);
+  --s-5: calc(1.325rem + 0.9vw);
+  --s-6: calc(1.375rem + 1.5vw);
+
+  --s-5-responsive: calc(0.8rem + 1vw);
+  --s-title: 10vw;
+
+  --header-height: 64px;
+  --header-bg: 248, 248, 248;
+  --header-shadow-color: #cccccc;
+  --header-shadow-radius: 10px;
+  --header-z-index: 999;
+
+  --toc-width: 28vw;
+  --side-padding: 10vw;
+  --front-matter-ext: 1.5rem;
+
+  --card-info-height: 25vh;
+
+  --trans-speed-quick: 100ms;
+  --trans-speed: 200ms;
+  --trans-speed-slow: 300ms;
+  --front-page-loop-time: 4000ms;
+  --front-page-delay-time: 500ms;
+
+  --gradient-len: 150px;
+
+  --nprogress-height: 5px;
+
+  --bar-height: 50px;
+}
+
