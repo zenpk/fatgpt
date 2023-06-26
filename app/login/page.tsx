@@ -22,7 +22,7 @@ export default function Login() {
       } else {
         window.localStorage.setItem(STORAGE_NAME, resp.token);
       }
-      redirect("/");
+      redirect("/fatgpt");
     }
   }
 
