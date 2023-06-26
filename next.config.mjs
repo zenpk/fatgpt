@@ -1,7 +1,7 @@
 /** @type {import("next").NextConfig} */
 
 const nextConfig = {
-  basePath: "/fatgpt",
+  basePath: "/fatgpt/",
   experimental: {
     serverActions: true,
   },
