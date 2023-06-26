@@ -1,7 +1,5 @@
 "use client";
 import { useRef } from "react";
-import { useRouter } from "next/router";
-import { fetchWrapper } from "@/app/utils/fetch";
 import { AuthInfo, login } from "@/app/services/simple-auth";
 import { STORAGE_NAME } from "@/app/utils/constants";
 import { redirect } from "next/navigation";
@@ -11,11 +9,13 @@ export default function Login() {
   const password = useRef<HTMLInputElement>(null);
 
   async function onSubmit() {
+    console.log("onSubmit");
     if (username.current && password.current) {
       const body: AuthInfo = {
         username: username.current.value,
         password: password.current.value,
       };
+      console.log(`sending ${JSON.stringify(body)}`);
       const resp = await login(body);
       if (!resp.ok) {
         console.log("something went wrong");
