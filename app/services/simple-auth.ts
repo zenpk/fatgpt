@@ -1,3 +1,5 @@
+"use server";
+
 import { fetchWrapper } from "@/app/utils/fetch";
 
 export type AuthInfo = {
