@@ -1,9 +1,12 @@
 "use client";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 import { MessageContext } from "@/app/contexts/MessageContext";
 import { Bubble } from "@/app/components/Bubble/Bubble";
 import { InputBar } from "@/app/components/InputBar/InputBar";
+import { STORAGE_NAME } from "@/app/utils/constants";
+import { checkToken } from "@/app/services/simple-auth";
+import Login from "@/app/login/page";
 
 export default function Home() {
   const [messages] = useContext(MessageContext)!;
@@ -16,7 +19,21 @@ export default function Home() {
     }
   }, [messages, divRef]);
 
-  return (
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const token = window.localStorage.getItem(STORAGE_NAME);
+    if (!token) {
+      setIsLoggedIn(false);
+    } else {
+      checkToken({ token: token }).then((resp) => {
+        if (resp.ok) {
+          setIsLoggedIn(true);
+        }
+      });
+    }
+  }, [isLoggedIn]);
+
+  return isLoggedIn ? (
     <div className={styles.background}>
       <h1 className={styles.title}>FatGPT</h1>
       <div className={styles.card}>
@@ -30,5 +47,7 @@ export default function Home() {
         </div>
       </div>
     </div>
+  ) : (
+    <Login />
   );
 }
