@@ -4,25 +4,23 @@ import user from "@/public/user.png";
 import Image from "next/image";
 import { Message } from "@/app/contexts/MessageContext";
 
-export function Bubble(props: Message) {
+export function Bubble({ msg }: { msg: Message }) {
   let className = styles.bubble;
-  if (props.isUser) {
+  if (msg.isUser) {
     className += ` ${styles.reverse}`;
   }
   return (
     <div className={className}>
-      <Avatar isUser={props.isUser} />
-      <Message {...props} />
+      <Avatar isUser={msg.isUser} />
+      <Message msg={msg} />
     </div>
   );
 }
 
-function Message(props: Message) {
+function Message({ msg }: { msg: Message }) {
   let className = styles.textBox;
-  className += props.isUser
-    ? ` ${styles.marginLeft}`
-    : ` ${styles.marginRight}`;
-  return <p className={className}>{props.msg}</p>;
+  className += msg.isUser ? ` ${styles.marginLeft}` : ` ${styles.marginRight}`;
+  return <p className={className}>{msg.msg}</p>;
 }
 
 function Avatar({ isUser }: { isUser: boolean }) {
