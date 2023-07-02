@@ -6,11 +6,11 @@ import { Bubble } from "@/app/components/Bubble/Bubble";
 import { InputBar } from "@/app/components/InputBar/InputBar";
 import { STORAGE_NAME } from "@/app/utils/constants";
 import { tokenParse } from "@/app/services/simple-auth";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const [messages] = useContext(MessageContext)!;
-
+  const router = useRouter();
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,12 +22,12 @@ export default function Home() {
   useEffect(() => {
     const token = window.localStorage.getItem(STORAGE_NAME);
     if (!token) {
-      redirect("/login");
+      router.push("/login");
     } else {
       tokenParse({ token: token }).then((resp) => {
         if (!resp.ok) {
-          redirect("/login");
           window.localStorage.removeItem(STORAGE_NAME);
+          router.push("/login");
         }
       });
     }

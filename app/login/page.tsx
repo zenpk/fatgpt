@@ -4,6 +4,7 @@ import { AuthInfo, loginRegister, tokenGen } from "@/app/services/simple-auth";
 import { STORAGE_NAME } from "@/app/utils/constants";
 import { redirect } from "next/navigation";
 import styles from "./page.module.css";
+import { useRouter } from "next/router";
 
 export default function Login() {
   const username = useRef<HTMLInputElement>(null);
@@ -14,6 +15,8 @@ export default function Login() {
     Register: "Register",
     Login: "Login",
   };
+
+  const router = useRouter();
 
   const [displayText, setDisplayText] = useState(displayMap.Login);
   const [message, setMessage] = useState("");
@@ -50,8 +53,7 @@ export default function Login() {
             setMessage(genResp.msg);
           } else {
             window.localStorage.setItem(STORAGE_NAME, genResp.token);
-            redirect("/");
-            return;
+            router.push("/");
           }
         }
       } catch (e) {
