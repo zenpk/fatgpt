@@ -2,9 +2,8 @@
 import { useRef, useState } from "react";
 import { AuthInfo, loginRegister, tokenGen } from "@/app/services/simple-auth";
 import { STORAGE_NAME } from "@/app/utils/constants";
-import { redirect } from "next/navigation";
 import styles from "./page.module.css";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const username = useRef<HTMLInputElement>(null);
