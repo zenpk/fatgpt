@@ -46,8 +46,14 @@ async function _delete(url: string) {
 }
 
 async function handleFetch(url: string, options: RequestInit) {
+  const nextOptions = {
+    ...options,
+    next: {
+      revalidate: 1,
+    },
+  };
   try {
-    const resp = await fetch(url, options);
+    const resp = await fetch(url, nextOptions);
     return await resp.json();
   } catch (e) {
     console.log(e);

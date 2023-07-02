@@ -4,7 +4,6 @@ import { AuthInfo, loginRegister, tokenGen } from "@/app/services/simple-auth";
 import { STORAGE_NAME } from "@/app/utils/constants";
 import { redirect } from "next/navigation";
 import styles from "./page.module.css";
-import { set } from "zod";
 
 export default function Login() {
   const username = useRef<HTMLInputElement>(null);
@@ -70,7 +69,12 @@ export default function Login() {
           <label htmlFor={"username"}>username</label>
           <input ref={username} name={"username"} className={styles.input} />
           <label htmlFor={"password"}>password</label>
-          <input ref={password} name={"password"} className={styles.input} />
+          <input
+            ref={password}
+            name={"password"}
+            className={styles.input}
+            type={"password"}
+          />
           <label htmlFor={"invitation"}>invitation code</label>
           <input
             ref={invitation}
