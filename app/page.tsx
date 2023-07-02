@@ -30,6 +30,7 @@ export default function Home() {
           setIsLoggedIn(true);
         } else {
           setIsLoggedIn(false);
+          window.localStorage.removeItem(STORAGE_NAME);
         }
       });
     }

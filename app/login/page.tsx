@@ -41,7 +41,6 @@ export default function Login() {
         if (!resp.ok) {
           setMessage(resp.msg);
         } else {
-          console.log(resp.token);
           const genResp = await tokenGen({
             token: resp.token,
             age: 8760,
