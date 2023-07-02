@@ -5,7 +5,7 @@ import { MessageContext } from "@/app/contexts/MessageContext";
 import { Bubble } from "@/app/components/Bubble/Bubble";
 import { InputBar } from "@/app/components/InputBar/InputBar";
 import { STORAGE_NAME } from "@/app/utils/constants";
-import { checkToken } from "@/app/services/simple-auth";
+import { tokenParse } from "@/app/services/simple-auth";
 import Login from "@/app/login/page";
 
 export default function Home() {
@@ -25,7 +25,7 @@ export default function Home() {
     if (!token) {
       setIsLoggedIn(false);
     } else {
-      checkToken({ token: token }).then((resp) => {
+      tokenParse({ token: token }).then((resp) => {
         if (resp.ok) {
           setIsLoggedIn(true);
         }
