@@ -50,7 +50,7 @@ export default function Login() {
             setMessage(genResp.msg);
           } else {
             window.localStorage.setItem(STORAGE_NAME, genResp.token);
-            redirect("/fatgpt");
+            redirect("/");
           }
         }
       } catch (e) {

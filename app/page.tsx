@@ -22,11 +22,11 @@ export default function Home() {
   useEffect(() => {
     const token = window.localStorage.getItem(STORAGE_NAME);
     if (!token) {
-      redirect("/fatgpt/login");
+      redirect("/login");
     } else {
       tokenParse({ token: token }).then((resp) => {
         if (!resp.ok) {
-          redirect("/fatgpt/login");
+          redirect("/login");
           window.localStorage.removeItem(STORAGE_NAME);
         }
       });
