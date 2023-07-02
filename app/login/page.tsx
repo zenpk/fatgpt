@@ -48,7 +48,7 @@ export default function Login() {
             data: "",
           });
           if (!genResp.ok) {
-            setMessage(resp.msg);
+            setMessage(genResp.msg);
           } else {
             window.localStorage.setItem(STORAGE_NAME, genResp.token);
             redirect("/fatgpt");
