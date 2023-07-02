@@ -51,6 +51,7 @@ export default function Login() {
           } else {
             window.localStorage.setItem(STORAGE_NAME, genResp.token);
             redirect("/");
+            return;
           }
         }
       } catch (e) {
