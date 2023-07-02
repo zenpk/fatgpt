@@ -11,6 +11,11 @@ export type Token = {
   token: string;
 };
 
+export type TokenReq = {
+  age: number;
+  data: string;
+} & Token;
+
 export type CommonResp = {
   ok: boolean;
   msg: string;
@@ -41,6 +46,10 @@ export async function loginRegister(
   )) as LoginResp;
 }
 
-export async function tokenParse(token: Token) {
-  return (await fetchWrapper.post(`${url}/token-parse`, token)) as ParseResp;
+export async function tokenGen(req: TokenReq) {
+  return (await fetchWrapper.post(`${url}/token-gen`, req)) as LoginResp;
+}
+
+export async function tokenParse(req: Token) {
+  return (await fetchWrapper.post(`${url}/token-parse`, req)) as ParseResp;
 }

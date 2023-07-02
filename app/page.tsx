@@ -19,7 +19,7 @@ export default function Home() {
     }
   }, [messages, divRef]);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   useEffect(() => {
     const token = window.localStorage.getItem(STORAGE_NAME);
     if (!token) {
@@ -28,10 +28,19 @@ export default function Home() {
       tokenParse({ token: token }).then((resp) => {
         if (resp.ok) {
           setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
         }
       });
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    const token = window.localStorage.getItem(STORAGE_NAME);
+    if (!token) {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   return isLoggedIn ? (
     <div className={styles.background}>

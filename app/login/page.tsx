@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
-import { AuthInfo, loginRegister } from "@/app/services/simple-auth";
+import { AuthInfo, loginRegister, tokenGen } from "@/app/services/simple-auth";
 import { STORAGE_NAME } from "@/app/utils/constants";
 import { redirect } from "next/navigation";
 import styles from "./page.module.css";
@@ -42,8 +42,17 @@ export default function Login() {
         if (!resp.ok) {
           setMessage(resp.msg);
         } else {
-          window.localStorage.setItem(STORAGE_NAME, resp.token);
-          redirect("/fatgpt");
+          const genResp = await tokenGen({
+            token: resp.token,
+            age: 8760,
+            data: "",
+          });
+          if (!genResp.ok) {
+            setMessage(resp.msg);
+          } else {
+            window.localStorage.setItem(STORAGE_NAME, genResp.token);
+            redirect("/fatgpt");
+          }
         }
       } catch (e) {
         setMessage(e as string);
