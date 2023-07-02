@@ -4,8 +4,15 @@ import {
   ChatCompletionRequestMessage,
   CreateChatCompletionRequest,
 } from "openai/api";
+import { tokenCheckUtil } from "@/app/utils/simple-auth";
 
-export async function chatGPT(gptMessages: ChatCompletionRequestMessage[]) {
+export async function chatGPT(
+  gptMessages: ChatCompletionRequestMessage[],
+  token: string
+) {
+  if (!(await tokenCheckUtil(token))) {
+    return "You're not logged in";
+  }
   const configuration = new Configuration({
     organization: process.env.ORG_ID,
     apiKey: process.env.OPENAI_API_KEY,

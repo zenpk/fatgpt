@@ -4,6 +4,7 @@ import { BsSendFill } from "react-icons/bs";
 import { Message, MessageContext } from "@/app/contexts/MessageContext";
 import { chatGPT } from "@/app/services/openai";
 import { ChatCompletionRequestMessage } from "openai/api";
+import { STORAGE_NAME } from "@/app/utils/constants";
 
 export function InputBar() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -12,9 +13,13 @@ export function InputBar() {
 
   async function handleSend() {
     if (inputRef && inputRef.current) {
+      const token = window.localStorage.getItem(STORAGE_NAME);
+      if (token === null) {
+        return;
+      }
       const transformed = transform(messages, inputRef.current.value);
       dispatch({ type: "addUser", msg: inputRef.current.value });
-      const response = await chatGPT(transformed);
+      const response = await chatGPT(transformed, token);
       dispatch({ type: "addBot", msg: response as string });
       inputRef.current.value = "";
     }

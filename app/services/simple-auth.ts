@@ -53,3 +53,7 @@ export async function tokenGen(req: TokenReq) {
 export async function tokenParse(req: Token) {
   return (await fetchWrapper.post(`${url}/token-parse`, req)) as ParseResp;
 }
+
+export async function tokenCheck(req: Token) {
+  return (await fetchWrapper.post(`${url}/token-check`, req)) as CommonResp;
+}
