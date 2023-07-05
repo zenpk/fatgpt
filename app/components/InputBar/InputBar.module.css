@@ -1,6 +1,4 @@
 .bar {
-  --radius: 0.25rem;
-
   display: flex;
   height: var(--bar-height);
   gap: 0.5rem;
@@ -8,7 +6,6 @@
 
 .input {
   flex: 8;
-  background-color: var(--black);
   box-shadow: none;
   color: var(--grey);
   font: var(--s-1);
@@ -25,25 +22,14 @@
 
 .button {
   width: var(--bar-height);
-  background-color: black;
 }
 
-.record {
-  flex: 8;
-  border: black solid 2px;
-  background: linear-gradient(180deg, rgba(50, 52, 56, 1) 0%, rgba(24, 24, 29, 1) 84%);
-}
 
-.recordBlack {
-  background: var(--black);
-}
-
-.send, .input, .button, .record {
+.send, .input, .button {
   display: flex;
   justify-content: center;
   align-items: center;
 
-  border-radius: var(--radius);
 }
 
 .button {

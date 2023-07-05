@@ -6,21 +6,13 @@ import { Message } from "@/app/contexts/MessageContext";
 
 export function Bubble({ msg }: { msg: Message }) {
   let className = styles.bubble;
-  if (msg.isUser) {
-    className += ` ${styles.reverse}`;
-  }
+  className += msg.isUser ? ` ${styles.bubbleUser}` : ` ${styles.bubbleBot}`;
   return (
     <div className={className}>
       <Avatar isUser={msg.isUser} />
-      <Message msg={msg} />
+      <p className={styles.textBox}>{msg.msg}</p>
     </div>
   );
-}
-
-function Message({ msg }: { msg: Message }) {
-  let className = styles.textBox;
-  className += msg.isUser ? ` ${styles.marginLeft}` : ` ${styles.marginRight}`;
-  return <p className={className}>{msg.msg}</p>;
 }
 
 function Avatar({ isUser }: { isUser: boolean }) {

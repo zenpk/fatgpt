@@ -1,7 +1,6 @@
 .background {
   background-color: white;
   height: 100vh;
-  color: var(--grey);
   width: 100vw;
   z-index: 0;
 }
@@ -28,6 +27,7 @@
   transform: translate(-50%, 0);
   width: 70%;
   margin: 0 auto;
+  padding: 0;
   background-color: var(--grey-card);
   height: 100%;
   z-index: 1;
@@ -35,7 +35,6 @@
 
 .textArea {
   margin: 0;
-  padding: 1rem 2rem;
   overflow: auto;
   height: calc(100% - 2rem - var(--bar-height));
   box-sizing: border-box;
@@ -55,7 +54,6 @@
   position: absolute;
   bottom: 0;
   z-index: 999;
-  background-color: var(--card-backgroud);
   width: 100%;
   padding: 1rem;
   box-sizing: border-box;

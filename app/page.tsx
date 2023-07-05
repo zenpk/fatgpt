@@ -15,7 +15,7 @@ export default function Home() {
 
   useEffect(() => {
     if (divRef && divRef.current) {
-      divRef.current.scrollTop = divRef.current.scrollHeight;
+      divRef.current.scrollTop = divRef.current.scrollHeight; // scroll to the bottom
     }
   }, [messages, divRef]);
 
