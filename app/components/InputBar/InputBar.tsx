@@ -1,39 +1,56 @@
 import React, { RefObject, useContext, useRef, useState } from "react";
 import styles from "./InputBar.module.css";
 import { BsSendFill } from "react-icons/bs";
-import { Message, MessageContext } from "@/app/contexts/MessageContext";
+import {
+  Message,
+  MessageActionTypes,
+  MessageContext,
+} from "@/app/contexts/MessageContext";
 import { chatGPT } from "@/app/services/openai";
 import { ChatCompletionRequestMessage } from "openai/api";
 import { STORAGE_NAME } from "@/app/utils/constants";
 
 export function InputBar() {
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const [disabled, setDisabled] = useState(false);
   const [messages, dispatch] = useContext(MessageContext)!;
 
   async function handleSend() {
-    if (inputRef && inputRef.current) {
-      const token = window.localStorage.getItem(STORAGE_NAME);
-      if (token === null) {
-        return;
-      }
+    if (inputRef && inputRef.current && inputRef.current.value) {
+      setDisabled(true);
+      // const token = window.localStorage.getItem(STORAGE_NAME);
+      // if (token === null) {
+      //   return;
+      // }
       const transformed = transform(messages, inputRef.current.value);
-      dispatch({ type: "addUser", msg: inputRef.current.value });
-      const response = await chatGPT(transformed, token);
-      dispatch({ type: "addBot", msg: response as string });
+      dispatch({
+        type: MessageActionTypes.addUser,
+        msg: inputRef.current.value,
+      });
       inputRef.current.value = "";
+      dispatch({ type: MessageActionTypes.addBot, msg: "..." });
+      // const response = await chatGPT(transformed, token);
+      const response = "bypassed";
+      dispatch({ type: MessageActionTypes.editBot, msg: response as string });
+      setDisabled(false);
     }
   }
 
   return (
     <div className={styles.bar}>
-      <Input inputRef={inputRef} handleSend={handleSend} />
-      <Send handleSend={handleSend} />
+      <Input inputRef={inputRef} handleSend={handleSend} disabled={disabled} />
+      <Send handleSend={handleSend} disabled={disabled} />
     </div>
   );
 }
 
-function Send({ handleSend }: { handleSend: () => void }) {
+function Send({
+  handleSend,
+  disabled,
+}: {
+  handleSend: () => void;
+  disabled: boolean;
+}) {
   const [className, setClassName] = useState(styles.send);
 
   function handleDown() {
@@ -50,6 +67,7 @@ function Send({ handleSend }: { handleSend: () => void }) {
       onMouseDown={handleDown}
       onMouseUp={handleUp}
       onClick={handleSend}
+      disabled={disabled}
     >
       <BsSendFill />
     </button>
@@ -59,9 +77,11 @@ function Send({ handleSend }: { handleSend: () => void }) {
 function Input({
   inputRef,
   handleSend,
+  disabled,
 }: {
   inputRef: RefObject<HTMLInputElement> | null;
   handleSend: () => void;
+  disabled: boolean;
 }) {
   function handleKeyDown(evt: React.KeyboardEvent) {
     if (evt.key === "Enter") {
@@ -75,6 +95,7 @@ function Input({
       className={styles.input}
       ref={inputRef}
       onKeyDown={handleKeyDown}
+      disabled={disabled}
     />
   );
 }

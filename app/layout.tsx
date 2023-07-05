@@ -6,7 +6,7 @@ import { MessageContextProvider } from "@/app/contexts/MessageContext";
 
 export const metadata = {
   title: "FatGPT",
-  description: "FatGPT",
+  description: "FatGPT is a frontend wrapper of ChatGPT",
 };
 
 export default function RootLayout({

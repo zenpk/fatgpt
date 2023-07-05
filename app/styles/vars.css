@@ -4,6 +4,9 @@ html {
   --width-lg: 960px;
   --width-xl: 1280px;
 
+  --grey-fatgpt: #e4eaef;
+  --grey-card: rgba(0, 0, 0, 0.1);
+
   --black: #202123;
   --grey: #ECECF1;
   --grey-lighter: #aaaaaa;

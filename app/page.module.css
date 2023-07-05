@@ -1,26 +1,36 @@
 .background {
-  background-color: var(--black);
+  background-color: white;
   height: 100vh;
   color: var(--grey);
   width: 100vw;
+  z-index: 0;
 }
 
 .title {
   display: block;
-  font-size: var(--s-2);
-  margin: 0 auto;
-  padding: 0.5rem 0;
-  width: fit-content;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  color: var(--grey-fatgpt);
+  font-family: "Kalam", sans-serif;
+  font-size: 30vw;
 }
 
 .card {
   --card-backgroud: #343541;
-
-  position: relative;
-  background-color: var(--card-backgroud);
-  height: calc(100vh - var(--s-3) - 3rem);
-  margin: 0 2rem 2.5rem 2rem;
-  border-radius: 0.5rem;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 70%;
+  margin: 0 auto;
+  background-color: var(--grey-card);
+  height: 100%;
+  z-index: 1;
 }
 
 .textArea {

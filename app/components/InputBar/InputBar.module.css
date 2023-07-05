@@ -16,11 +16,11 @@
 
 .send {
   width: var(--bar-height);
-  background-color: #5eb45b;
+  background-color: var(--crew);
 }
 
 .sendDark {
-  background-color: #386c36;
+  background-color: var(--crew-darker);
 }
 
 .button {
