@@ -9,6 +9,7 @@ import {
 import { chatGPT } from "@/app/services/openai";
 import { ChatCompletionRequestMessage } from "openai/api";
 import { STORAGE_NAME } from "@/app/utils/constants";
+import { generateMd } from "@/app/utils/markdown";
 
 export function InputBar() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -18,10 +19,10 @@ export function InputBar() {
   async function handleSend() {
     if (inputRef && inputRef.current && inputRef.current.value) {
       setDisabled(true);
-      // const token = window.localStorage.getItem(STORAGE_NAME);
-      // if (token === null) {
-      //   return;
-      // }
+      const token = window.localStorage.getItem(STORAGE_NAME);
+      if (token === null) {
+        return;
+      }
       const transformed = transform(messages, inputRef.current.value);
       dispatch({
         type: MessageActionTypes.addUser,
@@ -29,9 +30,12 @@ export function InputBar() {
       });
       inputRef.current.value = "";
       dispatch({ type: MessageActionTypes.addBot, msg: "..." });
-      // const response = await chatGPT(transformed, token);
-      const response = "bypassed";
-      dispatch({ type: MessageActionTypes.editBot, msg: response as string });
+      const response = await chatGPT(transformed, token);
+      // const response =
+      dispatch({
+        type: MessageActionTypes.editBot,
+        msg: generateMd(response ?? ""),
+      });
       setDisabled(false);
     }
   }

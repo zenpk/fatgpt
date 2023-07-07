@@ -11,7 +11,13 @@ export function Bubble({ msg }: { msg: Message }) {
   return (
     <div className={className}>
       <Avatar isUser={msg.isUser} />
-      <p className={styles.textBox}>{msg.msg}</p>
+      {msg.isUser && <p className={styles.textBox}>{msg.msg}</p>}
+      {!msg.isUser && (
+        <div
+          className={styles.textBox}
+          dangerouslySetInnerHTML={{ __html: msg.msg }}
+        ></div>
+      )}
     </div>
   );
 }
