@@ -15,14 +15,14 @@ export default function Home() {
 
   useEffect(() => {
     if (divRef && divRef.current) {
-      divRef.current.scrollTop = divRef.current.scrollHeight;
+      divRef.current.scrollTop = divRef.current.scrollHeight; // scroll to the bottom
     }
   }, [messages, divRef]);
 
   useEffect(() => {
     const token = window.localStorage.getItem(STORAGE_NAME);
     if (!token) {
-      router.push("/login");
+      // router.push("/login");
     } else {
       tokenParse({ token: token }).then((resp) => {
         if (!resp.ok) {
@@ -31,7 +31,7 @@ export default function Home() {
         }
       });
     }
-  }, []);
+  }, [router]);
 
   return (
     <div className={styles.background}>

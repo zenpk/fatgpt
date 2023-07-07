@@ -55,8 +55,8 @@ export default function Login() {
             router.push("/");
           }
         }
-      } catch (e) {
-        setMessage(e as string);
+      } catch (e: any) {
+        setMessage(e.toString());
       }
     }
   }
@@ -81,6 +81,7 @@ export default function Login() {
             ref={invitation}
             name={"invitation"}
             className={styles.input}
+            autoComplete={"off"}
           />
           <div className={styles.buttonAndRegister}>
             <button onClick={onSubmit} className={styles.button}>
