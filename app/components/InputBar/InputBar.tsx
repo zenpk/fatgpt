@@ -6,7 +6,7 @@ import {
   MessageActionTypes,
   MessageContext,
 } from "@/app/contexts/MessageContext";
-import { chatGPT } from "@/app/services/openai";
+import { wsGpt } from "@/app/services/openai";
 import { ChatCompletionRequestMessage } from "openai/api";
 import { STORAGE_NAME } from "@/app/utils/constants";
 import { generateMd } from "@/app/utils/markdown";
@@ -21,6 +21,11 @@ export function InputBar() {
       setDisabled(true);
       const token = window.localStorage.getItem(STORAGE_NAME);
       if (token === null) {
+        dispatch({
+          type: MessageActionTypes.addBot,
+          msg: "No Token!",
+        });
+        setDisabled(false);
         return;
       }
       const transformed = transform(messages, inputRef.current.value);
@@ -29,13 +34,7 @@ export function InputBar() {
         msg: inputRef.current.value,
       });
       inputRef.current.value = "";
-      dispatch({ type: MessageActionTypes.addBot, msg: "..." });
-      const response = await chatGPT(transformed, token);
-      // const response =
-      dispatch({
-        type: MessageActionTypes.editBot,
-        msg: generateMd(response ?? ""),
-      });
+      await wsGpt(token, transformed, dispatch);
       setDisabled(false);
     }
   }
