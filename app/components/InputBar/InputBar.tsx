@@ -19,6 +19,10 @@ export function InputBar() {
   async function handleSend() {
     if (inputRef && inputRef.current && inputRef.current.value) {
       setDisabled(true);
+      dispatch({
+        type: MessageActionTypes.addUser,
+        msg: inputRef.current.value,
+      });
       const token = window.localStorage.getItem(STORAGE_NAME);
       if (token === null) {
         dispatch({
@@ -29,11 +33,11 @@ export function InputBar() {
         return;
       }
       const transformed = transform(messages, inputRef.current.value);
-      dispatch({
-        type: MessageActionTypes.addUser,
-        msg: inputRef.current.value,
-      });
       inputRef.current.value = "";
+      dispatch({
+        type: MessageActionTypes.addBot,
+        msg: "",
+      });
       await wsGpt(token, transformed, dispatch);
       setDisabled(false);
     }
