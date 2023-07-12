@@ -19,7 +19,9 @@ export async function wsGpt(
   const domain = await getDomain();
   const socket = new WebSocket(`wss://${domain}/wsgpt/`);
   const sendObj: SendObj = { token: token, messages: gptMessages };
-  socket.send(JSON.stringify(sendObj));
+  socket.onopen = (evt) => {
+    socket.send(JSON.stringify(sendObj));
+  };
   socket.onmessage = (evt) => {
     const msg = evt.data.toString();
     if (msg === "[DONE]") {
