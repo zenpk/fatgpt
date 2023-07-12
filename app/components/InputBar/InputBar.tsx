@@ -9,12 +9,13 @@ import {
 import { wsGpt } from "@/app/services/openai";
 import { ChatCompletionRequestMessage } from "openai/api";
 import { STORAGE_NAME } from "@/app/utils/constants";
-import { generateMd } from "@/app/utils/markdown";
+import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
 
 export function InputBar() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [disabled, setDisabled] = useState(false);
   const [messages, dispatch] = useContext(MessageContext)!;
+  const [, forceUpdate] = useContext(ForceUpdateContext)!;
 
   async function handleSend() {
     if (inputRef && inputRef.current && inputRef.current.value) {
@@ -38,7 +39,7 @@ export function InputBar() {
         type: MessageActionTypes.addBot,
         msg: "",
       });
-      await wsGpt(token, transformed, dispatch);
+      await wsGpt(token, transformed, dispatch, forceUpdate);
       setDisabled(false);
     }
   }
