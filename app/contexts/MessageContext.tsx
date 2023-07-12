@@ -55,7 +55,6 @@ export function MessageContextProvider({
 
     if (action.type === MessageActionTypes.editUser) {
       state[findFromLast(true)].msg = action.msg;
-      return state;
     }
     if (action.type === MessageActionTypes.editBot) {
       state[findFromLast(false)].msg = action.msg;
@@ -63,6 +62,7 @@ export function MessageContextProvider({
     if (action.type === MessageActionTypes.updateBot) {
       state[findFromLast(false)].msg += action.msg;
     }
+    console.log(state);
     return state;
   }
 
