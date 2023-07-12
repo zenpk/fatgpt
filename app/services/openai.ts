@@ -20,6 +20,8 @@ export async function wsGpt(
   const socket = new WebSocket(`wss://${domain}/wsgpt/`);
   const sendObj: SendObj = { token: token, messages: gptMessages };
   socket.onopen = (evt) => {
+    dispatch({ type: MessageActionTypes.editBot, msg: "debug" });
+    dispatch({ type: MessageActionTypes.updateBot, msg: "debug" });
     socket.send(JSON.stringify(sendObj));
   };
   socket.onmessage = (evt) => {
