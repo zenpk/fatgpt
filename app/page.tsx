@@ -14,8 +14,6 @@ export default function Home() {
   const router = useRouter();
   const divRef = useRef<HTMLDivElement>(null);
 
-  const forceUpdateValue = useContext(ForceUpdateContext);
-
   useEffect(() => {
     if (divRef && divRef.current) {
       divRef.current.scrollTop = divRef.current.scrollHeight; // scroll to the bottom
