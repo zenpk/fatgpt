@@ -15,7 +15,7 @@ export function InputBar() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [disabled, setDisabled] = useState(false);
   const [messages, dispatch] = useContext(MessageContext)!;
-  const [, forceUpdate] = useContext(ForceUpdateContext)!;
+  const forceUpdate = useContext(ForceUpdateContext);
 
   async function handleSend() {
     if (inputRef && inputRef.current && inputRef.current.value) {

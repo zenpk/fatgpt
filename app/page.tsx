@@ -14,7 +14,7 @@ export default function Home() {
   const router = useRouter();
   const divRef = useRef<HTMLDivElement>(null);
 
-  const [forceUpdateValue] = useContext(ForceUpdateContext)!;
+  const forceUpdateValue = useContext(ForceUpdateContext);
 
   useEffect(() => {
     if (divRef && divRef.current) {
