@@ -3,10 +3,12 @@
   flex-flow: row;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 1rem;
+  padding-block: 1vw;
+  padding-inline: 2vw;
   gap: 0;
   color: black;
   border-bottom: solid 1px var(--grey-github);
+  line-height: 1rem;
 }
 
 .bubble :global {
@@ -24,6 +26,11 @@
 }
 
 .textBox {
-  padding: 0.5rem 1rem;
+  padding: 0 0.5rem;
+  line-height: 1rem;
   margin: 0;
+}
+
+.avatar {
+  /*margin-top: 0.5rem;*/
 }

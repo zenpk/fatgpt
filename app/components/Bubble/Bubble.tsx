@@ -3,6 +3,7 @@ import bot from "@/public/openai.png";
 import user from "@/public/user.png";
 import Image from "next/image";
 import { Message } from "@/app/contexts/MessageContext";
+import { useWidth } from "@/app/hooks/useWidth";
 
 export function Bubble({ msg }: { msg: Message }) {
   let className = styles.bubble;
@@ -10,12 +11,29 @@ export function Bubble({ msg }: { msg: Message }) {
   return (
     <div className={className}>
       <Avatar isUser={msg.isUser} />
-      <p className={styles.textBox}>{msg.msg}</p>
+      {msg.isUser && <p className={styles.textBox}>{msg.msg}</p>}
+      {!msg.isUser && (
+        <div
+          className={styles.textBox}
+          dangerouslySetInnerHTML={{ __html: msg.msg }}
+        ></div>
+      )}
     </div>
   );
 }
 
 function Avatar({ isUser }: { isUser: boolean }) {
   const src = isUser ? user : bot;
-  return <Image src={src} alt={"avatar"} width={50} height={50} />;
+  const width = useWidth();
+  if (width < 0) return;
+  const roundedWidth = Math.round(width / 30);
+  return (
+    <Image
+      src={src}
+      alt={"avatar"}
+      width={roundedWidth}
+      height={roundedWidth}
+      className={styles.avatar}
+    />
+  );
 }

@@ -33,6 +33,19 @@
   z-index: 1;
 }
 
+@media only screen and (max-width: 1280px) {
+  .card {
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .card {
+    width: 100%;
+    padding: 0 2rem;
+  }
+}
+
 .textArea {
   margin: 0;
   overflow: auto;
