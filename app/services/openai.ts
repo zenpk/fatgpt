@@ -4,6 +4,7 @@ import {
   MessageActionTypes,
 } from "@/app/contexts/MessageContext";
 import React from "react";
+import { DOMAIN } from "@/app/utils/constants";
 
 type SendObj = {
   token: string;
@@ -15,7 +16,7 @@ export async function wsGpt(
   gptMessages: ChatCompletionRequestMessage[],
   dispatch: React.Dispatch<MessageActions>
 ) {
-  const socket = new WebSocket(`wss://${process.env.DOMAIN}/wsgpt/`);
+  const socket = new WebSocket(`wss://${DOMAIN}/wsgpt/`);
   const sendObj: SendObj = { token: token, messages: gptMessages };
   socket.send(JSON.stringify(sendObj));
   socket.onmessage = (evt) => {
