@@ -1,5 +1,3 @@
-import { BASE_URL } from "@/app/utils/constants";
-
 export const fetchWrapper = {
   get: get,
   post: post,
@@ -7,7 +5,7 @@ export const fetchWrapper = {
   delete: _delete,
 };
 
-const baseURL = BASE_URL;
+const baseURL = "";
 
 async function get(url: string) {
   const options: RequestInit = {

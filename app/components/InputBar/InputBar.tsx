@@ -19,17 +19,10 @@ export function InputBar() {
   async function handleSend() {
     if (inputRef && inputRef.current && inputRef.current.value) {
       setDisabled(true);
-<<<<<<< HEAD
-      // const token = window.localStorage.getItem(STORAGE_NAME);
-      // if (token === null) {
-      //   return;
-      // }
-=======
       const token = window.localStorage.getItem(STORAGE_NAME);
       if (token === null) {
         return;
       }
->>>>>>> 461d44230532f6d0f6da7791504a14631ac3505c
       const transformed = transform(messages, inputRef.current.value);
       dispatch({
         type: MessageActionTypes.addUser,
@@ -37,18 +30,12 @@ export function InputBar() {
       });
       inputRef.current.value = "";
       dispatch({ type: MessageActionTypes.addBot, msg: "..." });
-<<<<<<< HEAD
-      // const response = await chatGPT(transformed, token);
-      const response = "bypassed";
-      dispatch({ type: MessageActionTypes.editBot, msg: response as string });
-=======
       const response = await chatGPT(transformed, token);
       // const response =
       dispatch({
         type: MessageActionTypes.editBot,
         msg: generateMd(response ?? ""),
       });
->>>>>>> 461d44230532f6d0f6da7791504a14631ac3505c
       setDisabled(false);
     }
   }
