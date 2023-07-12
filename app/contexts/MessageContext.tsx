@@ -62,7 +62,6 @@ export function MessageContextProvider({
     if (action.type === MessageActionTypes.updateBot) {
       state[findFromLast(false)].msg += action.msg;
     }
-    console.log(state);
     return state;
   }
 
