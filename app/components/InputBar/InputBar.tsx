@@ -6,36 +6,40 @@ import {
   MessageActionTypes,
   MessageContext,
 } from "@/app/contexts/MessageContext";
-import { chatGPT } from "@/app/services/openai";
+import { wsGpt } from "@/app/services/openai";
 import { ChatCompletionRequestMessage } from "openai/api";
 import { STORAGE_NAME } from "@/app/utils/constants";
-import { generateMd } from "@/app/utils/markdown";
+import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
 
 export function InputBar() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [disabled, setDisabled] = useState(false);
   const [messages, dispatch] = useContext(MessageContext)!;
+  const forceUpdate = useContext(ForceUpdateContext);
 
   async function handleSend() {
     if (inputRef && inputRef.current && inputRef.current.value) {
       setDisabled(true);
-      const token = window.localStorage.getItem(STORAGE_NAME);
-      if (token === null) {
-        return;
-      }
-      const transformed = transform(messages, inputRef.current.value);
       dispatch({
         type: MessageActionTypes.addUser,
         msg: inputRef.current.value,
       });
+      const token = window.localStorage.getItem(STORAGE_NAME);
+      if (token === null) {
+        dispatch({
+          type: MessageActionTypes.addBot,
+          msg: "No Token!",
+        });
+        setDisabled(false);
+        return;
+      }
+      const transformed = transform(messages, inputRef.current.value);
       inputRef.current.value = "";
-      dispatch({ type: MessageActionTypes.addBot, msg: "..." });
-      const response = await chatGPT(transformed, token);
-      // const response = "debugging";
       dispatch({
-        type: MessageActionTypes.editBot,
-        msg: generateMd(response ?? ""),
+        type: MessageActionTypes.addBot,
+        msg: "",
       });
+      await wsGpt(token, transformed, dispatch, forceUpdate);
       setDisabled(false);
     }
   }

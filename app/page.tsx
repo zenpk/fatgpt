@@ -7,6 +7,7 @@ import { InputBar } from "@/app/components/InputBar/InputBar";
 import { STORAGE_NAME } from "@/app/utils/constants";
 import { tokenParse } from "@/app/services/simple-auth";
 import { useRouter } from "next/navigation";
+import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
 
 export default function Home() {
   const [messages] = useContext(MessageContext)!;
@@ -39,8 +40,8 @@ export default function Home() {
       <h1 className={styles.title}>FatGPT</h1>
       <div className={styles.card}>
         <div className={styles.textArea} ref={divRef}>
-          {messages.map((msg, i) => {
-            return <Bubble key={i} msg={msg} />;
+          {messages.map((msg) => {
+            return <Bubble key={msg.msg} msg={msg} />;
           })}
         </div>
         <div className={styles.inputBar}>

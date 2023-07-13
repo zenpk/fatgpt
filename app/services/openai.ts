@@ -1,32 +1,40 @@
-"use server";
-import { Configuration, OpenAIApi } from "openai";
+import { ChatCompletionRequestMessage } from "openai/api";
 import {
-  ChatCompletionRequestMessage,
-  CreateChatCompletionRequest,
-} from "openai/api";
-import { tokenCheckUtil } from "@/app/utils/simple-auth";
+  MessageActions,
+  MessageActionTypes,
+} from "@/app/contexts/MessageContext";
+import React, { useContext } from "react";
+import { getDomain } from "@/app/services/util";
+import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
 
-export async function chatGPT(
+type SendObj = {
+  token: string;
+  messages: ChatCompletionRequestMessage[];
+};
+
+export async function wsGpt(
+  token: string,
   gptMessages: ChatCompletionRequestMessage[],
-  token: string
+  dispatch: React.Dispatch<MessageActions>,
+  forceUpdate: () => void
 ) {
-  if (!(await tokenCheckUtil(token))) {
-    return "You're not logged in";
-  }
-  const configuration = new Configuration({
-    organization: process.env.ORG_ID,
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-  const openai = new OpenAIApi(configuration);
-  try {
-    const body: CreateChatCompletionRequest = {
-      model: "gpt-3.5-turbo",
-      messages: gptMessages,
-    };
-    const resp = await openai.createChatCompletion(body);
-    const respBody = await resp.data;
-    return respBody.choices[0].message!.content;
-  } catch (e) {
-    return (e as Error).message;
-  }
+  const domain = await getDomain();
+  const socket = new WebSocket(`wss://${domain}/wsgpt/`);
+
+  const sendObj: SendObj = { token: token, messages: gptMessages };
+  socket.onopen = (evt) => {
+    socket.send(JSON.stringify(sendObj));
+  };
+  socket.onmessage = (evt) => {
+    const msg = evt.data.toString();
+    if (msg === "[DONE]") {
+      socket.close();
+      return;
+    }
+    dispatch({ type: MessageActionTypes.updateBot, msg: evt.data.toString() });
+    forceUpdate();
+  };
+  socket.onerror = (e) => {
+    console.log(e);
+  };
 }

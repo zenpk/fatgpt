@@ -3,6 +3,7 @@ import "@/app/styles/vars.css";
 import "@/app/styles/animations.css";
 import React from "react";
 import { MessageContextProvider } from "@/app/contexts/MessageContext";
+import { ForceUpdateContextProvider } from "@/app/contexts/ForceUpdateContext";
 
 export const metadata = {
   title: "FatGPT",
@@ -17,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <MessageContextProvider>
-        <body>{children}</body>
+        <ForceUpdateContextProvider>
+          <body>{children}</body>
+        </ForceUpdateContextProvider>
       </MessageContextProvider>
     </html>
   );
