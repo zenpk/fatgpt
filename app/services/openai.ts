@@ -25,9 +25,8 @@ export async function chatGPT(
     };
     const resp = await openai.createChatCompletion(body);
     const respBody = await resp.data;
-    console.log(JSON.stringify(respBody));
     return respBody.choices[0].message!.content;
   } catch (e) {
-    console.log(e);
+    return (e as Error).message;
   }
 }

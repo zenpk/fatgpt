@@ -31,7 +31,7 @@ export function InputBar() {
       inputRef.current.value = "";
       dispatch({ type: MessageActionTypes.addBot, msg: "..." });
       const response = await chatGPT(transformed, token);
-      // const response =
+      // const response = "debugging";
       dispatch({
         type: MessageActionTypes.editBot,
         msg: generateMd(response ?? ""),

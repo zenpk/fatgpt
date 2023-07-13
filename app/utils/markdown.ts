@@ -8,7 +8,7 @@ export function generateMd(raw: string) {
         try {
           return hljs.highlight(str, { language: lang }).value;
         } catch (e) {
-          console.log(e);
+          return (e as Error).message;
         }
       }
       return "";

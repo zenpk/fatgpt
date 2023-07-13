@@ -22,7 +22,8 @@ export default function Home() {
   useEffect(() => {
     const token = window.localStorage.getItem(STORAGE_NAME);
     if (!token) {
-      router.push("/login");
+      // comment this line to temporarily disable the authentication
+      // router.push("/login");
     } else {
       tokenParse({ token: token }).then((resp) => {
         if (!resp.ok) {

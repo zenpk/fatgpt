@@ -13,6 +13,7 @@ export enum MessageActionTypes {
   addBot,
   editUser,
   editBot,
+  updateBot,
 }
 
 export const MessageContext = React.createContext<
@@ -24,7 +25,20 @@ export function MessageContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const defaultValue: Message[] = [];
+  const defaultValue: Message[] = [
+    {
+      msg: "debug",
+      isUser: true,
+    },
+    {
+      msg: "debug",
+      isUser: true,
+    },
+    {
+      msg: "saoigdedytn gfkibdrjt48329ipdqoac;svfk gnju5irw4pdlc ksmgvhtuy593pwlx,c;svkgjtoiu",
+      isUser: false,
+    },
+  ];
 
   function reducer(state: Message[], action: MessageActions) {
     if (action.type === MessageActionTypes.addUser) {
@@ -58,6 +72,9 @@ export function MessageContextProvider({
     }
     if (action.type === MessageActionTypes.editBot) {
       state[findFromLast(false)].msg = action.msg;
+    }
+    if (action.type === MessageActionTypes.updateBot) {
+      state[findFromLast(false)].msg += action.msg;
     }
     return state;
   }
