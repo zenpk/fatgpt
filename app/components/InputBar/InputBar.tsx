@@ -64,7 +64,7 @@ export function InputBar() {
       setRows(1);
       await wsGpt(token, transformed, dispatch, forceUpdate, setButtonDisabled);
       setInputDisabled(false);
-      inputRef.current.focus();
+      inputRef.current.focus(); // not working
     }
   }
 
