@@ -88,11 +88,20 @@ function Send({
     handleSend();
   }
 
+  function handleLeave() {
+    setClassName(`${styles.send}`);
+  }
+
+  if (disabled) {
+    setClassName((prev) => prev + ` ${styles.sendDisabled}`);
+  }
+
   return (
     <button
       className={className}
       onMouseDown={handleDown}
       onMouseUp={handleUp}
+      onMouseLeave={handleLeave}
       disabled={disabled}
     >
       <BsSendFill />
@@ -125,7 +134,7 @@ function Input({
   function handleChange() {
     if (inputRef && inputRef.current) {
       const newLineCount =
-        (inputRef.current.value.match(/\n/g) || []).length + 1;
+        (inputRef.current.value.match(/\r/g) || []).length + 1;
       if (newLineCount <= maxRows) {
         setRows(newLineCount);
       }

@@ -42,6 +42,10 @@
   background-color: var(--crew-darker);
 }
 
+.sendDisabled{
+  background-color: var(--grey-darker);
+}
+
 .send, .input {
   display: flex;
   justify-content: center;
