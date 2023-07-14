@@ -100,6 +100,10 @@ ul, ol {
   border: 1px solid rgba(140, 178, 204, 0.7);
 }
 
+*::selection {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
 /* for markdown */
 
 pre {

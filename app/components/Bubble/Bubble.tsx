@@ -24,10 +24,14 @@ export function Bubble({
   return (
     <div className={className}>
       <Avatar isUser={msg.isUser} />
-      {msg.isUser && <pre className={styles.textBox}>{msg.msg}</pre>}
+      {msg.isUser && (
+        <pre className={`${styles.textBox} ${styles.textBoxUser}`}>
+          {msg.msg}
+        </pre>
+      )}
       {!msg.isUser && (
         <div
-          className={`${styles.textBox} ${styles.textBoxBot}`}
+          className={styles.textBox}
           dangerouslySetInnerHTML={{ __html: md }}
         ></div>
       )}

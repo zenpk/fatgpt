@@ -32,14 +32,14 @@
   font-size: var(--s-1);
   font-family: "Noto Sans SC", sans-serif;
   margin: 0;
-  white-space: pre-line;
   overflow-wrap: break-word;
-  width: fit-content;
+  width: var(--maxWidth);
   max-width: var(--maxWidth);
 }
 
-.textBoxBot {
-  width: var(--maxWidth);
+.textBoxUser {
+  white-space: pre-line;
+  width: fit-content;
 }
 
 .avatar {

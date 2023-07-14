@@ -27,6 +27,9 @@
   color: black;
 }
 
+.input::placeholder {
+  color: #c0c0c0;
+}
 
 .send {
   height: var(--button-size);
