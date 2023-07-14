@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Kalam:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap');
 
+button {
+  all: unset;
+}
 
 button:hover {
   cursor: pointer;
@@ -112,6 +115,10 @@ li {
 
 p {
   margin: 0;
+}
+
+ul > p, ol > p {
+  display: inline-block;
 }
 
 pre, code {

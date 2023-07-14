@@ -42,8 +42,8 @@
   background-color: var(--crew-darker);
 }
 
-.sendDisabled{
-  background-color: var(--grey-darker);
+.sendDisabled {
+  background-color: var(--grey);
 }
 
 .send, .input {
