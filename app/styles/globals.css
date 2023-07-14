@@ -89,7 +89,6 @@ ul, ol {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-size: var(--s-1);
   line-height: 2;
   list-style-position: inside;
 }
