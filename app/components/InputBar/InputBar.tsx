@@ -54,6 +54,7 @@ export function InputBar() {
       });
       await wsGpt(token, transformed, dispatch, forceUpdate, setButtonDisabled);
       setInputDisabled(false);
+      inputRef.current.focus();
     }
   }
 
