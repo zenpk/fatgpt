@@ -5,6 +5,7 @@ import {
 } from "@/app/contexts/MessageContext";
 import React from "react";
 import { getDomain } from "@/app/services/utils";
+import { SOCKET_TIMEOUT } from "@/app/utils/constants";
 
 type SendObj = {
   token: string;
@@ -23,6 +24,7 @@ export async function wsGpt(
   const sendObj: SendObj = { token: token, messages: gptMessages };
   socket.onopen = (evt) => {
     socket.send(JSON.stringify(sendObj));
+    setTimeout(socket.close, SOCKET_TIMEOUT);
   };
   socket.onmessage = (evt) => {
     const msg = evt.data.toString();

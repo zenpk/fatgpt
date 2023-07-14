@@ -23,7 +23,7 @@ html {
   --bg-grey-very-dark: #bbbbbb;
 
   --s-0: calc(0.6rem + 0.3vw);
-  --s-1: calc(0.8rem + 0.3vw);
+  --s-1: calc(1rem);
   --s-2: calc(1rem + 0.3vw);
   --s-3: calc(1rem + 0.6vw);
   --s-4: calc(1.3rem + 0.6vw);

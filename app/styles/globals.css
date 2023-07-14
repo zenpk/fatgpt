@@ -72,13 +72,6 @@ a {
   transition: color var(--trans-speed) ease;
 }
 
-pre {
-  background-color: rgba(0, 0, 0, 0.75);
-  padding: 1rem;
-  border-radius: 0.25rem;
-  color: #a9b7c6;
-}
-
 img {
   object-fit: contain;
   max-width: 100%;
@@ -105,4 +98,55 @@ ul, ol {
   border-radius: 0.5rem;
   background-color: rgba(140, 178, 204, 0.3);
   border: 1px solid rgba(140, 178, 204, 0.7);
+}
+
+/* for markdown */
+
+pre {
+  background-color: rgba(0, 0, 0, 0.75);
+  padding: 1rem;
+  border-radius: 0.25rem;
+  color: #a9b7c6;
+}
+
+blockquote {
+  margin: 0;
+  padding: 0 1rem;
+  line-height: 1.5;
+  background-color: rgba(0, 0, 0, 0.1);
+  font-size: var(--s-1);
+  border-radius: 0.25rem;
+  color: #333333;
+}
+
+table {
+  border: solid 1px black;
+  border-radius: 0.25rem;
+  border-spacing: 0;
+  text-align: left;
+  border-collapse: separate;
+  word-break: break-word;
+  width: 100%;
+}
+
+thead > tr {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  border-right: solid 1px black;
+  border-bottom: solid 2px black;
+  padding: 0.5rem 1rem;
+}
+
+td:last-child, th:last-child {
+  border-right: none;
+}
+
+td {
+  border-bottom: solid 1px black;
+}
+
+tbody > tr:last-child > td {
+  border-bottom: none;
 }

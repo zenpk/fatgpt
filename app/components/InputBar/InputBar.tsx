@@ -6,7 +6,7 @@ import {
   MessageActionTypes,
   MessageContext,
 } from "@/app/contexts/MessageContext";
-import { wsGpt } from "@/app/services/openai";
+import { wsGpt } from "@/app/services/wsgpt";
 import { ChatCompletionRequestMessage } from "openai/api";
 import { KeyNames, STORAGE_NAME } from "@/app/utils/constants";
 import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
