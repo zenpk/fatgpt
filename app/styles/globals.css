@@ -62,11 +62,19 @@ h4 {
   padding: 0;
 }
 
-
 a {
   font-weight: bold;
   text-decoration: none;
+  color: var(--crew);
   transition: color var(--trans-speed) ease;
+}
+
+a:focus {
+  color: var(--crew-darker);
+}
+
+a:visited {
+  color: var(--crew);
 }
 
 img {
@@ -111,6 +119,12 @@ p {
   /*display: inline-block;*/
 }
 
+pre, code {
+  background-color: rgba(0, 0, 0, 0.75);
+  border-radius: 0.25rem;
+  color: #a9b7c6;
+}
+
 pre {
   padding: 1rem;
   white-space: pre-wrap;
@@ -118,9 +132,7 @@ pre {
 
 code {
   /*display: inline-block;*/
-  background-color: rgba(0, 0, 0, 0.75);
-  border-radius: 0.25rem;
-  color: #a9b7c6;
+  padding: 0 0.5rem;
 }
 
 blockquote {

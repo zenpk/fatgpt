@@ -17,6 +17,8 @@ html {
   --crew: rgba(171, 201, 231, 0.66);
   --crew-rgba: 114, 192, 221;
   --crew-darker: #7799bb;
+  --code-background: rgba(0, 0, 0, 0.75);
+  --code-color: #a9b7c6;
 
   --bg-grey: #f0f0f0;
   --bg-grey-darker: #e0e0e0;

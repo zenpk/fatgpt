@@ -38,7 +38,7 @@
 }
 
 .textBoxUser {
-  white-space: pre-line;
+  white-space: pre-wrap;
   width: fit-content;
 }
 
