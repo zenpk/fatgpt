@@ -108,15 +108,19 @@ li {
 }
 
 p {
-  display: inline-block;
+  /*display: inline-block;*/
 }
 
 pre {
-  background-color: rgba(0, 0, 0, 0.75);
   padding: 1rem;
+  white-space: pre-wrap;
+}
+
+code {
+  /*display: inline-block;*/
+  background-color: rgba(0, 0, 0, 0.75);
   border-radius: 0.25rem;
   color: #a9b7c6;
-  white-space: pre;
 }
 
 blockquote {
