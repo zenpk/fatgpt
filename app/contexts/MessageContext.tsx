@@ -25,41 +25,7 @@ export function MessageContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const defaultValue: Message[] = [
-    {
-      msg:
-        "```jsx\n" +
-        "export function Bubble({\n" +
-        "  msg,\n" +
-        "  parentRef,\n" +
-        "}: {\n" +
-        "  msg: Message;\n" +
-        "  parentRef: RefObject<HTMLDivElement>;\n" +
-        "}) {\n" +
-        "  let className = styles.bubble;\n" +
-        "  className += msg.isUser ? ` ${styles.bubbleUser}` : ` ${styles.bubbleBot}`;\n" +
-        "  const forceUpdateValue = useContext(ForceUpdateContext);\n" +
-        "  const md = generateMd(msg.msg);\n" +
-        "  if (parentRef && parentRef.current) {\n" +
-        "    parentRef.current.scrollTop = parentRef.current.scrollHeight;\n" +
-        "  }\n" +
-        "  return (\n" +
-        "    <div className={className}>\n" +
-        "      <Avatar isUser={msg.isUser} />\n" +
-        "      {msg.isUser && <pre className={styles.textBox}>{msg.msg}</pre>}\n" +
-        "      {!msg.isUser && (\n" +
-        "        <div\n" +
-        "          className={`${styles.textBox} ${styles.textBoxBot}`}\n" +
-        "          dangerouslySetInnerHTML={{ __html: md }}\n" +
-        "        ></div>\n" +
-        "      )}\n" +
-        "    </div>\n" +
-        "  );\n" +
-        "}" +
-        "\n```",
-      isUser: false,
-    },
-  ];
+  const defaultValue: Message[] = [];
 
   function reducer(state: Message[], action: MessageActions) {
     if (action.type === MessageActionTypes.addUser) {
