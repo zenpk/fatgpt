@@ -41,7 +41,7 @@ export default function Home() {
       <div className={styles.card}>
         <div className={styles.textArea} ref={divRef}>
           {messages.map((msg, index) => {
-            return <Bubble key={index} msg={msg} />;
+            return <Bubble key={index} msg={msg} parentRef={divRef} />;
           })}
         </div>
         <div className={styles.inputBar}>

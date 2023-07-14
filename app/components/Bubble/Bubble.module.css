@@ -25,6 +25,7 @@
 }
 
 .textBox {
+  --maxWidth: calc(100% - 1rem - 2 * 24px);
   all: unset;
   padding: 0 0.5rem;
   line-height: 1.5;
@@ -34,7 +35,11 @@
   white-space: pre-line;
   overflow-wrap: break-word;
   width: fit-content;
-  max-width: calc(100% - 1rem - 2 * 24px);
+  max-width: var(--maxWidth);
+}
+
+.textBoxBot {
+  width: var(--maxWidth);
 }
 
 .avatar {

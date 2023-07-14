@@ -3,22 +3,31 @@ import bot from "@/public/openai.png";
 import user from "@/public/user.png";
 import Image from "next/image";
 import { Message } from "@/app/contexts/MessageContext";
-import { useContext } from "react";
+import { RefObject, useContext } from "react";
 import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
 import { generateMd } from "@/app/utils/markdown";
 
-export function Bubble({ msg }: { msg: Message }) {
+export function Bubble({
+  msg,
+  parentRef,
+}: {
+  msg: Message;
+  parentRef: RefObject<HTMLDivElement>;
+}) {
   let className = styles.bubble;
   className += msg.isUser ? ` ${styles.bubbleUser}` : ` ${styles.bubbleBot}`;
   const forceUpdateValue = useContext(ForceUpdateContext);
   const md = generateMd(msg.msg);
+  if (parentRef && parentRef.current) {
+    parentRef.current.scrollTop = parentRef.current.scrollHeight;
+  }
   return (
     <div className={className}>
       <Avatar isUser={msg.isUser} />
       {msg.isUser && <pre className={styles.textBox}>{msg.msg}</pre>}
       {!msg.isUser && (
         <div
-          className={styles.textBox}
+          className={`${styles.textBox} ${styles.textBoxBot}`}
           dangerouslySetInnerHTML={{ __html: md }}
         ></div>
       )}
