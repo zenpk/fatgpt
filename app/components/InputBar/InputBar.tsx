@@ -1,4 +1,10 @@
-import React, { RefObject, useContext, useRef, useState } from "react";
+import React, {
+  RefObject,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styles from "./InputBar.module.css";
 import { BsSendFill } from "react-icons/bs";
 import {
@@ -92,9 +98,11 @@ function Send({
     setClassName(`${styles.send}`);
   }
 
-  if (disabled) {
-    setClassName((prev) => prev + ` ${styles.sendDisabled}`);
-  }
+  useEffect(() => {
+    if (disabled) {
+      setClassName((prev) => prev + ` ${styles.sendDisabled}`);
+    }
+  }, [disabled]);
 
   return (
     <button
