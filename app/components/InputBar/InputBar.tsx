@@ -147,6 +147,8 @@ function Input({
         (inputRef.current.value.match(/[\n\r]/g) || []).length + 1;
       if (newLineCount <= maxRows) {
         setRows(newLineCount);
+      } else {
+        setRows(maxRows);
       }
     }
   }
