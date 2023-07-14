@@ -3,7 +3,7 @@ import {
   MessageActions,
   MessageActionTypes,
 } from "@/app/contexts/MessageContext";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { getDomain } from "@/app/services/utils";
 import { SOCKET_TIMEOUT } from "@/app/utils/constants";
 
@@ -16,7 +16,8 @@ export async function wsGpt(
   token: string,
   gptMessages: ChatCompletionRequestMessage[],
   dispatch: React.Dispatch<MessageActions>,
-  forceUpdate: () => void
+  forceUpdate: () => void,
+  setButtonDisabled: Dispatch<SetStateAction<boolean>>
 ) {
   const domain = await getDomain();
   const socket = new WebSocket(`wss://${domain}/wsgpt/`);
@@ -30,6 +31,7 @@ export async function wsGpt(
     const msg = evt.data.toString();
     if (msg === "[DONE]") {
       socket.close();
+      setButtonDisabled(false);
       return;
     }
     dispatch({ type: MessageActionTypes.updateBot, msg: evt.data.toString() });

@@ -13,11 +13,15 @@ import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const [disabled, setDisabled] = useState(false);
+  const [inputDisabled, setInputDisabled] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const [messages, dispatch] = useContext(MessageContext)!;
   const forceUpdate = useContext(ForceUpdateContext);
 
   async function handleSend() {
+    if (buttonDisabled || inputDisabled) {
+      return;
+    }
     if (inputRef && inputRef.current) {
       if (inputRef.current.value === "") {
         dispatch({
@@ -28,7 +32,6 @@ export function InputBar() {
       }
     }
     if (inputRef && inputRef.current && inputRef.current.value) {
-      setDisabled(true);
       dispatch({
         type: MessageActionTypes.addUser,
         msg: inputRef.current.value,
@@ -39,24 +42,29 @@ export function InputBar() {
           type: MessageActionTypes.addBot,
           msg: "No Token!",
         });
-        setDisabled(false);
         return;
       }
+      setInputDisabled(true);
+      setButtonDisabled(true);
       const transformed = transform(messages, inputRef.current.value);
       inputRef.current.value = "";
       dispatch({
         type: MessageActionTypes.addBot,
         msg: "",
       });
-      await wsGpt(token, transformed, dispatch, forceUpdate);
-      setDisabled(false);
+      await wsGpt(token, transformed, dispatch, forceUpdate, setButtonDisabled);
+      setInputDisabled(false);
     }
   }
 
   return (
     <div className={styles.bar}>
-      <Input inputRef={inputRef} handleSend={handleSend} disabled={disabled} />
-      <Send handleSend={handleSend} disabled={disabled} />
+      <Input
+        inputRef={inputRef}
+        handleSend={handleSend}
+        disabled={inputDisabled}
+      />
+      <Send handleSend={handleSend} disabled={buttonDisabled} />
     </div>
   );
 }
