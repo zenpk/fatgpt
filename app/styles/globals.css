@@ -65,12 +65,12 @@ h4 {
 a {
   font-weight: bold;
   text-decoration: none;
-  color: var(--crew);
+  color: var(--crew-darker);
   transition: color var(--trans-speed) ease;
 }
 
-a:focus {
-  color: var(--crew-darker);
+a:hover {
+  color: var(--crew-darkest);
 }
 
 a:visited {
@@ -133,6 +133,10 @@ pre {
 code {
   /*display: inline-block;*/
   padding: 0 0.5rem;
+}
+
+pre > code {
+  background: none;
 }
 
 blockquote {
