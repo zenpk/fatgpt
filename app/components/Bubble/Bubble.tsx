@@ -14,7 +14,7 @@ export function Bubble({ msg }: { msg: Message }) {
   return (
     <div className={className}>
       <Avatar isUser={msg.isUser} />
-      {msg.isUser && <p className={styles.textBox}>{msg.msg}</p>}
+      {msg.isUser && <pre className={styles.textBox}>{msg.msg}</pre>}
       {!msg.isUser && (
         <div
           className={styles.textBox}
@@ -27,9 +27,10 @@ export function Bubble({ msg }: { msg: Message }) {
 
 function Avatar({ isUser }: { isUser: boolean }) {
   const src = isUser ? user : bot;
-  const width = useWidth();
-  if (width < 0) return;
-  const roundedWidth = Math.round(width / 30);
+  // const width = useWidth();
+  // if (width < 0) return;
+  // const roundedWidth = Math.round(width / 50);
+  const roundedWidth = 24;
   return (
     <Image
       src={src}

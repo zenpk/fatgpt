@@ -8,16 +8,25 @@ import {
 } from "@/app/contexts/MessageContext";
 import { wsGpt } from "@/app/services/openai";
 import { ChatCompletionRequestMessage } from "openai/api";
-import { STORAGE_NAME } from "@/app/utils/constants";
+import { KeyNames, STORAGE_NAME } from "@/app/utils/constants";
 import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
 
 export function InputBar() {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const [disabled, setDisabled] = useState(false);
   const [messages, dispatch] = useContext(MessageContext)!;
   const forceUpdate = useContext(ForceUpdateContext);
 
   async function handleSend() {
+    if (inputRef && inputRef.current) {
+      if (inputRef.current.value === "") {
+        dispatch({
+          type: MessageActionTypes.addBot,
+          msg: "You need to at least say something...",
+        });
+        return;
+      }
+    }
     if (inputRef && inputRef.current && inputRef.current.value) {
       setDisabled(true);
       dispatch({
@@ -67,6 +76,7 @@ function Send({
 
   function handleUp() {
     setClassName(`${styles.send}`);
+    handleSend();
   }
 
   return (
@@ -74,7 +84,6 @@ function Send({
       className={className}
       onMouseDown={handleDown}
       onMouseUp={handleUp}
-      onClick={handleSend}
       disabled={disabled}
     >
       <BsSendFill />
@@ -87,23 +96,46 @@ function Input({
   handleSend,
   disabled,
 }: {
-  inputRef: RefObject<HTMLInputElement> | null;
+  inputRef: RefObject<HTMLTextAreaElement> | null;
   handleSend: () => void;
   disabled: boolean;
 }) {
+  const [rows, setRows] = useState(1);
+  const maxRows = 10;
+
   function handleKeyDown(evt: React.KeyboardEvent) {
-    if (evt.key === "Enter") {
+    if (evt.shiftKey && evt.key === KeyNames.enter) {
+      if (inputRef && inputRef.current) {
+        // if (rows <= maxRows) {
+        //   setRows((prev) => prev + 1);
+        // }
+      }
+      return;
+    }
+    if (evt.key === KeyNames.enter) {
       handleSend();
     }
   }
 
+  function handleChange() {
+    if (inputRef && inputRef.current) {
+      const newLineCount =
+        (inputRef.current.value.match(/\n/g) || []).length + 1;
+      if (newLineCount <= maxRows) {
+        setRows(newLineCount);
+        console.log(rows);
+      }
+    }
+  }
+
   return (
-    <input
-      type={"text"}
+    <textarea
       className={styles.input}
       ref={inputRef}
       onKeyDown={handleKeyDown}
       disabled={disabled}
+      rows={rows}
+      onChange={handleChange}
     />
   );
 }

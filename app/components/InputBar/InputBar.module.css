@@ -1,37 +1,42 @@
 .bar {
   display: flex;
-  height: var(--bar-height);
   gap: 0.5rem;
+  bottom: 0;
+  width: 100%;
 }
 
 .input {
-  flex: 8;
   box-shadow: none;
-  color: var(--grey);
-  font: var(--s-1);
+  font-size: 1rem;
+  font-family: "Noto Sans SC", sans-serif;
+  border-radius: 0.25rem;
+  color: black;
+  resize: none;
+  overflow: auto;
+  line-height: 1.5;
+  padding: 0.5rem;
+  width: calc(100% - var(--button-size));
+  border: solid 1px var(--crew-darker);
+}
+
+.input:focus {
+  outline: none;
+  border: solid 1px black;
 }
 
 .send {
-  width: var(--bar-height);
+  height: var(--button-size);
+  width: var(--button-size);
   background-color: var(--crew);
+  border-radius: 0.25rem;
 }
 
 .sendDark {
   background-color: var(--crew-darker);
 }
 
-.button {
-  width: var(--bar-height);
-}
-
-
-.send, .input, .button {
+.send, .input {
   display: flex;
   justify-content: center;
   align-items: center;
-
-}
-
-.button {
-  border-radius: 100rem;
 }

@@ -7,7 +7,6 @@ import { InputBar } from "@/app/components/InputBar/InputBar";
 import { STORAGE_NAME } from "@/app/utils/constants";
 import { tokenParse } from "@/app/services/simple-auth";
 import { useRouter } from "next/navigation";
-import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
 
 export default function Home() {
   const [messages] = useContext(MessageContext)!;

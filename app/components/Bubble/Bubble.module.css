@@ -3,12 +3,10 @@
   flex-flow: row;
   justify-content: flex-start;
   align-items: flex-start;
-  padding-block: 1vw;
-  padding-inline: 2vw;
+  padding: 1rem;
   gap: 0;
   color: black;
-  border-bottom: solid 1px var(--grey-github);
-  line-height: 1rem;
+  /*border-bottom: solid 1px var(--grey-github);*/
 }
 
 .bubble :global {
@@ -18,18 +16,23 @@
 
 .bubbleUser {
   flex-flow: row-reverse;
-  background: rgba(100, 100, 100, 0.6);
+  background: rgba(218, 223, 231, 0.6);
 }
 
 .bubbleBot {
-  background: rgba(220, 220, 220, 0.6);
+  /*background: rgba(220, 220, 220, 0.6);*/
 }
 
 .textBox {
   all: unset;
   padding: 0 0.5rem;
-  line-height: 1rem;
+  line-height: 1.5;
+  font-size: 1rem;
+  font-family: "Noto Sans SC", sans-serif;
   margin: 0;
+  white-space: pre-line;
+  overflow-wrap: normal;
+  width: fit-content;
 }
 
 .avatar {

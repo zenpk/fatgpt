@@ -16,7 +16,7 @@
   padding: 0;
   color: var(--grey-fatgpt);
   font-family: "Kalam", sans-serif;
-  font-size: 30vw;
+  font-size: 28vw;
 }
 
 .card {
@@ -29,6 +29,7 @@
   margin: 0 auto;
   padding: 0;
   background-color: var(--grey-card);
+  backdrop-filter: blur(6px);
   height: 100%;
   z-index: 1;
 }
@@ -42,14 +43,18 @@
 @media only screen and (max-width: 1024px) {
   .card {
     width: 100%;
+  }
+
+  .textArea {
     padding: 0 2rem;
   }
 }
 
 .textArea {
+  padding: 0;
   margin: 0;
   overflow: auto;
-  height: calc(100% - 2rem - var(--bar-height));
+  height: calc(100% - 2rem - var(--button-size));
   box-sizing: border-box;
 }
 

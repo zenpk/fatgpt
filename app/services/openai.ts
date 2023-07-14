@@ -3,9 +3,8 @@ import {
   MessageActions,
   MessageActionTypes,
 } from "@/app/contexts/MessageContext";
-import React, { useContext } from "react";
-import { getDomain } from "@/app/services/util";
-import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
+import React from "react";
+import { getDomain } from "@/app/services/utils";
 
 type SendObj = {
   token: string;

@@ -4,8 +4,8 @@ html {
   --width-lg: 960px;
   --width-xl: 1280px;
 
-  --grey-fatgpt: #e4eaef;
-  --grey-card: rgba(0, 0, 0, 0.1);
+  --grey-fatgpt: rgba(235, 241, 248, 0.5);
+  --grey-card: rgba(192, 192, 192, 0.05);
 
   --black: #202123;
   --grey: #ECECF1;
@@ -14,7 +14,7 @@ html {
   --grey-secondary: #e2e3e5;
   --grey-github: hsla(210, 18%, 87%, 1);
   --ice: #e5efff;
-  --crew: #99bbdd;
+  --crew: #abc9e7;
   --crew-rgba: 114, 192, 221;
   --crew-darker: #7799bb;
 
@@ -55,6 +55,6 @@ html {
 
   --nprogress-height: 5px;
 
-  --bar-height: 40px;
+  --button-size: 42px;
 }
 
