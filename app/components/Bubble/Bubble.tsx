@@ -11,9 +11,7 @@ export function Bubble({ msg }: { msg: Message }) {
   let className = styles.bubble;
   className += msg.isUser ? ` ${styles.bubbleUser}` : ` ${styles.bubbleBot}`;
   const forceUpdateValue = useContext(ForceUpdateContext);
-  if (!msg.isUser) {
-    msg.msg = generateMd(msg.msg);
-  }
+  const md = generateMd(msg.msg);
   return (
     <div className={className}>
       <Avatar isUser={msg.isUser} />
@@ -21,7 +19,7 @@ export function Bubble({ msg }: { msg: Message }) {
       {!msg.isUser && (
         <div
           className={styles.textBox}
-          dangerouslySetInnerHTML={{ __html: msg.msg }}
+          dangerouslySetInnerHTML={{ __html: md }}
         ></div>
       )}
     </div>
