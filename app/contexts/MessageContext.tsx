@@ -25,20 +25,7 @@ export function MessageContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const defaultValue: Message[] = [
-    {
-      msg: "debug",
-      isUser: true,
-    },
-    {
-      msg: "debug",
-      isUser: true,
-    },
-    {
-      msg: "saoigdedytn gfkibdrjt48329ipdqoac;svfk gnju5irw4pdlc ksmgvhtuy593pwlx,c;svkgjtoiuioqwefnrvirgwthunefdckj hbguerifodwjcmvfiguwejplkfvgenfidhsacf",
-      isUser: false,
-    },
-  ];
+  const defaultValue: Message[] = [];
 
   function reducer(state: Message[], action: MessageActions) {
     if (action.type === MessageActionTypes.addUser) {

@@ -5,11 +5,15 @@ import Image from "next/image";
 import { Message } from "@/app/contexts/MessageContext";
 import { useContext } from "react";
 import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
+import { generateMd } from "@/app/utils/markdown";
 
 export function Bubble({ msg }: { msg: Message }) {
   let className = styles.bubble;
   className += msg.isUser ? ` ${styles.bubbleUser}` : ` ${styles.bubbleBot}`;
   const forceUpdateValue = useContext(ForceUpdateContext);
+  if (!msg.isUser) {
+    msg.msg = generateMd(msg.msg);
+  }
   return (
     <div className={className}>
       <Avatar isUser={msg.isUser} />
