@@ -100,7 +100,9 @@ function Send({
 
   useEffect(() => {
     if (disabled) {
-      setClassName((prev) => prev + ` ${styles.sendDisabled}`);
+      setClassName(`${styles.send} ${styles.sendDisabled}`);
+    } else {
+      setClassName(`${styles.send}`);
     }
   }, [disabled]);
 
@@ -142,7 +144,7 @@ function Input({
   function handleChange() {
     if (inputRef && inputRef.current) {
       const newLineCount =
-        (inputRef.current.value.match(/\r/g) || []).length + 1;
+        (inputRef.current.value.match(/[\n\r]/g) || []).length + 1;
       if (newLineCount <= maxRows) {
         setRows(newLineCount);
       }
