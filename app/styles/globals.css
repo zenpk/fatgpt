@@ -117,7 +117,7 @@ p {
   margin: 0;
 }
 
-ul > p, ol > p {
+li > p {
   display: inline-block;
 }
 

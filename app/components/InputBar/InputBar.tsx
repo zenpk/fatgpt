@@ -1,5 +1,7 @@
 import React, {
+  Dispatch,
   RefObject,
+  SetStateAction,
   useContext,
   useEffect,
   useRef,
@@ -21,6 +23,7 @@ export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [rows, setRows] = useState(1);
   const [messages, dispatch] = useContext(MessageContext)!;
   const forceUpdate = useContext(ForceUpdateContext);
 
@@ -58,6 +61,7 @@ export function InputBar() {
         type: MessageActionTypes.addBot,
         msg: "",
       });
+      setRows(1);
       await wsGpt(token, transformed, dispatch, forceUpdate, setButtonDisabled);
       setInputDisabled(false);
       inputRef.current.focus();
@@ -70,6 +74,8 @@ export function InputBar() {
         inputRef={inputRef}
         handleSend={handleSend}
         disabled={inputDisabled}
+        rows={rows}
+        setRows={setRows}
       />
       <Send handleSend={handleSend} disabled={buttonDisabled} />
     </div>
@@ -123,12 +129,15 @@ function Input({
   inputRef,
   handleSend,
   disabled,
+  rows,
+  setRows,
 }: {
   inputRef: RefObject<HTMLTextAreaElement> | null;
   handleSend: () => void;
   disabled: boolean;
+  rows: number;
+  setRows: Dispatch<SetStateAction<number>>;
 }) {
-  const [rows, setRows] = useState(1);
   const maxRows = 10;
 
   function handleKeyDown(evt: React.KeyboardEvent) {
