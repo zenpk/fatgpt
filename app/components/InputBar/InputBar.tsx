@@ -125,6 +125,7 @@ function Input({
 
   return (
     <textarea
+      placeholder={"Say something... (Press Shift + Enter to add a new line)"}
       className={styles.input}
       ref={inputRef}
       onKeyDown={handleKeyDown}
