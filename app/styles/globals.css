@@ -6,7 +6,7 @@ p {
   all: unset;
 }
 
-button:hover{
+button:hover {
   cursor: pointer;
 }
 
@@ -91,4 +91,16 @@ ul, ol {
   font-size: var(--s-1);
   line-height: 2;
   list-style-position: inside;
+}
+
+*::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 0.5rem;
+  background-color: rgba(140, 178, 204, 0.3);
+  border: 1px solid rgba(140, 178, 204, 0.7);
 }

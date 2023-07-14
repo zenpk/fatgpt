@@ -105,15 +105,11 @@ function Input({
 
   function handleKeyDown(evt: React.KeyboardEvent) {
     if (evt.shiftKey && evt.key === KeyNames.enter) {
-      if (inputRef && inputRef.current) {
-        // if (rows <= maxRows) {
-        //   setRows((prev) => prev + 1);
-        // }
-      }
       return;
     }
     if (evt.key === KeyNames.enter) {
       handleSend();
+      evt.preventDefault();
     }
   }
 
@@ -123,7 +119,6 @@ function Input({
         (inputRef.current.value.match(/\n/g) || []).length + 1;
       if (newLineCount <= maxRows) {
         setRows(newLineCount);
-        console.log(rows);
       }
     }
   }

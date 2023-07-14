@@ -14,7 +14,7 @@ html {
   --grey-secondary: #e2e3e5;
   --grey-github: hsla(210, 18%, 87%, 1);
   --ice: #e5efff;
-  --crew: #abc9e7;
+  --crew: rgba(171, 201, 231, 0.66);
   --crew-rgba: 114, 192, 221;
   --crew-darker: #7799bb;
 

@@ -13,11 +13,12 @@ export default function Home() {
   const router = useRouter();
   const divRef = useRef<HTMLDivElement>(null);
 
+  // scroll to the bottom
   useEffect(() => {
     if (divRef && divRef.current) {
-      divRef.current.scrollTop = divRef.current.scrollHeight; // scroll to the bottom
+      divRef.current.scrollTop = divRef.current.scrollHeight;
     }
-  }, [messages, divRef]);
+  }, [messages]);
 
   useEffect(() => {
     const token = window.localStorage.getItem(STORAGE_NAME);
@@ -39,8 +40,8 @@ export default function Home() {
       <h1 className={styles.title}>FatGPT</h1>
       <div className={styles.card}>
         <div className={styles.textArea} ref={divRef}>
-          {messages.map((msg) => {
-            return <Bubble key={msg.msg} msg={msg} />;
+          {messages.map((msg, index) => {
+            return <Bubble key={index} msg={msg} />;
           })}
         </div>
         <div className={styles.inputBar}>

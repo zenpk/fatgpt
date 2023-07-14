@@ -4,6 +4,7 @@ import "@/app/styles/animations.css";
 import React from "react";
 import { MessageContextProvider } from "@/app/contexts/MessageContext";
 import { ForceUpdateContextProvider } from "@/app/contexts/ForceUpdateContext";
+import { InputRowsContextProvider } from "@/app/contexts/InputRowsContext";
 
 export const metadata = {
   title: "FatGPT",
@@ -19,7 +20,9 @@ export default function RootLayout({
     <html lang="en">
       <MessageContextProvider>
         <ForceUpdateContextProvider>
-          <body>{children}</body>
+          <InputRowsContextProvider>
+            <body>{children}</body>
+          </InputRowsContextProvider>
         </ForceUpdateContextProvider>
       </MessageContextProvider>
     </html>

@@ -2,7 +2,7 @@
 import React from "react";
 
 export const ForceUpdateContext = React.createContext<() => void>(() => {
-  console.log("function not ready");
+  console.log("ForceUpdateContext not ready");
 });
 
 export function ForceUpdateContextProvider({

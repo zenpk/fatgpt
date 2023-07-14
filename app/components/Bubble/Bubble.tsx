@@ -3,7 +3,6 @@ import bot from "@/public/openai.png";
 import user from "@/public/user.png";
 import Image from "next/image";
 import { Message } from "@/app/contexts/MessageContext";
-import { useWidth } from "@/app/hooks/useWidth";
 import { useContext } from "react";
 import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
 
