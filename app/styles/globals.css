@@ -111,7 +111,7 @@ pre {
   padding: 1rem;
   border-radius: 0.25rem;
   color: #a9b7c6;
-  white-space: pre-line;
+  white-space: pre;
 }
 
 blockquote {
