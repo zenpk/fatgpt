@@ -5,7 +5,7 @@ import { MessageContext } from "@/app/contexts/MessageContext";
 import { Bubble } from "@/app/components/Bubble/Bubble";
 import { InputBar } from "@/app/components/InputBar/InputBar";
 import { STORAGE_NAME } from "@/app/utils/constants";
-import { tokenParse } from "@/app/services/simple-auth";
+import { tokenCheck } from "@/app/services/simple-auth";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -26,7 +26,7 @@ export default function Home() {
       // comment this line to temporarily disable the authentication
       router.push("/login");
     } else {
-      tokenParse({ token: token }).then((resp) => {
+      tokenCheck({ token: token }).then((resp) => {
         if (!resp.ok) {
           window.localStorage.removeItem(STORAGE_NAME);
           router.push("/login");

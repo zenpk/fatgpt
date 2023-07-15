@@ -1,6 +1,11 @@
 "use client";
 import { useRef, useState } from "react";
-import { AuthInfo, loginRegister, tokenGen } from "@/app/services/simple-auth";
+import {
+  AuthInfo,
+  login,
+  register,
+  tokenGen,
+} from "@/app/services/simple-auth";
 import { STORAGE_NAME } from "@/app/utils/constants";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
@@ -17,15 +22,11 @@ export default function Login() {
 
   const router = useRouter();
 
-  const [displayText, setDisplayText] = useState(displayMap.Login);
+  const [isLogin, setIsLogin] = useState(true);
   const [message, setMessage] = useState("");
 
   function handleClick() {
-    if (displayText === displayMap.Register) {
-      setDisplayText(displayMap.Login);
-    } else {
-      setDisplayText(displayMap.Register);
-    }
+    setIsLogin((prev) => !prev);
   }
 
   async function onSubmit() {
@@ -35,11 +36,12 @@ export default function Login() {
         password: password.current.value,
       };
       try {
-        const resp = await loginRegister(
-          body,
-          invitation.current.value,
-          displayText
-        );
+        let resp;
+        if (!isLogin) {
+          resp = await register(body, invitation.current.value);
+        } else {
+          resp = await login(body);
+        }
         if (!resp.ok) {
           setMessage(resp.msg);
         } else {
@@ -66,7 +68,7 @@ export default function Login() {
       <div className={styles.container}>
         <div className={styles.flex}>
           <p>{message}</p>
-          <h2>{displayText}</h2>
+          <h2>{isLogin ? displayMap.Login : displayMap.Register}</h2>
           <label htmlFor={"username"}>username</label>
           <input ref={username} name={"username"} className={styles.input} />
           <label htmlFor={"password"}>password</label>
@@ -77,20 +79,20 @@ export default function Login() {
             type={"password"}
           />
           <label htmlFor={"invitation"}>invitation code</label>
-          <input
-            ref={invitation}
-            name={"invitation"}
-            className={styles.input}
-            autoComplete={"off"}
-          />
+          {!isLogin && (
+            <input
+              ref={invitation}
+              name={"invitation"}
+              className={styles.input}
+              autoComplete={"off"}
+            />
+          )}
           <div className={styles.buttonAndRegister}>
             <button onClick={onSubmit} className={styles.button}>
               submit
             </button>
             <a href={"#"} onClick={handleClick} className={styles.anchor}>
-              {displayText === displayMap.Register
-                ? displayMap.Login
-                : displayMap.Register}
+              {isLogin ? displayMap.Register : displayMap.Login}
             </a>
           </div>
         </div>
