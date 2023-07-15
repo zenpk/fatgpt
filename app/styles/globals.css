@@ -118,7 +118,7 @@ p {
 }
 
 li > p {
-  display: inline-block;
+  display: inline;
 }
 
 pre, code {

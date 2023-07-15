@@ -17,6 +17,7 @@
   color: var(--grey-fatgpt);
   font-family: "Kalam", sans-serif;
   font-size: 28vw;
+  user-select: none;
 }
 
 .card {
