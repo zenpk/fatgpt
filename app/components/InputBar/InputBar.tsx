@@ -149,6 +149,9 @@ function Input({
     if (evt.shiftKey && evt.key === KeyNames.enter) {
       return;
     }
+    if (evt.ctrlKey && evt.key === KeyNames.enter) {
+      return;
+    }
     if (evt.key === KeyNames.enter && !isMobile) {
       evt.preventDefault();
       handleSend();
