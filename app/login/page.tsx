@@ -30,17 +30,25 @@ export default function Login() {
   }
 
   async function onSubmit() {
-    if (username.current && password.current && invitation.current) {
+    if (username.current && password.current) {
       const body: AuthInfo = {
         username: username.current.value,
         password: password.current.value,
       };
       try {
-        let resp;
+        let resp = null;
         if (!isLogin) {
-          resp = await register(body, invitation.current.value);
+          if (invitation.current) {
+            resp = await register(body, invitation.current.value);
+          } else {
+            setMessage("You need to provide the invitation");
+          }
         } else {
           resp = await login(body);
+        }
+        if (!resp) {
+          setMessage("Network error");
+          return;
         }
         if (!resp.ok) {
           setMessage(resp.msg);
@@ -60,6 +68,8 @@ export default function Login() {
       } catch (e: any) {
         setMessage(e.toString());
       }
+    } else {
+      setMessage("Please input all the fields");
     }
   }
 
