@@ -33,10 +33,6 @@ export function InputBar() {
     }
     if (inputRef && inputRef.current) {
       if (inputRef.current.value === "") {
-        dispatch({
-          type: MessageActionTypes.addBot,
-          msg: "You need to at least say something...",
-        });
         return;
       }
     }
@@ -49,7 +45,7 @@ export function InputBar() {
       if (token === null) {
         dispatch({
           type: MessageActionTypes.addBot,
-          msg: "No Token!",
+          msg: "No Token! (Normally, you shouldn't see this. Try refresh the page and you'll be guided to the login page)",
         });
         return;
       }
@@ -142,12 +138,12 @@ function Input({
 
   function handleKeyDown(evt: React.KeyboardEvent) {
     if (evt.shiftKey && evt.key === KeyNames.enter) {
-      return;
-    }
-    if (evt.key === KeyNames.enter) {
       handleSend();
       evt.preventDefault();
     }
+    // if (evt.key === KeyNames.enter) {
+    //   return;
+    // }
   }
 
   function handleChange() {
@@ -164,7 +160,7 @@ function Input({
 
   return (
     <textarea
-      placeholder={"Say something... (Press Shift + Enter to add a new line)"}
+      placeholder={"(Press Shift + Enter to send)"}
       className={styles.input}
       ref={inputRef}
       onKeyDown={handleKeyDown}
