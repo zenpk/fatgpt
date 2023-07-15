@@ -78,14 +78,16 @@ export default function Login() {
             className={styles.input}
             type={"password"}
           />
-          <label htmlFor={"invitation"}>invitation code</label>
           {!isLogin && (
-            <input
-              ref={invitation}
-              name={"invitation"}
-              className={styles.input}
-              autoComplete={"off"}
-            />
+            <>
+              <label htmlFor={"invitation"}>invitation code</label>
+              <input
+                ref={invitation}
+                name={"invitation"}
+                className={styles.input}
+                autoComplete={"off"}
+              />
+            </>
           )}
           <div className={styles.buttonAndRegister}>
             <button onClick={onSubmit} className={styles.button}>
