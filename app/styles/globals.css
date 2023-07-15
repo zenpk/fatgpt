@@ -139,6 +139,7 @@ code {
 
 pre > code {
   background: none;
+  padding: 0;
 }
 
 blockquote {
