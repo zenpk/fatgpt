@@ -36,6 +36,7 @@
   width: var(--button-size);
   background-color: var(--crew);
   border-radius: 0.25rem;
+  user-select: none;
 }
 
 .sendDark {

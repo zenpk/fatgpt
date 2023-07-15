@@ -56,4 +56,5 @@
 
 .avatar {
   /*margin-top: 0.5rem;*/
+  user-select: none;
 }
