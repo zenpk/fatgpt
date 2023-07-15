@@ -135,15 +135,24 @@ function Input({
   setRows: Dispatch<SetStateAction<number>>;
 }) {
   const maxRows = 10;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      )
+    );
+  }, []);
 
   function handleKeyDown(evt: React.KeyboardEvent) {
     if (evt.shiftKey && evt.key === KeyNames.enter) {
-      handleSend();
-      evt.preventDefault();
+      return;
     }
-    // if (evt.key === KeyNames.enter) {
-    //   return;
-    // }
+    if (evt.key === KeyNames.enter && !isMobile) {
+      evt.preventDefault();
+      handleSend();
+    }
   }
 
   function handleChange() {
@@ -160,7 +169,7 @@ function Input({
 
   return (
     <textarea
-      placeholder={"(Press Shift + Enter to send)"}
+      placeholder={!isMobile ? "(Press Shift + Enter to add a new line)" : ""}
       className={styles.input}
       ref={inputRef}
       onKeyDown={handleKeyDown}
