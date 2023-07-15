@@ -45,7 +45,7 @@ export function InputBar() {
       if (token === null) {
         dispatch({
           type: MessageActionTypes.addBot,
-          msg: "No Token! (Normally, you shouldn't see this. Try refresh the page and you'll be guided to the login page)",
+          msg: "No Token! (Normally, you shouldn't see this. Try refreshing the page and you'll be guided to the login page)",
         });
         return;
       }
