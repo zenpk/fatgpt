@@ -25,6 +25,7 @@ export async function wsGpt(
   setButtonDisabled: Dispatch<SetStateAction<boolean>>
 ) {
   const dotInterval = setInterval(() => {
+    console.log("dispatched dot!");
     dispatch({ type: MessageActionTypes.updateBot, msg: "." });
   }, DOT_INTERVAL);
   const connectionTimeout = setTimeout(() => {
