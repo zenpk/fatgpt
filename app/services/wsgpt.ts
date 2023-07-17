@@ -10,7 +10,6 @@ import {
   SOCKET_CONNECTION_TIMEOUT,
   SOCKET_ESTABLISH_TIMEOUT,
 } from "@/app/utils/constants";
-import { sleep } from "@/app/utils/utils";
 
 type SendObj = {
   token: string;
@@ -25,8 +24,8 @@ export async function wsGpt(
   setButtonDisabled: Dispatch<SetStateAction<boolean>>
 ) {
   const dotInterval = setInterval(() => {
-    console.log("dispatched dot!");
     dispatch({ type: MessageActionTypes.updateBot, msg: "." });
+    forceUpdate();
   }, DOT_INTERVAL);
   const connectionTimeout = setTimeout(() => {
     socket.close();
@@ -39,7 +38,6 @@ export async function wsGpt(
   const sendObj: SendObj = { token: token, messages: gptMessages };
   const domain = await getDomain();
   const socket = new WebSocket(`wss://${domain}/wsgpt/`);
-  await sleep(1000);
   socket.onopen = (evt) => {
     dispatch({ type: MessageActionTypes.editBot, msg: "" });
     clearTimeout(connectionTimeout);
