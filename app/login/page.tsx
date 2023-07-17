@@ -1,12 +1,12 @@
 "use client";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   AuthInfo,
   login,
   register,
   tokenGen,
 } from "@/app/services/simple-auth";
-import { STORAGE_NAME } from "@/app/utils/constants";
+import { KeyNames, STORAGE_NAME } from "@/app/utils/constants";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 
@@ -41,7 +41,7 @@ export default function Login() {
           if (invitation.current) {
             resp = await register(body, invitation.current.value);
           } else {
-            setMessage("You need to provide the invitation");
+            setMessage("You need to provide the Invitation Code");
           }
         } else {
           resp = await login(body);
@@ -55,7 +55,7 @@ export default function Login() {
         } else {
           const genResp = await tokenGen({
             token: resp.token,
-            age: 8760,
+            age: 720, // 1 month
             data: "",
           });
           if (!genResp.ok) {
@@ -73,29 +73,37 @@ export default function Login() {
     }
   }
 
+  function handleEnter(evt: React.KeyboardEvent) {
+    if (evt.key === KeyNames.enter) {
+      return onSubmit();
+    }
+  }
+
   return (
     <div className={styles.background}>
       <div className={styles.container}>
         <div className={styles.flex}>
           <p>{message}</p>
           <h2>{isLogin ? displayMap.Login : displayMap.Register}</h2>
-          <label htmlFor={"username"}>username</label>
+          <label htmlFor={"username"}>Username</label>
           <input ref={username} name={"username"} className={styles.input} />
-          <label htmlFor={"password"}>password</label>
+          <label htmlFor={"password"}>Password</label>
           <input
             ref={password}
             name={"password"}
             className={styles.input}
             type={"password"}
+            onKeyDown={handleEnter}
           />
           {!isLogin && (
             <>
-              <label htmlFor={"invitation"}>invitation code</label>
+              <label htmlFor={"invitation"}>Invitation Code</label>
               <input
                 ref={invitation}
                 name={"invitation"}
                 className={styles.input}
                 autoComplete={"off"}
+                onKeyDown={handleEnter}
               />
             </>
           )}
