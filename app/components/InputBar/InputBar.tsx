@@ -38,7 +38,12 @@ export function InputBar() {
         return;
       }
     }
-    if (inputRef && inputRef.current && inputRef.current.value) {
+    const transformed = transform(messages);
+    if (inputRef && inputRef.current && inputRef.current.value && !isRetry) {
+      transformed.push({
+        role: "user",
+        content: inputRef.current.value,
+      });
       dispatch({
         type: MessageActionTypes.addUser,
         msg: inputRef.current.value,
@@ -46,7 +51,10 @@ export function InputBar() {
       inputRef.current.value = "";
       inputRef.current.focus(); // not working
     }
-    const transformed = transform(messages);
+    if (isRetry) {
+      // remove the last one, which should be bot error msg
+      transformed.splice(transformed.length - 1, 1);
+    }
     const token = window.localStorage.getItem(STORAGE_NAME);
     if (token === null) {
       dispatch({
@@ -219,9 +227,9 @@ function Retry({
 
   function handleUp() {
     setClassName(`${styles.send} ${styles.retry}`);
-    dispatch({ type: MessageActionTypes.deleteBot, msg: "" });
     setErrorOccurred(false);
     handleSend(true);
+    dispatch({ type: MessageActionTypes.deleteBot, msg: "" });
   }
 
   function handleLeave() {
