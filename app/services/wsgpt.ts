@@ -60,6 +60,7 @@ export async function wsGpt(
       dispatch({ type: MessageActionTypes.editBot, msg: resp.msg });
       setErrorOccurred(true);
       setButtonDisabled(false);
+      forceUpdate();
       return;
     }
     if (resp.msg === "[DONE]") {
