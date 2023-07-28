@@ -29,11 +29,11 @@ export function InputBar() {
   const [messages, dispatch] = useContext(MessageContext)!;
   const forceUpdate = useContext(ForceUpdateContext);
 
-  async function handleSend() {
+  async function handleSend(isRetry = false) {
     if (buttonDisabled || inputDisabled) {
       return;
     }
-    if (inputRef && inputRef.current) {
+    if (inputRef && inputRef.current && !isRetry) {
       if (inputRef.current.value === "") {
         return;
       }
@@ -43,34 +43,35 @@ export function InputBar() {
         type: MessageActionTypes.addUser,
         msg: inputRef.current.value,
       });
-      const token = window.localStorage.getItem(STORAGE_NAME);
-      if (token === null) {
-        dispatch({
-          type: MessageActionTypes.addBot,
-          msg: "No Token! (Normally, you shouldn't see this. Try refreshing the page and you'll be guided to the login page)",
-        });
-        return;
-      }
-      setInputDisabled(true);
-      setButtonDisabled(true);
-      const transformed = transform(messages, inputRef.current.value);
       inputRef.current.value = "";
-      dispatch({
-        type: MessageActionTypes.addBot,
-        msg: "",
-      });
-      setRows(1);
-      await wsGpt(
-        token,
-        transformed,
-        dispatch,
-        forceUpdate,
-        setButtonDisabled,
-        setErrorOccurred
-      );
-      setInputDisabled(false);
       inputRef.current.focus(); // not working
     }
+    const transformed = transform(messages);
+    const token = window.localStorage.getItem(STORAGE_NAME);
+    if (token === null) {
+      dispatch({
+        type: MessageActionTypes.addBot,
+        msg: "No Token! (Normally, you shouldn't see this. Try refreshing the page and you'll be guided to the login page)",
+      });
+      return;
+    }
+    setInputDisabled(true);
+    setButtonDisabled(true);
+
+    dispatch({
+      type: MessageActionTypes.addBot,
+      msg: "",
+    });
+    setRows(1);
+    await wsGpt(
+      token,
+      transformed,
+      dispatch,
+      forceUpdate,
+      setButtonDisabled,
+      setErrorOccurred
+    );
+    setInputDisabled(false);
   }
 
   return (
@@ -206,7 +207,7 @@ function Retry({
   dispatch,
   setErrorOccurred,
 }: {
-  handleSend: () => void;
+  handleSend: (isRetry: boolean) => void;
   dispatch: React.Dispatch<MessageActions>;
   setErrorOccurred: Dispatch<SetStateAction<boolean>>;
 }) {
@@ -219,7 +220,8 @@ function Retry({
   function handleUp() {
     setClassName(`${styles.send} ${styles.retry}`);
     dispatch({ type: MessageActionTypes.deleteBot, msg: "" });
-    handleSend();
+    setErrorOccurred(false);
+    handleSend(true);
   }
 
   function handleLeave() {
@@ -238,12 +240,11 @@ function Retry({
   );
 }
 
-function transform(messages: Message[], newMessage: string) {
+function transform(messages: Message[]) {
   const transformed: ChatCompletionRequestMessage[] = [];
   for (const msg of messages) {
     const role = msg.isUser ? "user" : "assistant";
     transformed.push({ role: role, content: msg.msg });
   }
-  transformed.push({ role: "user", content: newMessage });
   return transformed;
 }
