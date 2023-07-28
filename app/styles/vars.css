@@ -20,6 +20,8 @@ html {
   --crew-darkest: #58738f;
   --code-background: rgba(0, 0, 0, 0.75);
   --code-color: #a9b7c6;
+  --retry-color: #e59969;
+  --retry-color-darker: #af7146;
 
   --bg-grey: #f0f0f0;
   --bg-grey-darker: #e0e0e0;

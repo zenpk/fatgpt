@@ -16,12 +16,18 @@ type SendObj = {
   messages: ChatCompletionRequestMessage[];
 };
 
+type Resp = {
+  ok: boolean;
+  msg: string;
+};
+
 export async function wsGpt(
   token: string,
   gptMessages: ChatCompletionRequestMessage[],
   dispatch: React.Dispatch<MessageActions>,
   forceUpdate: () => void,
-  setButtonDisabled: Dispatch<SetStateAction<boolean>>
+  setButtonDisabled: Dispatch<SetStateAction<boolean>>,
+  setErrorOccurred: Dispatch<SetStateAction<boolean>>
 ) {
   const dotInterval = setInterval(() => {
     dispatch({ type: MessageActionTypes.updateBot, msg: "." });
@@ -33,6 +39,8 @@ export async function wsGpt(
       type: MessageActionTypes.editBot,
       msg: "WebSocket Connection Timeout :(",
     });
+    setErrorOccurred(true);
+    setButtonDisabled(false);
   }, SOCKET_ESTABLISH_TIMEOUT);
 
   const sendObj: SendObj = { token: token, messages: gptMessages };
@@ -46,13 +54,19 @@ export async function wsGpt(
     setTimeout(socket.close, SOCKET_CONNECTION_TIMEOUT);
   };
   socket.onmessage = (evt) => {
-    const msg = evt.data.toString();
-    if (msg === "[DONE]") {
+    const resp: Resp = JSON.parse(evt.data.toString());
+    if (!resp.ok) {
+      socket.close();
+      setErrorOccurred(true);
+      setButtonDisabled(false);
+      return;
+    }
+    if (resp.msg === "[DONE]") {
       socket.close();
       setButtonDisabled(false);
       return;
     }
-    dispatch({ type: MessageActionTypes.updateBot, msg: evt.data.toString() });
+    dispatch({ type: MessageActionTypes.updateBot, msg: resp.msg });
     forceUpdate();
   };
   socket.onerror = (e) => {

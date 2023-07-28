@@ -43,6 +43,14 @@
   background-color: var(--crew-darker);
 }
 
+.retry {
+  background-color: var(--retry-color);
+}
+
+.retryDark {
+  background-color: var(--retry-color-darker);
+}
+
 .sendDisabled {
   background-color: var(--grey);
   color: var(--grey-darker);

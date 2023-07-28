@@ -8,9 +8,10 @@ import React, {
   useState,
 } from "react";
 import styles from "./InputBar.module.css";
-import { BsSendFill } from "react-icons/bs";
+import { FaPaperPlane, FaArrowRotateRight } from "react-icons/fa6";
 import {
   Message,
+  MessageActions,
   MessageActionTypes,
   MessageContext,
 } from "@/app/contexts/MessageContext";
@@ -24,6 +25,7 @@ export function InputBar() {
   const [inputDisabled, setInputDisabled] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [rows, setRows] = useState(1);
+  const [errorOccurred, setErrorOccurred] = useState(false);
   const [messages, dispatch] = useContext(MessageContext)!;
   const forceUpdate = useContext(ForceUpdateContext);
 
@@ -58,7 +60,14 @@ export function InputBar() {
         msg: "",
       });
       setRows(1);
-      await wsGpt(token, transformed, dispatch, forceUpdate, setButtonDisabled);
+      await wsGpt(
+        token,
+        transformed,
+        dispatch,
+        forceUpdate,
+        setButtonDisabled,
+        setErrorOccurred
+      );
       setInputDisabled(false);
       inputRef.current.focus(); // not working
     }
@@ -73,7 +82,16 @@ export function InputBar() {
         rows={rows}
         setRows={setRows}
       />
-      <Send handleSend={handleSend} disabled={buttonDisabled} />
+      {!errorOccurred && (
+        <Send handleSend={handleSend} disabled={buttonDisabled} />
+      )}
+      {errorOccurred && (
+        <Retry
+          handleSend={handleSend}
+          dispatch={dispatch}
+          setErrorOccurred={setErrorOccurred}
+        />
+      )}
     </div>
   );
 }
@@ -116,7 +134,7 @@ function Send({
       onMouseLeave={handleLeave}
       disabled={disabled}
     >
-      <BsSendFill />
+      <FaPaperPlane />
     </button>
   );
 }
@@ -180,6 +198,43 @@ function Input({
       rows={rows}
       onChange={handleChange}
     />
+  );
+}
+
+function Retry({
+  handleSend,
+  dispatch,
+  setErrorOccurred,
+}: {
+  handleSend: () => void;
+  dispatch: React.Dispatch<MessageActions>;
+  setErrorOccurred: Dispatch<SetStateAction<boolean>>;
+}) {
+  const [className, setClassName] = useState(`${styles.send} ${styles.retry}`);
+
+  function handleDown() {
+    setClassName(`${styles.send} ${styles.retryDark}`);
+  }
+
+  function handleUp() {
+    setClassName(`${styles.send} ${styles.retry}`);
+    dispatch({ type: MessageActionTypes.deleteBot, msg: "" });
+    handleSend();
+  }
+
+  function handleLeave() {
+    setClassName(`${styles.send} ${styles.retry}`);
+  }
+
+  return (
+    <button
+      className={className}
+      onMouseDown={handleDown}
+      onMouseUp={handleUp}
+      onMouseLeave={handleLeave}
+    >
+      <FaArrowRotateRight />
+    </button>
   );
 }
 

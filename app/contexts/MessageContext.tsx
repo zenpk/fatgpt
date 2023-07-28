@@ -14,6 +14,7 @@ export enum MessageActionTypes {
   editUser,
   editBot,
   updateBot,
+  deleteBot,
 }
 
 export const MessageContext = React.createContext<
@@ -61,6 +62,9 @@ export function MessageContextProvider({
     }
     if (action.type === MessageActionTypes.updateBot) {
       state[findFromLast(false)].msg += action.msg;
+    }
+    if (action.type === MessageActionTypes.deleteBot) {
+      state.splice(findFromLast(false), 1);
     }
     // console.log(state);
     return state;
