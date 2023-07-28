@@ -57,6 +57,7 @@ export async function wsGpt(
     const resp: Resp = JSON.parse(evt.data.toString());
     if (!resp.ok) {
       socket.close();
+      dispatch({ type: MessageActionTypes.editBot, msg: resp.msg });
       setErrorOccurred(true);
       setButtonDisabled(false);
       return;
