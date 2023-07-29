@@ -1,5 +1,7 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
+import { ForceUpdateBubbleContext } from "@/app/contexts/ForceUpdateBubbleContext";
+import { ForceUpdatePageContext } from "@/app/contexts/ForceUpdatePageContext";
 
 export type Message = {
   msg: string;
@@ -35,6 +37,8 @@ export function MessageContextProvider({
   children: React.ReactNode;
 }) {
   const defaultValue: Message[] = [];
+  const forceUpdateBubble = useContext(ForceUpdateBubbleContext);
+  const forceUpdatePage = useContext(ForceUpdatePageContext);
 
   function reducer(state: Message[], action: MessageActions) {
     if (action.type === MessageActionTypes.addUser) {
@@ -64,18 +68,22 @@ export function MessageContextProvider({
 
     if (action.type === MessageActionTypes.editUser) {
       state[findFromLast(true)].msg = action.msg;
+      forceUpdateBubble();
     }
     if (action.type === MessageActionTypes.editBot) {
       state[findFromLast(false)].msg = action.msg;
+      forceUpdateBubble();
     }
     if (action.type === MessageActionTypes.updateBot) {
       state[findFromLast(false)].msg += action.msg;
+      forceUpdateBubble();
     }
     if (action.type === MessageActionTypes.deleteBot) {
       state.splice(findFromLast(false), 1);
-      console.log(state);
+      forceUpdatePage();
     }
     if (action.type === MessageActionTypes.loadState) {
+      forceUpdatePage();
       return action.saved;
     }
     // console.log(state);

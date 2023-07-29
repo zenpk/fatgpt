@@ -10,12 +10,12 @@ import React, {
 import { Menu } from "@headlessui/react";
 import styles from "./InputBar.module.css";
 import {
-  FaPaperPlane,
   FaArrowRotateRight,
-  FaHorseHead,
-  FaHorse,
-  FaFloppyDisk,
   FaCartFlatbedSuitcase,
+  FaFloppyDisk,
+  FaHorse,
+  FaHorseHead,
+  FaPaperPlane,
 } from "react-icons/fa6";
 import {
   Message,
@@ -30,10 +30,8 @@ import {
   STORAGE_MESSAGES,
   STORAGE_TOKEN,
 } from "@/app/utils/constants";
-import { ForceUpdateBubbleContext } from "@/app/contexts/ForceUpdateBubbleContext";
 import { Button } from "@/app/components/InputBar/Button";
 import { useAlert } from "@/app/hooks/useAlert";
-import { ForceUpdatePageContext } from "@/app/contexts/ForceUpdatePageContext";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -42,7 +40,6 @@ export function InputBar() {
   const [rows, setRows] = useState(1);
   const [errorOccurred, setErrorOccurred] = useState(false);
   const [messages, dispatch] = useContext(MessageContext)!;
-  const forceUpdate = useContext(ForceUpdateBubbleContext);
 
   async function handleSend(isRetry = false) {
     if (buttonDisabled || inputDisabled) {
@@ -90,7 +87,6 @@ export function InputBar() {
       token,
       transformed,
       dispatch,
-      forceUpdate,
       setButtonDisabled,
       setErrorOccurred
     );
@@ -212,13 +208,10 @@ function Retry({
   dispatch: React.Dispatch<MessageActions>;
   setErrorOccurred: Dispatch<SetStateAction<boolean>>;
 }) {
-  const forceUpdatePage = useContext(ForceUpdatePageContext);
-
   function onClick() {
     setErrorOccurred(false);
     handleSend(true);
     dispatch({ type: MessageActionTypes.deleteBot });
-    forceUpdatePage();
   }
 
   return (

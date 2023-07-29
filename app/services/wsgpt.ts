@@ -25,13 +25,11 @@ export async function wsGpt(
   token: string,
   gptMessages: ChatCompletionRequestMessage[],
   dispatch: React.Dispatch<MessageActions>,
-  forceUpdate: () => void,
   setButtonDisabled: Dispatch<SetStateAction<boolean>>,
   setErrorOccurred: Dispatch<SetStateAction<boolean>>
 ) {
   const dotInterval = setInterval(() => {
     dispatch({ type: MessageActionTypes.updateBot, msg: "." });
-    forceUpdate();
   }, DOT_INTERVAL);
   const connectionTimeout = setTimeout(() => {
     socket.close();
@@ -60,7 +58,6 @@ export async function wsGpt(
       dispatch({ type: MessageActionTypes.editBot, msg: resp.msg });
       setErrorOccurred(true);
       setButtonDisabled(false);
-      forceUpdate();
       return;
     }
     if (resp.msg === "[DONE]") {
@@ -69,7 +66,6 @@ export async function wsGpt(
       return;
     }
     dispatch({ type: MessageActionTypes.updateBot, msg: resp.msg });
-    forceUpdate();
   };
   socket.onerror = (e) => {
     console.log(e);
