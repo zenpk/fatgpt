@@ -1,8 +1,8 @@
 .bar {
   display: flex;
   gap: 0.5rem;
-  bottom: 0;
   width: 100%;
+  justify-content: space-between;
 }
 
 .input {
@@ -15,9 +15,9 @@
   overflow: auto;
   line-height: 1.5;
   padding: 0.5rem;
-  width: calc(100% - var(--button-size));
   border: solid 1px var(--crew-darker);
   background: none;
+  flex: 8;
   /*white-space: nowrap;*/
 }
 
@@ -33,7 +33,7 @@
 
 .send {
   height: var(--button-size);
-  width: var(--button-size);
+  width: 100%;
   background-color: var(--crew);
   border-radius: 0.25rem;
   user-select: none;
@@ -93,5 +93,10 @@
   gap: 0.5rem;
   width: max-content;
   padding-inline: 0.5rem;
+}
+
+.buttonFlex {
+  max-width: var(--button-size);
+  flex: 1;
 }
 

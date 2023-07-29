@@ -33,8 +33,6 @@ import {
 import { ForceUpdateBubbleContext } from "@/app/contexts/ForceUpdateBubbleContext";
 import { Button } from "@/app/components/InputBar/Button";
 import { useAlert } from "@/app/hooks/useAlert";
-import { Simulate } from "react-dom/test-utils";
-import load = Simulate.load;
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -193,9 +191,9 @@ function Send({
 }) {
   return (
     <Button
-      basicClassName={styles.send}
-      downClassName={`${styles.send} ${styles.sendDark}`}
-      disabledClassName={`${styles.send} ${styles.sendDisabled}`}
+      basicClassName={`${styles.send} ${styles.buttonFlex}`}
+      downClassName={`${styles.send} ${styles.buttonFlex} ${styles.sendDark}`}
+      disabledClassName={`${styles.send} ${styles.buttonFlex} ${styles.sendDisabled}`}
       onClick={handleSend}
       disabled={disabled}
     >
@@ -221,8 +219,8 @@ function Retry({
 
   return (
     <Button
-      basicClassName={`${styles.send} ${styles.retry}`}
-      downClassName={`${styles.send} ${styles.retryDark}`}
+      basicClassName={`${styles.send} ${styles.buttonFlex} ${styles.retry}`}
+      downClassName={`${styles.send} ${styles.buttonFlex} ${styles.retryDark}`}
       onClick={onClick}
     >
       <FaArrowRotateRight />
@@ -267,7 +265,7 @@ function ToolMenu({
         }
         return (
           <>
-            <Menu.Button>
+            <Menu.Button className={styles.buttonFlex}>
               <Button
                 basicClassName={styles.send}
                 downClassName={`${styles.send} ${styles.sendDark}`}

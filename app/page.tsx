@@ -26,7 +26,7 @@ export default function Home() {
     const token = window.localStorage.getItem(STORAGE_TOKEN);
     if (!token) {
       // comment this line to temporarily disable the authentication
-      router.push("/login");
+      // router.push("/login");
     } else {
       tokenCheck({ token: token }).then((resp) => {
         if (!resp.ok) {
