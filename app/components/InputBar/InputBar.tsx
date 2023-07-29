@@ -63,10 +63,6 @@ export function InputBar() {
       inputRef.current.value = "";
       inputRef.current.focus(); // not working
     }
-    if (isRetry) {
-      // remove the last one, which should be bot error msg
-      transformed.splice(transformed.length - 1, 1);
-    }
     const token = window.localStorage.getItem(STORAGE_TOKEN);
     if (token === null) {
       dispatch({
@@ -210,8 +206,8 @@ function Retry({
 }) {
   function onClick() {
     setErrorOccurred(false);
-    handleSend(true);
     dispatch({ type: MessageActionTypes.deleteBot });
+    handleSend(true);
   }
 
   return (
