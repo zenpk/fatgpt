@@ -33,6 +33,7 @@ import {
 import { ForceUpdateBubbleContext } from "@/app/contexts/ForceUpdateBubbleContext";
 import { Button } from "@/app/components/InputBar/Button";
 import { useAlert } from "@/app/hooks/useAlert";
+import { ForceUpdatePageContext } from "@/app/contexts/ForceUpdatePageContext";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -211,10 +212,13 @@ function Retry({
   dispatch: React.Dispatch<MessageActions>;
   setErrorOccurred: Dispatch<SetStateAction<boolean>>;
 }) {
+  const forceUpdatePage = useContext(ForceUpdatePageContext);
+
   function onClick() {
     setErrorOccurred(false);
     handleSend(true);
     dispatch({ type: MessageActionTypes.deleteBot });
+    forceUpdatePage();
   }
 
   return (
