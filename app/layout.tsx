@@ -4,8 +4,9 @@ import "@/app/styles/animations.css";
 import "@/app/styles/highlightjs.css";
 import React from "react";
 import { MessageContextProvider } from "@/app/contexts/MessageContext";
-import { ForceUpdateContextProvider } from "@/app/contexts/ForceUpdateContext";
+import { ForceUpdateBubbleContextProvider } from "@/app/contexts/ForceUpdateBubbleContext";
 import { InputRowsContextProvider } from "@/app/contexts/InputRowsContext";
+import { ForceUpdatePageContextProvider } from "@/app/contexts/ForceUpdatePageContext";
 
 export const metadata = {
   title: "FatGPT",
@@ -20,11 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <MessageContextProvider>
-        <ForceUpdateContextProvider>
-          <InputRowsContextProvider>
-            <body>{children}</body>
-          </InputRowsContextProvider>
-        </ForceUpdateContextProvider>
+        <ForceUpdatePageContextProvider>
+          <ForceUpdateBubbleContextProvider>
+            <InputRowsContextProvider>
+              <body>{children}</body>
+            </InputRowsContextProvider>
+          </ForceUpdateBubbleContextProvider>
+        </ForceUpdatePageContextProvider>
       </MessageContextProvider>
     </html>
   );

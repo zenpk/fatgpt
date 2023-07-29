@@ -4,14 +4,16 @@ import styles from "./page.module.css";
 import { MessageContext } from "@/app/contexts/MessageContext";
 import { Bubble } from "@/app/components/Bubble/Bubble";
 import { InputBar } from "@/app/components/InputBar/InputBar";
-import { STORAGE_NAME } from "@/app/utils/constants";
+import { STORAGE_TOKEN } from "@/app/utils/constants";
 import { tokenCheck } from "@/app/services/simple-auth";
 import { useRouter } from "next/navigation";
+import { ForceUpdatePageContext } from "@/app/contexts/ForceUpdatePageContext";
 
 export default function Home() {
   const [messages] = useContext(MessageContext)!;
   const router = useRouter();
   const divRef = useRef<HTMLDivElement>(null);
+  const forceUpdateValue = useContext(ForceUpdatePageContext);
 
   // scroll to the bottom
   useEffect(() => {
@@ -21,14 +23,14 @@ export default function Home() {
   }, [messages]);
 
   useEffect(() => {
-    const token = window.localStorage.getItem(STORAGE_NAME);
+    const token = window.localStorage.getItem(STORAGE_TOKEN);
     if (!token) {
       // comment this line to temporarily disable the authentication
       router.push("/login");
     } else {
       tokenCheck({ token: token }).then((resp) => {
         if (!resp.ok) {
-          window.localStorage.removeItem(STORAGE_NAME);
+          window.localStorage.removeItem(STORAGE_TOKEN);
           router.push("/login");
         }
       });

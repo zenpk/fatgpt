@@ -6,7 +6,7 @@ import {
   register,
   tokenGen,
 } from "@/app/services/simple-auth";
-import { KeyNames, STORAGE_NAME } from "@/app/utils/constants";
+import { KeyNames, STORAGE_TOKEN } from "@/app/utils/constants";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 
@@ -61,7 +61,7 @@ export default function Login() {
           if (!genResp.ok) {
             setMessage(genResp.msg);
           } else {
-            window.localStorage.setItem(STORAGE_NAME, genResp.token);
+            window.localStorage.setItem(STORAGE_TOKEN, genResp.token);
             router.push("/");
           }
         }

@@ -6,8 +6,6 @@ export type Message = {
   isUser: boolean;
 };
 
-export type MessageActions = { type: number; msg: string };
-
 export enum MessageActionTypes {
   addUser,
   addBot,
@@ -15,7 +13,17 @@ export enum MessageActionTypes {
   editBot,
   updateBot,
   deleteBot,
+  loadState,
 }
+
+export type MessageActions =
+  | { type: MessageActionTypes.addUser; msg: string }
+  | { type: MessageActionTypes.addBot; msg: string }
+  | { type: MessageActionTypes.editUser; msg: string }
+  | { type: MessageActionTypes.editBot; msg: string }
+  | { type: MessageActionTypes.updateBot; msg: string }
+  | { type: MessageActionTypes.deleteBot }
+  | { type: MessageActionTypes.loadState; saved: Message[] };
 
 export const MessageContext = React.createContext<
   [Message[], React.Dispatch<MessageActions>] | null
@@ -65,6 +73,10 @@ export function MessageContextProvider({
     }
     if (action.type === MessageActionTypes.deleteBot) {
       state.splice(findFromLast(false), 1);
+      console.log(state);
+    }
+    if (action.type === MessageActionTypes.loadState) {
+      return action.saved;
     }
     // console.log(state);
     return state;

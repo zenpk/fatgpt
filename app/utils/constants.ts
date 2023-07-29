@@ -1,4 +1,5 @@
-export const STORAGE_NAME = "notToken";
+export const STORAGE_TOKEN = "notToken";
+export const STORAGE_MESSAGES = "messages";
 
 export const SOCKET_CONNECTION_TIMEOUT = 180_000;
 export const SOCKET_ESTABLISH_TIMEOUT = 12_000;

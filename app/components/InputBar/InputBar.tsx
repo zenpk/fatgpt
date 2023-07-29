@@ -9,7 +9,14 @@ import React, {
 } from "react";
 import { Menu } from "@headlessui/react";
 import styles from "./InputBar.module.css";
-import { FaPaperPlane, FaArrowRotateRight, FaHorseHead } from "react-icons/fa6";
+import {
+  FaPaperPlane,
+  FaArrowRotateRight,
+  FaHorseHead,
+  FaHorse,
+  FaFloppyDisk,
+  FaCartFlatbedSuitcase,
+} from "react-icons/fa6";
 import {
   Message,
   MessageActions,
@@ -18,9 +25,16 @@ import {
 } from "@/app/contexts/MessageContext";
 import { wsGpt } from "@/app/services/wsgpt";
 import { ChatCompletionRequestMessage } from "openai/api";
-import { KeyNames, STORAGE_NAME } from "@/app/utils/constants";
-import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
+import {
+  KeyNames,
+  STORAGE_MESSAGES,
+  STORAGE_TOKEN,
+} from "@/app/utils/constants";
+import { ForceUpdateBubbleContext } from "@/app/contexts/ForceUpdateBubbleContext";
 import { Button } from "@/app/components/InputBar/Button";
+import { useAlert } from "@/app/hooks/useAlert";
+import { Simulate } from "react-dom/test-utils";
+import load = Simulate.load;
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -29,7 +43,7 @@ export function InputBar() {
   const [rows, setRows] = useState(1);
   const [errorOccurred, setErrorOccurred] = useState(false);
   const [messages, dispatch] = useContext(MessageContext)!;
-  const forceUpdate = useContext(ForceUpdateContext);
+  const forceUpdate = useContext(ForceUpdateBubbleContext);
 
   async function handleSend(isRetry = false) {
     if (buttonDisabled || inputDisabled) {
@@ -57,7 +71,7 @@ export function InputBar() {
       // remove the last one, which should be bot error msg
       transformed.splice(transformed.length - 1, 1);
     }
-    const token = window.localStorage.getItem(STORAGE_NAME);
+    const token = window.localStorage.getItem(STORAGE_TOKEN);
     if (token === null) {
       dispatch({
         type: MessageActionTypes.addBot,
@@ -86,7 +100,7 @@ export function InputBar() {
 
   return (
     <div className={styles.bar}>
-      <ToolMenu />
+      <ToolMenu messages={messages} dispatch={dispatch} />
       <Input
         inputRef={inputRef}
         handleSend={handleSend}
@@ -202,7 +216,7 @@ function Retry({
   function onClick() {
     setErrorOccurred(false);
     handleSend(true);
-    dispatch({ type: MessageActionTypes.deleteBot, msg: "" });
+    dispatch({ type: MessageActionTypes.deleteBot });
   }
 
   return (
@@ -216,32 +230,91 @@ function Retry({
   );
 }
 
-function ToolMenu() {
+function ToolMenu({
+  messages,
+  dispatch,
+}: {
+  messages: Message[];
+  dispatch: Dispatch<MessageActions>;
+}) {
+  const [menuClassName, setMenuClassName] = useState(styles.toolMenu);
+  const [alert, setAlert] = useState("");
+  useAlert(alert, setAlert, 1500);
+
+  function saveState() {
+    window.localStorage.setItem(STORAGE_MESSAGES, JSON.stringify(messages));
+    setAlert("Saved successfully!");
+  }
+
+  function loadState() {
+    const state = window.localStorage.getItem(STORAGE_MESSAGES);
+    if (state === null) {
+      setAlert("No saved state!");
+      return;
+    }
+    const saved: Message[] = JSON.parse(state);
+    dispatch({ type: MessageActionTypes.loadState, saved: saved });
+    setAlert("Loaded successfully!");
+  }
+
   return (
     <Menu>
-      <Menu.Button>
-        <Button
-          basicClassName={styles.send}
-          downClassName={`${styles.send} ${styles.sendDark}`}
-          onClick={() => {
-            return;
-          }}
-        >
-          <FaHorseHead />
-        </Button>
-      </Menu.Button>
-      <Menu.Items>
-        <Menu.Item>
-          {({ active }) => (
-            <a
-              className={`${active && "bg-blue-500"}`}
-              href="/account-settings"
-            >
-              Documentation
-            </a>
-          )}
-        </Menu.Item>
-      </Menu.Items>
+      {({ open }) => {
+        if (open) {
+          setMenuClassName(`${styles.toolMenu} ${styles.toolMenuAppear}`);
+        } else {
+          setMenuClassName(styles.toolMenu);
+        }
+        return (
+          <>
+            <Menu.Button>
+              <Button
+                basicClassName={styles.send}
+                downClassName={`${styles.send} ${styles.sendDark}`}
+                onClick={() => {
+                  return;
+                }}
+              >
+                {open ? <FaHorse /> : <FaHorseHead />}
+              </Button>
+            </Menu.Button>
+            <Menu.Items className={menuClassName}>
+              <Menu.Item>
+                {({ active }) => {
+                  return (
+                    <Button
+                      basicClassName={`${styles.send} ${styles.textButton}`}
+                      downClassName={`${styles.send} ${styles.textButton} ${styles.sendDark}`}
+                      onClick={saveState}
+                    >
+                      <div className={styles.textButton}>
+                        <FaFloppyDisk />
+                        Save
+                      </div>
+                    </Button>
+                  );
+                }}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => {
+                  return (
+                    <Button
+                      basicClassName={`${styles.send} ${styles.textButton}`}
+                      downClassName={`${styles.send} ${styles.textButton} ${styles.sendDark}`}
+                      onClick={loadState}
+                    >
+                      <div className={styles.textButton}>
+                        <FaCartFlatbedSuitcase />
+                        Load
+                      </div>
+                    </Button>
+                  );
+                }}
+              </Menu.Item>
+            </Menu.Items>
+          </>
+        );
+      }}
     </Menu>
   );
 }

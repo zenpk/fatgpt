@@ -4,7 +4,7 @@ import user from "@/public/user.png";
 import Image from "next/image";
 import { Message } from "@/app/contexts/MessageContext";
 import { RefObject, useContext } from "react";
-import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
+import { ForceUpdateBubbleContext } from "@/app/contexts/ForceUpdateBubbleContext";
 import { generateMd } from "@/app/utils/markdown";
 
 export function Bubble({
@@ -16,7 +16,7 @@ export function Bubble({
 }) {
   let className = styles.bubble;
   className += msg.isUser ? ` ${styles.bubbleUser}` : ` ${styles.bubbleBot}`;
-  const forceUpdateValue = useContext(ForceUpdateContext);
+  const forceUpdateValue = useContext(ForceUpdateBubbleContext);
   const md = generateMd(msg.msg);
   if (parentRef && parentRef.current) {
     parentRef.current.scrollTop = parentRef.current.scrollHeight;
