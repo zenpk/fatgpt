@@ -20,15 +20,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <MessageContextProvider>
-        <ForceUpdatePageContextProvider>
-          <ForceUpdateBubbleContextProvider>
+      <ForceUpdatePageContextProvider>
+        <ForceUpdateBubbleContextProvider>
+          <MessageContextProvider>
             <InputRowsContextProvider>
               <body>{children}</body>
             </InputRowsContextProvider>
-          </ForceUpdateBubbleContextProvider>
-        </ForceUpdatePageContextProvider>
-      </MessageContextProvider>
+          </MessageContextProvider>
+        </ForceUpdateBubbleContextProvider>
+      </ForceUpdatePageContextProvider>
     </html>
   );
 }
