@@ -7,8 +7,9 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { Menu } from "@headlessui/react";
 import styles from "./InputBar.module.css";
-import { FaPaperPlane, FaArrowRotateRight } from "react-icons/fa6";
+import { FaPaperPlane, FaArrowRotateRight, FaHorseHead } from "react-icons/fa6";
 import {
   Message,
   MessageActions,
@@ -19,6 +20,7 @@ import { wsGpt } from "@/app/services/wsgpt";
 import { ChatCompletionRequestMessage } from "openai/api";
 import { KeyNames, STORAGE_NAME } from "@/app/utils/constants";
 import { ForceUpdateContext } from "@/app/contexts/ForceUpdateContext";
+import { Button } from "@/app/components/InputBar/Button";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -84,6 +86,7 @@ export function InputBar() {
 
   return (
     <div className={styles.bar}>
+      <ToolMenu />
       <Input
         inputRef={inputRef}
         handleSend={handleSend}
@@ -102,49 +105,6 @@ export function InputBar() {
         />
       )}
     </div>
-  );
-}
-
-function Send({
-  handleSend,
-  disabled,
-}: {
-  handleSend: () => void;
-  disabled: boolean;
-}) {
-  const [className, setClassName] = useState(styles.send);
-
-  function handleDown() {
-    setClassName(`${styles.send} ${styles.sendDark}`);
-  }
-
-  function handleUp() {
-    setClassName(`${styles.send}`);
-    handleSend();
-  }
-
-  function handleLeave() {
-    setClassName(`${styles.send}`);
-  }
-
-  useEffect(() => {
-    if (disabled) {
-      setClassName(`${styles.send} ${styles.sendDisabled}`);
-    } else {
-      setClassName(`${styles.send}`);
-    }
-  }, [disabled]);
-
-  return (
-    <button
-      className={className}
-      onMouseDown={handleDown}
-      onMouseUp={handleUp}
-      onMouseLeave={handleLeave}
-      disabled={disabled}
-    >
-      <FaPaperPlane />
-    </button>
   );
 }
 
@@ -210,6 +170,26 @@ function Input({
   );
 }
 
+function Send({
+  handleSend,
+  disabled,
+}: {
+  handleSend: () => void;
+  disabled: boolean;
+}) {
+  return (
+    <Button
+      basicClassName={styles.send}
+      downClassName={`${styles.send} ${styles.sendDark}`}
+      disabledClassName={`${styles.send} ${styles.sendDisabled}`}
+      onClick={handleSend}
+      disabled={disabled}
+    >
+      <FaPaperPlane />
+    </Button>
+  );
+}
+
 function Retry({
   handleSend,
   dispatch,
@@ -219,32 +199,50 @@ function Retry({
   dispatch: React.Dispatch<MessageActions>;
   setErrorOccurred: Dispatch<SetStateAction<boolean>>;
 }) {
-  const [className, setClassName] = useState(`${styles.send} ${styles.retry}`);
-
-  function handleDown() {
-    setClassName(`${styles.send} ${styles.retryDark}`);
-  }
-
-  function handleUp() {
-    setClassName(`${styles.send} ${styles.retry}`);
+  function onClick() {
     setErrorOccurred(false);
     handleSend(true);
     dispatch({ type: MessageActionTypes.deleteBot, msg: "" });
   }
 
-  function handleLeave() {
-    setClassName(`${styles.send} ${styles.retry}`);
-  }
-
   return (
-    <button
-      className={className}
-      onMouseDown={handleDown}
-      onMouseUp={handleUp}
-      onMouseLeave={handleLeave}
+    <Button
+      basicClassName={`${styles.send} ${styles.retry}`}
+      downClassName={`${styles.send} ${styles.retryDark}`}
+      onClick={onClick}
     >
       <FaArrowRotateRight />
-    </button>
+    </Button>
+  );
+}
+
+function ToolMenu() {
+  return (
+    <Menu>
+      <Menu.Button>
+        <Button
+          basicClassName={styles.send}
+          downClassName={`${styles.send} ${styles.sendDark}`}
+          onClick={() => {
+            return;
+          }}
+        >
+          <FaHorseHead />
+        </Button>
+      </Menu.Button>
+      <Menu.Items>
+        <Menu.Item>
+          {({ active }) => (
+            <a
+              className={`${active && "bg-blue-500"}`}
+              href="/account-settings"
+            >
+              Documentation
+            </a>
+          )}
+        </Menu.Item>
+      </Menu.Items>
+    </Menu>
   );
 }
 
