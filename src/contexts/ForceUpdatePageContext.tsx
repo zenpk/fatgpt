@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 
 export const ForceUpdatePageContext = React.createContext<() => void>(() => {
@@ -6,8 +5,8 @@ export const ForceUpdatePageContext = React.createContext<() => void>(() => {
 });
 
 export function ForceUpdatePageContextProvider({
-  children,
-}: {
+                                                 children
+                                               }: {
   children: React.ReactNode;
 }) {
   const [, setValue] = React.useState(0);

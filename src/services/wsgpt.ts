@@ -1,15 +1,15 @@
 import { ChatCompletionRequestMessage } from "openai/api";
 import {
   MessageActions,
-  MessageActionTypes,
-} from "@/app/contexts/MessageContext";
+  MessageActionTypes
+} from "@/contexts/MessageContext";
 import React, { Dispatch, SetStateAction } from "react";
-import { getDomain } from "@/app/services/utils";
+import { getDomain } from "@/services/utils";
 import {
   DOT_INTERVAL,
   SOCKET_CONNECTION_TIMEOUT,
-  SOCKET_ESTABLISH_TIMEOUT,
-} from "@/app/utils/constants";
+  SOCKET_ESTABLISH_TIMEOUT
+} from "@/utils/constants";
 
 type SendObj = {
   token: string;
@@ -35,7 +35,7 @@ export async function wsGpt(
     socket.close();
     dispatch({
       type: MessageActionTypes.editBot,
-      msg: "WebSocket Connection Timeout :(",
+      msg: "WebSocket Connection Timeout :("
     });
     setErrorOccurred(true);
     setButtonDisabled(false);

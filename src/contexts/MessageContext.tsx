@@ -1,7 +1,6 @@
-"use client";
 import React, { useContext } from "react";
-import { ForceUpdateBubbleContext } from "@/app/contexts/ForceUpdateBubbleContext";
-import { ForceUpdatePageContext } from "@/app/contexts/ForceUpdatePageContext";
+import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext";
+import { ForceUpdatePageContext } from "@/contexts/ForceUpdatePageContext";
 
 export type Message = {
   msg: string;
@@ -32,8 +31,8 @@ export const MessageContext = React.createContext<
 >(null);
 
 export function MessageContextProvider({
-  children,
-}: {
+                                         children
+                                       }: {
   children: React.ReactNode;
 }) {
   const defaultValue: Message[] = [];
@@ -44,14 +43,14 @@ export function MessageContextProvider({
     if (action.type === MessageActionTypes.addUser) {
       const message: Message = {
         msg: action.msg,
-        isUser: true,
+        isUser: true
       };
       return [...state, message];
     }
     if (action.type === MessageActionTypes.addBot) {
       const message: Message = {
         msg: action.msg,
-        isUser: false,
+        isUser: false
       };
       return [...state, message];
     }

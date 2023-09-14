@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import {
   MessageActionTypes,
-  MessageContext,
-} from "@/app/contexts/MessageContext";
-import { ForceUpdatePageContext } from "@/app/contexts/ForceUpdatePageContext";
+  MessageContext
+} from "@/contexts/MessageContext";
+import { ForceUpdatePageContext } from "@/contexts/ForceUpdatePageContext";
 
 export function useAlert(
   alert: string,

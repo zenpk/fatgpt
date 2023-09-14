@@ -1,12 +1,11 @@
-"use client";
 import React, { useRef, useState } from "react";
 import {
   AuthInfo,
   login,
   register,
-  tokenGen,
-} from "@/app/services/simple-auth";
-import { KeyNames, STORAGE_TOKEN } from "@/app/utils/constants";
+  tokenGen
+} from "@/services/simple-auth";
+import { KeyNames, STORAGE_TOKEN } from "@/utils/constants";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 
@@ -17,7 +16,7 @@ export default function Login() {
 
   const displayMap = {
     Register: "Register",
-    Login: "Login",
+    Login: "Login"
   };
 
   const router = useRouter();
@@ -33,7 +32,7 @@ export default function Login() {
     if (username.current && password.current) {
       const body: AuthInfo = {
         username: username.current.value,
-        password: password.current.value,
+        password: password.current.value
       };
       try {
         let resp = null;
@@ -56,7 +55,7 @@ export default function Login() {
           const genResp = await tokenGen({
             token: resp.token,
             age: 720, // 1 month
-            data: "",
+            data: ""
           });
           if (!genResp.ok) {
             setMessage(genResp.msg);

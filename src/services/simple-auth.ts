@@ -1,6 +1,4 @@
-"use server";
-
-import { fetchWrapper } from "@/app/utils/fetch";
+import { fetchWrapper } from "@/utils/fetch";
 
 export type AuthInfo = {
   username: string;
@@ -50,20 +48,20 @@ export async function login(info: AuthInfo): Promise<LoginResp> {
 export async function tokenGen(req: TokenReq) {
   return (await fetchWrapper.post(`${url}/token-gen`, {
     ...req,
-    appId: APP_ID,
+    appId: APP_ID
   })) as LoginResp;
 }
 
 export async function tokenParse(req: Token) {
   return (await fetchWrapper.post(`${url}/token-parse`, {
     ...req,
-    appId: APP_ID,
+    appId: APP_ID
   })) as ParseResp;
 }
 
 export async function tokenCheck(req: Token) {
   return (await fetchWrapper.post(`${url}/token-check`, {
     ...req,
-    appId: APP_ID,
+    appId: APP_ID
   })) as CommonResp;
 }

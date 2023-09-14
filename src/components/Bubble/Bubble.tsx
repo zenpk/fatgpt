@@ -2,15 +2,15 @@ import styles from "./Bubble.module.css";
 import bot from "@/public/openai.png";
 import user from "@/public/user.png";
 import Image from "next/image";
-import { Message } from "@/app/contexts/MessageContext";
+import { Message } from "@/contexts/MessageContext";
 import { RefObject, useContext } from "react";
-import { ForceUpdateBubbleContext } from "@/app/contexts/ForceUpdateBubbleContext";
-import { generateMd } from "@/app/utils/markdown";
+import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext";
+import { generateMd } from "@/utils/markdown";
 
 export function Bubble({
-  msg,
-  parentRef,
-}: {
+                         msg,
+                         parentRef
+                       }: {
   msg: Message;
   parentRef: RefObject<HTMLDivElement>;
 }) {

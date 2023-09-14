@@ -1,12 +1,11 @@
-"use client";
-import React, { useContext, useEffect, useRef } from "react";
-import styles from "./page.module.css";
-import { MessageContext } from "@/app/contexts/MessageContext";
-import { Bubble } from "@/app/components/Bubble/Bubble";
-import { InputBar } from "@/app/components/InputBar/InputBar";
-import { ForceUpdatePageContext } from "@/app/contexts/ForceUpdatePageContext";
+import { useContext, useEffect, useRef } from "react";
+import styles from "./root.module.css";
+import { MessageContext } from "@/contexts/MessageContext";
+import { Bubble } from "@/components/Bubble/Bubble";
+import { InputBar } from "@/components/InputBar/InputBar";
+import { ForceUpdatePageContext } from "@/contexts/ForceUpdatePageContext";
 
-export default function Home() {
+export function Root() {
   const [messages] = useContext(MessageContext)!;
   const divRef = useRef<HTMLDivElement>(null);
   const forceUpdateValue = useContext(ForceUpdatePageContext);
