@@ -15,6 +15,7 @@ export function Root() {
     if (divRef && divRef.current) {
       divRef.current.scrollTop = divRef.current.scrollHeight;
     }
+    console.log("hello");
   }, [messages]);
 
   return (

@@ -5,9 +5,8 @@ import React, {
   useContext,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
-import { Menu } from "@headlessui/react";
 import styles from "./InputBar.module.css";
 import {
   FaArrowRotateRight,
@@ -15,21 +14,16 @@ import {
   FaFloppyDisk,
   FaHorse,
   FaHorseHead,
-  FaPaperPlane
+  FaPaperPlane,
 } from "react-icons/fa6";
 import {
   Message,
   MessageActions,
   MessageActionTypes,
-  MessageContext
+  MessageContext,
 } from "@/contexts/MessageContext";
 import { wsGpt } from "@/services/wsgpt";
-import { ChatCompletionRequestMessage } from "openai/api";
-import {
-  KeyNames,
-  STORAGE_MESSAGES,
-  STORAGE_TOKEN
-} from "@/utils/constants";
+import { KeyNames, STORAGE_MESSAGES, STORAGE_TOKEN } from "@/utils/constants";
 import { Button } from "@/components/InputBar/Button";
 import { useAlert } from "@/hooks/useAlert";
 
@@ -54,11 +48,11 @@ export function InputBar() {
     if (inputRef && inputRef.current && inputRef.current.value && !isRetry) {
       transformed.push({
         role: "user",
-        content: inputRef.current.value
+        content: inputRef.current.value,
       });
       dispatch({
         type: MessageActionTypes.addUser,
-        msg: inputRef.current.value
+        msg: inputRef.current.value,
       });
       inputRef.current.value = "";
       inputRef.current.focus(); // not working
@@ -67,7 +61,7 @@ export function InputBar() {
     if (token === null) {
       dispatch({
         type: MessageActionTypes.addBot,
-        msg: "No Token! (Normally, you shouldn't see this. Try refreshing the page and you'll be guided to the login page)"
+        msg: "No Token! (Normally, you shouldn't see this. Try refreshing the page and you'll be guided to the login page)",
       });
       return;
     }
@@ -76,7 +70,7 @@ export function InputBar() {
 
     dispatch({
       type: MessageActionTypes.addBot,
-      msg: ""
+      msg: "",
     });
     setRows(1);
     await wsGpt(
@@ -114,12 +108,12 @@ export function InputBar() {
 }
 
 function Input({
-                 inputRef,
-                 handleSend,
-                 disabled,
-                 rows,
-                 setRows
-               }: {
+  inputRef,
+  handleSend,
+  disabled,
+  rows,
+  setRows,
+}: {
   inputRef: RefObject<HTMLTextAreaElement> | null;
   handleSend: () => void;
   disabled: boolean;
@@ -176,9 +170,9 @@ function Input({
 }
 
 function Send({
-                handleSend,
-                disabled
-              }: {
+  handleSend,
+  disabled,
+}: {
   handleSend: () => void;
   disabled: boolean;
 }) {
@@ -196,10 +190,10 @@ function Send({
 }
 
 function Retry({
-                 handleSend,
-                 dispatch,
-                 setErrorOccurred
-               }: {
+  handleSend,
+  dispatch,
+  setErrorOccurred,
+}: {
   handleSend: (isRetry: boolean) => void;
   dispatch: React.Dispatch<MessageActions>;
   setErrorOccurred: Dispatch<SetStateAction<boolean>>;
@@ -222,9 +216,9 @@ function Retry({
 }
 
 function ToolMenu({
-                    messages,
-                    dispatch
-                  }: {
+  messages,
+  dispatch,
+}: {
   messages: Message[];
   dispatch: Dispatch<MessageActions>;
 }) {
@@ -243,72 +237,75 @@ function ToolMenu({
       setAlert("No saved state!");
       return;
     }
-    const saved: Message[] = JSON.parse(state);
+    const saved = JSON.parse(state) as Message[];
     dispatch({ type: MessageActionTypes.loadState, saved: saved });
     setAlert("Loaded successfully!");
   }
 
-  return (
-    <Menu>
-      {({ open }) => {
-        if (open) {
-          setMenuClassName(`${styles.toolMenu} ${styles.toolMenuAppear}`);
-        } else {
-          setMenuClassName(styles.toolMenu);
-        }
-        return (
-          <>
-            <Menu.Button className={styles.buttonFlex}>
-              <Button
-                basicClassName={styles.send}
-                downClassName={`${styles.send} ${styles.sendDark}`}
-                onClick={() => {
-                  return;
-                }}
-              >
-                {open ? <FaHorse /> : <FaHorseHead />}
-              </Button>
-            </Menu.Button>
-            <Menu.Items className={menuClassName}>
-              <Menu.Item>
-                {({ active }) => {
-                  return (
-                    <Button
-                      basicClassName={`${styles.send} ${styles.textButton}`}
-                      downClassName={`${styles.send} ${styles.textButton} ${styles.sendDark}`}
-                      onClick={saveState}
-                    >
-                      <div className={styles.textButton}>
-                        <FaFloppyDisk />
-                        Save
-                      </div>
-                    </Button>
-                  );
-                }}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => {
-                  return (
-                    <Button
-                      basicClassName={`${styles.send} ${styles.textButton}`}
-                      downClassName={`${styles.send} ${styles.textButton} ${styles.sendDark}`}
-                      onClick={loadState}
-                    >
-                      <div className={styles.textButton}>
-                        <FaCartFlatbedSuitcase />
-                        Load
-                      </div>
-                    </Button>
-                  );
-                }}
-              </Menu.Item>
-            </Menu.Items>
-          </>
-        );
-      }}
-    </Menu>
-  );
+  //     {({ open }) => {
+  //       if (open) {
+  //         setMenuClassName(`${styles.toolMenu} ${styles.toolMenuAppear}`);
+  //       } else {
+  //         setMenuClassName(styles.toolMenu);
+  //       }
+  //       return (
+  //         <>
+  //             <Button
+  //               basicClassName={styles.send}
+  //               downClassName={`${styles.send} ${styles.sendDark}`}
+  //               onClick={() => {
+  //                 return;
+  //               }}
+  //             >
+  //               {open ? <FaHorse /> : <FaHorseHead />}
+  //             </Button>
+  //           </Menu.Button>
+  //           <Menu.Items className={menuClassName}>
+  //             <Menu.Item>
+  //               {({ active }) => {
+  //                 return (
+  //                   <Button
+  //                     basicClassName={`${styles.send} ${styles.textButton}`}
+  //                     downClassName={`${styles.send} ${styles.textButton} ${styles.sendDark}`}
+  //                     onClick={saveState}
+  //                   >
+  //                     <div className={styles.textButton}>
+  //                       <FaFloppyDisk />
+  //                       Save
+  //                     </div>
+  //                   </Button>
+  //                 );
+  //               }}
+  //             </Menu.Item>
+  //             <Menu.Item>
+  //               {({ active }) => {
+  //                 return (
+  //                   <Button
+  //                     basicClassName={`${styles.send} ${styles.textButton}`}
+  //                     downClassName={`${styles.send} ${styles.textButton} ${styles.sendDark}`}
+  //                     onClick={loadState}
+  //                   >
+  //                     <div className={styles.textButton}>
+  //                       <FaCartFlatbedSuitcase />
+  //                       Load
+  //                     </div>
+  //                   </Button>
+  //                 );
+  //               }}
+  //             </Menu.Item>
+  //           </Menu.Items>
+  //         </>
+  //       );
+  //     }}
+  //   </Menu>
+  // );
+  return <></>;
 }
+
+type ChatCompletionRequestMessage = {
+  role: string;
+  content: string;
+};
 
 function transform(messages: Message[]) {
   const transformed: ChatCompletionRequestMessage[] = [];
