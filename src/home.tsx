@@ -1,11 +1,12 @@
 import { useContext, useEffect, useRef } from "react";
-import styles from "./root.module.css";
+import styles from "./home.module.css";
 import { MessageContext } from "@/contexts/MessageContext";
 import { Bubble } from "@/components/Bubble/Bubble";
 import { InputBar } from "@/components/InputBar/InputBar";
 import { ForceUpdatePageContext } from "@/contexts/ForceUpdatePageContext";
+import { sendTest } from "@/services/wsgpt.ts";
 
-export function Root() {
+export function Home() {
   const [messages] = useContext(MessageContext)!;
   const divRef = useRef<HTMLDivElement>(null);
   const forceUpdateValue = useContext(ForceUpdatePageContext);
@@ -15,7 +16,7 @@ export function Root() {
     if (divRef && divRef.current) {
       divRef.current.scrollTop = divRef.current.scrollHeight;
     }
-    console.log("hello");
+    sendTest();
   }, [messages]);
 
   return (

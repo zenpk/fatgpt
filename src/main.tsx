@@ -7,14 +7,14 @@ import "./styles/animations.css";
 import { ForceUpdateBubbleContextProvider } from "./contexts/ForceUpdateBubbleContext.tsx";
 import { MessageContextProvider } from "./contexts/MessageContext.tsx";
 import { ForceUpdatePageContextProvider } from "./contexts/ForceUpdatePageContext.tsx";
-import { Root } from "./root.tsx";
+import { Home } from "./home.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ForceUpdatePageContextProvider>
       <ForceUpdateBubbleContextProvider>
         <MessageContextProvider>
-          <Root />
+          <Home />
         </MessageContextProvider>
       </ForceUpdateBubbleContextProvider>
     </ForceUpdatePageContextProvider>

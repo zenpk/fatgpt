@@ -1,27 +1,24 @@
-import { ChatCompletionRequestMessage } from "openai/api";
-import {
-  MessageActions,
-  MessageActionTypes
-} from "@/contexts/MessageContext";
+import { MessageActions, MessageActionTypes } from "@/contexts/MessageContext";
 import React, { Dispatch, SetStateAction } from "react";
-import { getDomain } from "@/services/utils";
 import {
   DOT_INTERVAL,
   SOCKET_CONNECTION_TIMEOUT,
-  SOCKET_ESTABLISH_TIMEOUT
+  SOCKET_ESTABLISH_TIMEOUT,
 } from "@/utils/constants";
+import { Signals } from "@/utils/constants.ts";
 
-type SendObj = {
+export type ChatCompletionRequestMessage = {
+  role: string;
+  content: string;
+};
+
+type ReqMessage = {
   token: string;
   messages: ChatCompletionRequestMessage[];
+  test?: boolean;
 };
 
-type Resp = {
-  ok: boolean;
-  msg: string;
-};
-
-export async function wsGpt(
+export function chatWithWsGpt(
   token: string,
   gptMessages: ChatCompletionRequestMessage[],
   dispatch: React.Dispatch<MessageActions>,
@@ -31,43 +28,82 @@ export async function wsGpt(
   const dotInterval = setInterval(() => {
     dispatch({ type: MessageActionTypes.updateBot, msg: "." });
   }, DOT_INTERVAL);
+
   const connectionTimeout = setTimeout(() => {
     socket.close();
     dispatch({
       type: MessageActionTypes.editBot,
-      msg: "WebSocket Connection Timeout :("
+      msg: "WebSocket Connection Timeout :(",
     });
     setErrorOccurred(true);
     setButtonDisabled(false);
   }, SOCKET_ESTABLISH_TIMEOUT);
 
-  const sendObj: SendObj = { token: token, messages: gptMessages };
-  const domain = await getDomain();
-  const socket = new WebSocket(`wss://${domain}/wsgpt/`);
-  socket.onopen = (evt) => {
+  const reqMessage: ReqMessage = { token: token, messages: gptMessages };
+  const socket = new WebSocket(`wss://${import.meta.env.DOMAIN}/wsgpt/`);
+
+  socket.onopen = () => {
     dispatch({ type: MessageActionTypes.editBot, msg: "" });
     clearTimeout(connectionTimeout);
     clearInterval(dotInterval);
-    socket.send(JSON.stringify(sendObj));
-    setTimeout(socket.close, SOCKET_CONNECTION_TIMEOUT);
-  };
-  socket.onmessage = (evt) => {
-    const resp: Resp = JSON.parse(evt.data.toString());
-    if (!resp.ok) {
+    socket.send(JSON.stringify(reqMessage));
+    setTimeout(() => {
       socket.close();
-      dispatch({ type: MessageActionTypes.editBot, msg: resp.msg });
+    }, SOCKET_CONNECTION_TIMEOUT);
+  };
+
+  socket.onmessage = (evt: MessageEvent<string>) => {
+    const resp = evt.data.toString();
+    if (resp === Signals.Error) {
+      socket.close();
+      dispatch({
+        type: MessageActionTypes.editBot,
+        msg: resp.slice(Signals.Error.length),
+      });
       setErrorOccurred(true);
       setButtonDisabled(false);
       return;
     }
-    if (resp.msg === "[DONE]") {
+    if (resp === Signals.Done) {
       socket.close();
       setButtonDisabled(false);
       return;
     }
-    dispatch({ type: MessageActionTypes.updateBot, msg: resp.msg });
+    dispatch({ type: MessageActionTypes.updateBot, msg: resp });
   };
+
   socket.onerror = (e) => {
     console.log(e);
+    socket.close();
+  };
+
+  socket.onclose = () => {
+    clearTimeout(connectionTimeout);
+    clearInterval(dotInterval);
+  };
+}
+
+export function sendTest() {
+  const socket = new WebSocket(`wss://${import.meta.env.DOMAIN}/wsgpt/`);
+
+  socket.onopen = () => {
+    const reqMessage: ReqMessage = { token: "", messages: [], test: true };
+    socket.send(JSON.stringify(reqMessage));
+    setTimeout(() => {
+      socket.close();
+    }, SOCKET_CONNECTION_TIMEOUT);
+  };
+
+  socket.onmessage = (evt: MessageEvent<string>) => {
+    const resp = evt.data.toString();
+    if (resp !== Signals.Test) {
+      socket.close();
+      // TODO redirect login
+    }
+  };
+
+  socket.onerror = (e) => {
+    console.log(e);
+    socket.close();
   };
 }

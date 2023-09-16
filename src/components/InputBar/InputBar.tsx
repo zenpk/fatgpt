@@ -22,7 +22,10 @@ import {
   MessageActionTypes,
   MessageContext,
 } from "@/contexts/MessageContext";
-import { wsGpt } from "@/services/wsgpt";
+import {
+  ChatCompletionRequestMessage,
+  chatWithWsGpt,
+} from "@/services/wsgpt.ts";
 import { KeyNames, STORAGE_MESSAGES, STORAGE_TOKEN } from "@/utils/constants";
 import { Button } from "@/components/InputBar/Button";
 import { useAlert } from "@/hooks/useAlert";
@@ -35,7 +38,7 @@ export function InputBar() {
   const [errorOccurred, setErrorOccurred] = useState(false);
   const [messages, dispatch] = useContext(MessageContext)!;
 
-  async function handleSend(isRetry = false) {
+  function handleSend(isRetry = false) {
     if (buttonDisabled || inputDisabled) {
       return;
     }
@@ -59,10 +62,7 @@ export function InputBar() {
     }
     const token = window.localStorage.getItem(STORAGE_TOKEN);
     if (token === null) {
-      dispatch({
-        type: MessageActionTypes.addBot,
-        msg: "No Token! (Normally, you shouldn't see this. Try refreshing the page and you'll be guided to the login page)",
-      });
+      // TODO redirect
       return;
     }
     setInputDisabled(true);
@@ -73,7 +73,7 @@ export function InputBar() {
       msg: "",
     });
     setRows(1);
-    await wsGpt(
+    chatWithWsGpt(
       token,
       transformed,
       dispatch,
@@ -301,11 +301,6 @@ function ToolMenu({
   // );
   return <></>;
 }
-
-type ChatCompletionRequestMessage = {
-  role: string;
-  content: string;
-};
 
 function transform(messages: Message[]) {
   const transformed: ChatCompletionRequestMessage[] = [];
