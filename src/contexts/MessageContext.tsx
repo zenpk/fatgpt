@@ -3,36 +3,41 @@ import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext";
 import { ForceUpdatePageContext } from "@/contexts/ForceUpdatePageContext";
 
 export type Message = {
+  id?: number;
   msg: string;
   isUser: boolean;
 };
 
 export enum MessageActionTypes {
-  addUser,
-  addBot,
-  editUser,
-  editBot,
-  updateBot,
-  deleteBot,
-  loadState,
+  AddUser,
+  AddBot,
+  EditUser,
+  EditBot,
+  UpdateBot,
+  DeleteBot,
+  LoadState,
+  DeleteId,
+  Callback,
 }
 
 export type MessageActions =
-  | { type: MessageActionTypes.addUser; msg: string }
-  | { type: MessageActionTypes.addBot; msg: string }
-  | { type: MessageActionTypes.editUser; msg: string }
-  | { type: MessageActionTypes.editBot; msg: string }
-  | { type: MessageActionTypes.updateBot; msg: string }
-  | { type: MessageActionTypes.deleteBot }
-  | { type: MessageActionTypes.loadState; saved: Message[] };
+  | { type: MessageActionTypes.AddUser; msg: string }
+  | { type: MessageActionTypes.AddBot; msg: string }
+  | { type: MessageActionTypes.EditUser; msg: string }
+  | { type: MessageActionTypes.EditBot; msg: string }
+  | { type: MessageActionTypes.UpdateBot; msg: string }
+  | { type: MessageActionTypes.DeleteBot }
+  | { type: MessageActionTypes.DeleteId; id: number }
+  | { type: MessageActionTypes.LoadState; saved: Message[] }
+  | { type: MessageActionTypes.Callback; callback: any };
 
 export const MessageContext = React.createContext<
   [Message[], React.Dispatch<MessageActions>] | null
 >(null);
 
 export function MessageContextProvider({
-                                         children
-                                       }: {
+  children,
+}: {
   children: React.ReactNode;
 }) {
   const defaultValue: Message[] = [];
@@ -40,17 +45,19 @@ export function MessageContextProvider({
   const forceUpdatePage = useContext(ForceUpdatePageContext);
 
   function reducer(state: Message[], action: MessageActions) {
-    if (action.type === MessageActionTypes.addUser) {
+    if (action.type === MessageActionTypes.AddUser) {
       const message: Message = {
+        id: state.length,
         msg: action.msg,
-        isUser: true
+        isUser: true,
       };
       return [...state, message];
     }
-    if (action.type === MessageActionTypes.addBot) {
+    if (action.type === MessageActionTypes.AddBot) {
       const message: Message = {
+        id: state.length,
         msg: action.msg,
-        isUser: false
+        isUser: false,
       };
       return [...state, message];
     }
@@ -65,27 +72,36 @@ export function MessageContextProvider({
       return i;
     }
 
-    if (action.type === MessageActionTypes.editUser) {
+    if (action.type === MessageActionTypes.EditUser) {
       state[findFromLast(true)].msg = action.msg;
       forceUpdateBubble();
     }
-    if (action.type === MessageActionTypes.editBot) {
+    if (action.type === MessageActionTypes.EditBot) {
       state[findFromLast(false)].msg = action.msg;
       forceUpdateBubble();
     }
-    if (action.type === MessageActionTypes.updateBot) {
+    if (action.type === MessageActionTypes.UpdateBot) {
       state[findFromLast(false)].msg += action.msg;
       forceUpdateBubble();
     }
-    if (action.type === MessageActionTypes.deleteBot) {
+    if (action.type === MessageActionTypes.DeleteBot) {
       state.splice(findFromLast(false), 1);
       forceUpdatePage();
     }
-    if (action.type === MessageActionTypes.loadState) {
+    if (action.type === MessageActionTypes.DeleteId) {
+      for (let i = 0; i < state.length; i++) {
+        if (state[i].id === action.id) {
+          state.splice(i, 1);
+        }
+      }
+    }
+    if (action.type === MessageActionTypes.LoadState) {
       forceUpdatePage();
       return action.saved;
     }
-    // console.log(state);
+    if (action.type === MessageActionTypes.Callback) {
+      action.callback();
+    }
     return state;
   }
 

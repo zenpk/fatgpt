@@ -149,23 +149,47 @@ export function authorization() {
       authorizationCode: "", // will be filled in the auth.authorize method
     })
     .then((resp) => {
-      if (!resp.data.ok) {
-        console.log(`Authorization failed: ${resp.data.msg}`);
-      } else {
-        window.localStorage.setItem(
-          STORAGE_ACCESS_TOKEN,
-          resp.data.accessToken
-        );
-        window.localStorage.setItem(
-          STORAGE_REFRESH_TOKEN,
-          resp.data.refreshToken
-        );
-        window.localStorage.removeItem(STORAGE_VERIFIER);
-      }
-      const url = window.location.href;
-      window.location.replace(url.substring(0, url.indexOf("?")));
+      handleAuthResp(resp, true);
     })
     .catch((e) => {
+      window.localStorage.removeItem(STORAGE_ACCESS_TOKEN);
+      window.localStorage.removeItem(STORAGE_REFRESH_TOKEN);
+      window.localStorage.removeItem(STORAGE_VERIFIER);
       console.log(e);
     });
+}
+
+export async function refresh() {
+  window.localStorage.removeItem(STORAGE_ACCESS_TOKEN);
+  const refreshToken = window.localStorage.getItem(STORAGE_REFRESH_TOKEN);
+  if (!refreshToken) {
+    return redirectLogin();
+  }
+  const auth = new MyOAuthSdk(import.meta.env.VITE_AUTH as string);
+  try {
+    const resp = await auth.refresh({
+      clientId: import.meta.env.VITE_CLIENT_ID as string,
+      clientSecret: import.meta.env.VITE_CLIENT_SECRET as string,
+      refreshToken: refreshToken,
+    });
+    handleAuthResp(resp, false);
+  } catch (e) {
+    window.localStorage.removeItem(STORAGE_REFRESH_TOKEN);
+    console.log(e);
+  }
+}
+
+function handleAuthResp(resp: AxiosResponse<AuthorizeResp>, isAuth: boolean) {
+  if (!resp.data.ok) {
+    console.log(`Authorization failed: ${resp.data.msg}`);
+    window.localStorage.removeItem(STORAGE_ACCESS_TOKEN);
+  } else {
+    window.localStorage.setItem(STORAGE_ACCESS_TOKEN, resp.data.accessToken);
+    window.localStorage.setItem(STORAGE_REFRESH_TOKEN, resp.data.refreshToken);
+  }
+  if (isAuth) {
+    const url = window.location.href;
+    window.localStorage.removeItem(STORAGE_VERIFIER);
+    window.location.replace(url.substring(0, url.indexOf("?")));
+  }
 }

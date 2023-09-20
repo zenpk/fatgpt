@@ -1,8 +1,5 @@
 import { Dispatch, SetStateAction, useContext, useEffect } from "react";
-import {
-  MessageActionTypes,
-  MessageContext
-} from "@/contexts/MessageContext";
+import { MessageActionTypes, MessageContext } from "@/contexts/MessageContext";
 import { ForceUpdatePageContext } from "@/contexts/ForceUpdatePageContext";
 
 export function useAlert(
@@ -14,10 +11,10 @@ export function useAlert(
   const forceUpdate = useContext(ForceUpdatePageContext);
   useEffect(() => {
     if (alert !== "") {
-      dispatch({ type: MessageActionTypes.addBot, msg: alert });
+      dispatch({ type: MessageActionTypes.AddBot, msg: alert });
       forceUpdate();
       setTimeout(() => {
-        dispatch({ type: MessageActionTypes.deleteBot });
+        dispatch({ type: MessageActionTypes.DeleteBot });
         forceUpdate();
       }, timeout);
       setAlert("");

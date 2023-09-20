@@ -7,8 +7,7 @@ import {
   STORAGE_ACCESS_TOKEN,
 } from "@/utils/constants";
 import { Signals } from "@/utils/constants.ts";
-import { redirectLogin } from "@/services/myoauth.ts";
-import { debug } from "util";
+import { redirectLogin, refresh } from "@/services/myoauth.ts";
 
 export type ChatCompletionRequestMessage = {
   role: string;
@@ -25,20 +24,18 @@ export function chatWithWsGpt(
   token: string,
   gptMessages: ChatCompletionRequestMessage[],
   dispatch: React.Dispatch<MessageActions>,
-  setButtonDisabled: Dispatch<SetStateAction<boolean>>,
-  setErrorOccurred: Dispatch<SetStateAction<boolean>>
+  setButtonDisabled: Dispatch<SetStateAction<boolean>>
 ) {
   const dotInterval = setInterval(() => {
-    dispatch({ type: MessageActionTypes.updateBot, msg: "." });
+    dispatch({ type: MessageActionTypes.UpdateBot, msg: "." });
   }, DOT_INTERVAL);
 
   const connectionTimeout = setTimeout(() => {
     socket.close();
     dispatch({
-      type: MessageActionTypes.editBot,
+      type: MessageActionTypes.EditBot,
       msg: "WebSocket Connection Timeout :(",
     });
-    setErrorOccurred(true);
     setButtonDisabled(false);
   }, SOCKET_ESTABLISH_TIMEOUT);
 
@@ -46,7 +43,7 @@ export function chatWithWsGpt(
   const socket = new WebSocket(import.meta.env.VITE_DOMAIN as string);
 
   socket.onopen = () => {
-    dispatch({ type: MessageActionTypes.editBot, msg: "" });
+    dispatch({ type: MessageActionTypes.EditBot, msg: "" });
     clearTimeout(connectionTimeout);
     clearInterval(dotInterval);
     socket.send(JSON.stringify(reqMessage));
@@ -55,24 +52,37 @@ export function chatWithWsGpt(
     }, SOCKET_CONNECTION_TIMEOUT);
   };
 
-  socket.onmessage = (evt: MessageEvent<string>) => {
+  socket.onmessage = async (evt: MessageEvent<string>) => {
     const resp = evt.data.toString();
     if (resp === Signals.Error) {
       socket.close();
       dispatch({
-        type: MessageActionTypes.editBot,
+        type: MessageActionTypes.EditBot,
         msg: resp.slice(Signals.Error.length),
       });
-      setErrorOccurred(true);
       setButtonDisabled(false);
       return;
+    }
+    if (resp === Signals.TokenFailed) {
+      socket.close();
+      await refresh();
+      if (!window.localStorage.getItem(STORAGE_ACCESS_TOKEN)) {
+        redirectLogin();
+      } else {
+        dispatch({
+          type: MessageActionTypes.EditBot,
+          msg: "Token refreshed, please resend the message.",
+        });
+        setButtonDisabled(false);
+        return;
+      }
     }
     if (resp === Signals.Done) {
       socket.close();
       setButtonDisabled(false);
       return;
     }
-    dispatch({ type: MessageActionTypes.updateBot, msg: resp });
+    dispatch({ type: MessageActionTypes.UpdateBot, msg: resp });
   };
 
   socket.onerror = (e) => {
@@ -91,7 +101,7 @@ export function sendTest() {
 
   socket.onopen = () => {
     const reqMessage: ReqMessage = {
-      token: localStorage.getItem(STORAGE_ACCESS_TOKEN) ?? "",
+      token: window.localStorage.getItem(STORAGE_ACCESS_TOKEN) ?? "",
       messages: [],
       test: true,
     };
@@ -101,11 +111,14 @@ export function sendTest() {
     }, SOCKET_CONNECTION_TIMEOUT);
   };
 
-  socket.onmessage = (evt: MessageEvent<string>) => {
+  socket.onmessage = async (evt: MessageEvent<string>) => {
+    socket.close();
     const resp = evt.data.toString();
     if (resp !== Signals.Test) {
-      socket.close();
-      redirectLogin();
+      await refresh();
+      if (!window.localStorage.getItem(STORAGE_ACCESS_TOKEN)) {
+        redirectLogin();
+      }
     }
   };
 

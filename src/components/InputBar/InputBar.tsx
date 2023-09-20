@@ -40,31 +40,29 @@ export function InputBar() {
   const [inputDisabled, setInputDisabled] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [rows, setRows] = useState(1);
-  const [errorOccurred, setErrorOccurred] = useState(false);
   const [messages, dispatch] = useContext(MessageContext)!;
 
-  function handleSend(isRetry = false) {
+  function handleSend() {
     if (buttonDisabled || inputDisabled) {
       return;
     }
-    if (inputRef && inputRef.current && !isRetry) {
+    if (inputRef && inputRef.current) {
       if (inputRef.current.value === "") {
         return;
+      } else {
+        dispatch({
+          type: MessageActionTypes.AddUser,
+          msg: inputRef.current.value,
+        });
+        inputRef.current.value = "";
+        inputRef.current.focus(); // not working
+        setRows(1);
+        dispatch({ type: MessageActionTypes.Callback, callback: handleWsGpt });
       }
     }
-    const transformed = transform(messages);
-    if (inputRef && inputRef.current && inputRef.current.value && !isRetry) {
-      transformed.push({
-        role: "user",
-        content: inputRef.current.value,
-      });
-      dispatch({
-        type: MessageActionTypes.addUser,
-        msg: inputRef.current.value,
-      });
-      inputRef.current.value = "";
-      inputRef.current.focus(); // not working
-    }
+  }
+
+  function handleWsGpt() {
     const token = window.localStorage.getItem(STORAGE_ACCESS_TOKEN);
     if (token === null) {
       redirectLogin();
@@ -73,18 +71,12 @@ export function InputBar() {
     setInputDisabled(true);
     setButtonDisabled(true);
 
+    const transformed = transform(messages);
     dispatch({
-      type: MessageActionTypes.addBot,
+      type: MessageActionTypes.AddBot,
       msg: "",
     });
-    setRows(1);
-    chatWithWsGpt(
-      token,
-      transformed,
-      dispatch,
-      setButtonDisabled,
-      setErrorOccurred
-    );
+    chatWithWsGpt(token, transformed, dispatch, setButtonDisabled);
     setInputDisabled(false);
   }
 
@@ -98,16 +90,15 @@ export function InputBar() {
         rows={rows}
         setRows={setRows}
       />
-      {!errorOccurred && (
-        <Send handleSend={handleSend} disabled={buttonDisabled} />
-      )}
-      {errorOccurred && (
+      {messages.length > 0 && (
         <Retry
-          handleSend={handleSend}
+          disabled={buttonDisabled}
+          handleWsGpt={handleWsGpt}
+          messages={messages}
           dispatch={dispatch}
-          setErrorOccurred={setErrorOccurred}
         />
       )}
+      <Send handleSend={handleSend} disabled={buttonDisabled} />
     </div>
   );
 }
@@ -137,13 +128,13 @@ function Input({
   }, []);
 
   function handleKeyDown(evt: React.KeyboardEvent) {
-    if (evt.shiftKey && evt.key === KeyNames.enter) {
+    if (evt.shiftKey && evt.key === KeyNames.Enter) {
       return;
     }
-    if (evt.ctrlKey && evt.key === KeyNames.enter) {
+    if (evt.ctrlKey && evt.key === KeyNames.Enter) {
       return;
     }
-    if (evt.key === KeyNames.enter && !isMobile) {
+    if (evt.key === KeyNames.Enter && !isMobile) {
       evt.preventDefault();
       handleSend();
     }
@@ -195,24 +186,29 @@ function Send({
 }
 
 function Retry({
-  handleSend,
+  disabled,
+  handleWsGpt,
+  messages,
   dispatch,
-  setErrorOccurred,
 }: {
-  handleSend: (isRetry: boolean) => void;
+  disabled: boolean;
+  handleWsGpt: () => void;
+  messages: Message[];
   dispatch: React.Dispatch<MessageActions>;
-  setErrorOccurred: Dispatch<SetStateAction<boolean>>;
 }) {
   function onClick() {
-    setErrorOccurred(false);
-    dispatch({ type: MessageActionTypes.deleteBot });
-    handleSend(true);
+    if (messages && !messages[messages.length - 1].isUser) {
+      dispatch({ type: MessageActionTypes.DeleteBot });
+    }
+    handleWsGpt();
   }
 
   return (
     <Button
       basicClassName={`${styles.send} ${styles.buttonFlex} ${styles.retry}`}
       downClassName={`${styles.send} ${styles.buttonFlex} ${styles.retryDark}`}
+      disabledClassName={`${styles.send} ${styles.buttonFlex} ${styles.sendDisabled}`}
+      disabled={disabled}
       onClick={onClick}
     >
       <FaArrowRotateRight />
@@ -243,7 +239,7 @@ function ToolMenu({
       return;
     }
     const saved = JSON.parse(state) as Message[];
-    dispatch({ type: MessageActionTypes.loadState, saved: saved });
+    dispatch({ type: MessageActionTypes.LoadState, saved: saved });
     setAlert("Loaded successfully!");
   }
 

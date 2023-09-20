@@ -8,8 +8,8 @@ export const SOCKET_ESTABLISH_TIMEOUT = 12_000;
 export const DOT_INTERVAL = 500;
 
 export enum KeyNames {
-  shift = "Shift",
-  enter = "Enter",
+  Shift = "Shift",
+  Enter = "Enter",
 }
 
 export enum Signals {
