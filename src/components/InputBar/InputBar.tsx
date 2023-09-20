@@ -26,9 +26,14 @@ import {
   ChatCompletionRequestMessage,
   chatWithWsGpt,
 } from "@/services/wsgpt.ts";
-import { KeyNames, STORAGE_MESSAGES, STORAGE_TOKEN } from "@/utils/constants";
+import {
+  KeyNames,
+  STORAGE_MESSAGES,
+  STORAGE_ACCESS_TOKEN,
+} from "@/utils/constants";
 import { Button } from "@/components/InputBar/Button";
 import { useAlert } from "@/hooks/useAlert";
+import { redirectLogin } from "@/services/myoauth.ts";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -60,9 +65,9 @@ export function InputBar() {
       inputRef.current.value = "";
       inputRef.current.focus(); // not working
     }
-    const token = window.localStorage.getItem(STORAGE_TOKEN);
+    const token = window.localStorage.getItem(STORAGE_ACCESS_TOKEN);
     if (token === null) {
-      // TODO redirect
+      redirectLogin();
       return;
     }
     setInputDisabled(true);

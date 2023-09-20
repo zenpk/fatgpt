@@ -4,8 +4,11 @@ import {
   DOT_INTERVAL,
   SOCKET_CONNECTION_TIMEOUT,
   SOCKET_ESTABLISH_TIMEOUT,
+  STORAGE_ACCESS_TOKEN,
 } from "@/utils/constants";
 import { Signals } from "@/utils/constants.ts";
+import { redirectLogin } from "@/services/myoauth.ts";
+import { debug } from "util";
 
 export type ChatCompletionRequestMessage = {
   role: string;
@@ -40,7 +43,7 @@ export function chatWithWsGpt(
   }, SOCKET_ESTABLISH_TIMEOUT);
 
   const reqMessage: ReqMessage = { token: token, messages: gptMessages };
-  const socket = new WebSocket(`wss://${import.meta.env.DOMAIN}/wsgpt/`);
+  const socket = new WebSocket(import.meta.env.VITE_DOMAIN as string);
 
   socket.onopen = () => {
     dispatch({ type: MessageActionTypes.editBot, msg: "" });
@@ -84,10 +87,14 @@ export function chatWithWsGpt(
 }
 
 export function sendTest() {
-  const socket = new WebSocket(`wss://${import.meta.env.DOMAIN}/wsgpt/`);
+  const socket = new WebSocket(import.meta.env.VITE_WSGPT as string);
 
   socket.onopen = () => {
-    const reqMessage: ReqMessage = { token: "", messages: [], test: true };
+    const reqMessage: ReqMessage = {
+      token: localStorage.getItem(STORAGE_ACCESS_TOKEN) ?? "",
+      messages: [],
+      test: true,
+    };
     socket.send(JSON.stringify(reqMessage));
     setTimeout(() => {
       socket.close();
@@ -98,7 +105,7 @@ export function sendTest() {
     const resp = evt.data.toString();
     if (resp !== Signals.Test) {
       socket.close();
-      // TODO redirect login
+      redirectLogin();
     }
   };
 

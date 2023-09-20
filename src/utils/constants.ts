@@ -1,5 +1,7 @@
-export const STORAGE_TOKEN = "notToken";
+export const STORAGE_ACCESS_TOKEN = "accessToken";
+export const STORAGE_REFRESH_TOKEN = "refreshToken";
 export const STORAGE_MESSAGES = "messages";
+export const STORAGE_VERIFIER = "verifier";
 
 export const SOCKET_CONNECTION_TIMEOUT = 180_000;
 export const SOCKET_ESTABLISH_TIMEOUT = 12_000;

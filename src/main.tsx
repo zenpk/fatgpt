@@ -7,16 +7,22 @@ import "./styles/animations.css";
 import { ForceUpdateBubbleContextProvider } from "./contexts/ForceUpdateBubbleContext.tsx";
 import { MessageContextProvider } from "./contexts/MessageContext.tsx";
 import { ForceUpdatePageContextProvider } from "./contexts/ForceUpdatePageContext.tsx";
-import { Home } from "./home.tsx";
+import { Home } from "./Home.tsx";
+import { authorization } from "@/services/myoauth.ts";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <ForceUpdatePageContextProvider>
-      <ForceUpdateBubbleContextProvider>
-        <MessageContextProvider>
-          <Home />
-        </MessageContextProvider>
-      </ForceUpdateBubbleContextProvider>
-    </ForceUpdatePageContextProvider>
-  </React.StrictMode>
-);
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get("authorizationCode")) {
+  authorization();
+} else {
+  ReactDOM.createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+      <ForceUpdatePageContextProvider>
+        <ForceUpdateBubbleContextProvider>
+          <MessageContextProvider>
+            <Home />
+          </MessageContextProvider>
+        </ForceUpdateBubbleContextProvider>
+      </ForceUpdatePageContextProvider>
+    </React.StrictMode>
+  );
+}
