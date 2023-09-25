@@ -24,7 +24,8 @@ export function chatWithWsGpt(
   token: string,
   gptMessages: ChatCompletionRequestMessage[],
   dispatch: React.Dispatch<MessageActions>,
-  setButtonDisabled: Dispatch<SetStateAction<boolean>>
+  setButtonDisabled: Dispatch<SetStateAction<boolean>>,
+  forceUpdateBubble: () => void
 ) {
   const dotInterval = setInterval(() => {
     dispatch({ type: MessageActionTypes.UpdateBot, msg: "." });
@@ -40,7 +41,7 @@ export function chatWithWsGpt(
   }, SOCKET_ESTABLISH_TIMEOUT);
 
   const reqMessage: ReqMessage = { token: token, messages: gptMessages };
-  const socket = new WebSocket(import.meta.env.VITE_DOMAIN as string);
+  const socket = new WebSocket(import.meta.env.VITE_WSGPT as string);
 
   socket.onopen = () => {
     dispatch({ type: MessageActionTypes.EditBot, msg: "" });
@@ -74,8 +75,8 @@ export function chatWithWsGpt(
           msg: "Token refreshed, please resend the message.",
         });
         setButtonDisabled(false);
-        return;
       }
+      return;
     }
     if (resp === Signals.Done) {
       socket.close();
@@ -83,6 +84,7 @@ export function chatWithWsGpt(
       return;
     }
     dispatch({ type: MessageActionTypes.UpdateBot, msg: resp });
+    forceUpdateBubble();
   };
 
   socket.onerror = (e) => {

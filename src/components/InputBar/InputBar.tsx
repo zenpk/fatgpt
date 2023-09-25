@@ -34,13 +34,19 @@ import {
 import { Button } from "@/components/InputBar/Button";
 import { useAlert } from "@/hooks/useAlert";
 import { redirectLogin } from "@/services/myoauth.ts";
+import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext.tsx";
+import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [rows, setRows] = useState(1);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [triggerWsgpt, setTriggerWsgpt] = useState(0);
+
   const [messages, dispatch] = useContext(MessageContext)!;
+  const forceUpdateBubble = useContext(ForceUpdateBubbleContext);
 
   function handleSend() {
     if (buttonDisabled || inputDisabled) {
@@ -57,32 +63,46 @@ export function InputBar() {
         inputRef.current.value = "";
         inputRef.current.focus(); // not working
         setRows(1);
-        dispatch({ type: MessageActionTypes.Callback, callback: handleWsGpt });
+        setTriggerWsgpt((prev) => prev + 1);
       }
     }
   }
 
-  function handleWsGpt() {
-    const token = window.localStorage.getItem(STORAGE_ACCESS_TOKEN);
-    if (token === null) {
-      redirectLogin();
-      return;
-    }
-    setInputDisabled(true);
-    setButtonDisabled(true);
+  useEffect(() => {
+    if (triggerWsgpt > 0) {
+      const token = window.localStorage.getItem(STORAGE_ACCESS_TOKEN);
+      if (token === null) {
+        redirectLogin();
+        return;
+      }
+      setInputDisabled(true);
+      setButtonDisabled(true);
 
-    const transformed = transform(messages);
-    dispatch({
-      type: MessageActionTypes.AddBot,
-      msg: "",
-    });
-    chatWithWsGpt(token, transformed, dispatch, setButtonDisabled);
-    setInputDisabled(false);
-  }
+      const transformed = transform(messages);
+      dispatch({
+        type: MessageActionTypes.AddBot,
+        msg: "",
+      });
+      chatWithWsGpt(
+        token,
+        transformed,
+        dispatch,
+        setButtonDisabled,
+        forceUpdateBubble
+      );
+      setInputDisabled(false);
+    }
+  }, [triggerWsgpt]);
 
   return (
     <div className={styles.bar}>
-      <ToolMenu messages={messages} dispatch={dispatch} />
+      <MenuButton menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <ToolMenu
+        messages={messages}
+        dispatch={dispatch}
+        menuOpen={menuOpen}
+        setMenuOpen={setMenuOpen}
+      />
       <Input
         inputRef={inputRef}
         handleSend={handleSend}
@@ -93,7 +113,7 @@ export function InputBar() {
       {messages.length > 0 && (
         <Retry
           disabled={buttonDisabled}
-          handleWsGpt={handleWsGpt}
+          setTriggerWsgpt={setTriggerWsgpt}
           messages={messages}
           dispatch={dispatch}
         />
@@ -187,12 +207,12 @@ function Send({
 
 function Retry({
   disabled,
-  handleWsGpt,
+  setTriggerWsgpt,
   messages,
   dispatch,
 }: {
   disabled: boolean;
-  handleWsGpt: () => void;
+  setTriggerWsgpt: Dispatch<SetStateAction<number>>;
   messages: Message[];
   dispatch: React.Dispatch<MessageActions>;
 }) {
@@ -200,7 +220,7 @@ function Retry({
     if (messages && !messages[messages.length - 1].isUser) {
       dispatch({ type: MessageActionTypes.DeleteBot });
     }
-    handleWsGpt();
+    setTriggerWsgpt((prev) => prev + 1);
   }
 
   return (
@@ -219,11 +239,14 @@ function Retry({
 function ToolMenu({
   messages,
   dispatch,
+  menuOpen,
+  setMenuOpen,
 }: {
   messages: Message[];
   dispatch: Dispatch<MessageActions>;
+  menuOpen: boolean;
+  setMenuOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const [menuClassName, setMenuClassName] = useState(styles.toolMenu);
   const [alert, setAlert] = useState("");
   useAlert(alert, setAlert, 1500);
 
@@ -243,64 +266,46 @@ function ToolMenu({
     setAlert("Loaded successfully!");
   }
 
-  //     {({ open }) => {
-  //       if (open) {
-  //         setMenuClassName(`${styles.toolMenu} ${styles.toolMenuAppear}`);
-  //       } else {
-  //         setMenuClassName(styles.toolMenu);
-  //       }
-  //       return (
-  //         <>
-  //             <Button
-  //               basicClassName={styles.send}
-  //               downClassName={`${styles.send} ${styles.sendDark}`}
-  //               onClick={() => {
-  //                 return;
-  //               }}
-  //             >
-  //               {open ? <FaHorse /> : <FaHorseHead />}
-  //             </Button>
-  //           </Menu.Button>
-  //           <Menu.Items className={menuClassName}>
-  //             <Menu.Item>
-  //               {({ active }) => {
-  //                 return (
-  //                   <Button
-  //                     basicClassName={`${styles.send} ${styles.textButton}`}
-  //                     downClassName={`${styles.send} ${styles.textButton} ${styles.sendDark}`}
-  //                     onClick={saveState}
-  //                   >
-  //                     <div className={styles.textButton}>
-  //                       <FaFloppyDisk />
-  //                       Save
-  //                     </div>
-  //                   </Button>
-  //                 );
-  //               }}
-  //             </Menu.Item>
-  //             <Menu.Item>
-  //               {({ active }) => {
-  //                 return (
-  //                   <Button
-  //                     basicClassName={`${styles.send} ${styles.textButton}`}
-  //                     downClassName={`${styles.send} ${styles.textButton} ${styles.sendDark}`}
-  //                     onClick={loadState}
-  //                   >
-  //                     <div className={styles.textButton}>
-  //                       <FaCartFlatbedSuitcase />
-  //                       Load
-  //                     </div>
-  //                   </Button>
-  //                 );
-  //               }}
-  //             </Menu.Item>
-  //           </Menu.Items>
-  //         </>
-  //       );
-  //     }}
-  //   </Menu>
-  // );
-  return <></>;
+  return menuOpen ? (
+    <Menu upside={true}>
+      <>
+        <MenuItem onClick={saveState} setMenuOpen={setMenuOpen}>
+          <div className={styles.textButton}>
+            <FaFloppyDisk />
+            Save
+          </div>
+        </MenuItem>
+        <MenuItem onClick={loadState} setMenuOpen={setMenuOpen}>
+          <div className={styles.textButton}>
+            <FaCartFlatbedSuitcase />
+            Load
+          </div>
+        </MenuItem>
+      </>
+    </Menu>
+  ) : (
+    <></>
+  );
+}
+
+function MenuButton({
+  menuOpen,
+  setMenuOpen,
+}: {
+  menuOpen: boolean;
+  setMenuOpen: Dispatch<SetStateAction<boolean>>;
+}) {
+  return (
+    <Button
+      basicClassName={`${styles.send} ${styles.buttonFlex}`}
+      downClassName={`${styles.send} ${styles.sendDark} ${styles.buttonFlex}`}
+      onClick={() => {
+        setMenuOpen((prev) => !prev);
+      }}
+    >
+      {menuOpen ? <FaHorse /> : <FaHorseHead />}
+    </Button>
+  );
 }
 
 function transform(messages: Message[]) {

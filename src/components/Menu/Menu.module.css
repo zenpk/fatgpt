@@ -1,0 +1,28 @@
+.menu {
+  position: absolute;
+  bottom: calc(var(--button-size) + 3rem);
+  border-radius: 0.25rem;
+  width: max-content;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-flow: column;
+  opacity: 0;
+  transition: all ease 200ms;
+  transform: translateY(20%);
+  gap: 0.5rem;
+  /*box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1);*/
+  /*background-color: white;*/
+  /*left: 2rem;*/
+  /*padding: 0.5rem;*/
+}
+
+.menuAppear {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.downside {
+  bottom: 0;
+  top: 1rem;
+}

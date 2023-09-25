@@ -1,6 +1,4 @@
-import React, { useContext } from "react";
-import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext";
-import { ForceUpdatePageContext } from "@/contexts/ForceUpdatePageContext";
+import React from "react";
 
 export type Message = {
   id?: number;
@@ -17,7 +15,6 @@ export enum MessageActionTypes {
   DeleteBot,
   LoadState,
   DeleteId,
-  Callback,
 }
 
 export type MessageActions =
@@ -28,8 +25,7 @@ export type MessageActions =
   | { type: MessageActionTypes.UpdateBot; msg: string }
   | { type: MessageActionTypes.DeleteBot }
   | { type: MessageActionTypes.DeleteId; id: number }
-  | { type: MessageActionTypes.LoadState; saved: Message[] }
-  | { type: MessageActionTypes.Callback; callback: any };
+  | { type: MessageActionTypes.LoadState; saved: Message[] };
 
 export const MessageContext = React.createContext<
   [Message[], React.Dispatch<MessageActions>] | null
@@ -41,13 +37,11 @@ export function MessageContextProvider({
   children: React.ReactNode;
 }) {
   const defaultValue: Message[] = [];
-  const forceUpdateBubble = useContext(ForceUpdateBubbleContext);
-  const forceUpdatePage = useContext(ForceUpdatePageContext);
 
   function reducer(state: Message[], action: MessageActions) {
     if (action.type === MessageActionTypes.AddUser) {
       const message: Message = {
-        id: state.length,
+        id: state.length > 0 ? (state[state.length - 1].id ?? 0) + 1 : 1,
         msg: action.msg,
         isUser: true,
       };
@@ -55,7 +49,7 @@ export function MessageContextProvider({
     }
     if (action.type === MessageActionTypes.AddBot) {
       const message: Message = {
-        id: state.length,
+        id: state.length > 0 ? (state[state.length - 1].id ?? 0) + 1 : 1,
         msg: action.msg,
         isUser: false,
       };
@@ -74,33 +68,38 @@ export function MessageContextProvider({
 
     if (action.type === MessageActionTypes.EditUser) {
       state[findFromLast(true)].msg = action.msg;
-      forceUpdateBubble();
+      return state;
     }
     if (action.type === MessageActionTypes.EditBot) {
       state[findFromLast(false)].msg = action.msg;
-      forceUpdateBubble();
+      return state;
     }
     if (action.type === MessageActionTypes.UpdateBot) {
-      state[findFromLast(false)].msg += action.msg;
-      forceUpdateBubble();
+      // doing copies to handle double dispatch in strict mode
+      const newState = [...state];
+      const index = findFromLast(false);
+      newState[index] = {
+        ...newState[index],
+        msg: newState[index].msg + action.msg,
+      };
+      return newState;
     }
     if (action.type === MessageActionTypes.DeleteBot) {
-      state.splice(findFromLast(false), 1);
-      forceUpdatePage();
+      const newState = [...state];
+      newState.splice(findFromLast(false), 1);
+      return newState;
     }
     if (action.type === MessageActionTypes.DeleteId) {
       for (let i = 0; i < state.length; i++) {
         if (state[i].id === action.id) {
           state.splice(i, 1);
+          break;
         }
       }
+      return state;
     }
     if (action.type === MessageActionTypes.LoadState) {
-      forceUpdatePage();
       return action.saved;
-    }
-    if (action.type === MessageActionTypes.Callback) {
-      action.callback();
     }
     return state;
   }

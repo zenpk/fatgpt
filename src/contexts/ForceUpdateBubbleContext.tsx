@@ -5,8 +5,8 @@ export const ForceUpdateBubbleContext = React.createContext<() => void>(() => {
 });
 
 export function ForceUpdateBubbleContextProvider({
-                                                   children
-                                                 }: {
+  children,
+}: {
   children: React.ReactNode;
 }) {
   const [, setValue] = React.useState(0);
