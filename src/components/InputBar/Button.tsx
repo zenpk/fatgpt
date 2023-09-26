@@ -7,6 +7,7 @@ export function Button({
   onClick,
   children,
   disabled = false,
+  myRef,
 }: {
   basicClassName: string;
   downClassName: string;
@@ -14,6 +15,7 @@ export function Button({
   onClick: () => void;
   children: React.ReactNode;
   disabled?: boolean;
+  myRef?: React.RefObject<HTMLButtonElement>;
 }) {
   const [className, setClassName] = React.useState(basicClassName);
 
@@ -45,6 +47,7 @@ export function Button({
       onMouseUp={handleUp}
       onMouseLeave={handleLeave}
       disabled={disabled}
+      ref={myRef}
     >
       {children}
     </button>

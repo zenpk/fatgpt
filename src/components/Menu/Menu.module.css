@@ -1,7 +1,7 @@
 .menu {
-  position: absolute;
-  bottom: calc(var(--button-size) + 3rem);
+  position: fixed;
   border-radius: 0.25rem;
+  height: auto;
   width: max-content;
   display: flex;
   justify-content: flex-end;
@@ -23,7 +23,11 @@
   transform: translateY(0);
 }
 
-.downside {
-  bottom: unset;
-  top: 3rem;
+.clickArea {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  z-index: 10;
 }

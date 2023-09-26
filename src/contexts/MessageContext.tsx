@@ -96,7 +96,7 @@ export function MessageContextProvider({
           break;
         }
       }
-      return state;
+      return [...state];
     }
     if (action.type === MessageActionTypes.LoadState) {
       return action.saved;

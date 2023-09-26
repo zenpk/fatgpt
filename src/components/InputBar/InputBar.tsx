@@ -28,19 +28,18 @@ import {
 } from "@/services/wsgpt.ts";
 import {
   KeyNames,
-  STORAGE_MESSAGES,
   STORAGE_ACCESS_TOKEN,
-  MENU_ANIMATION_TIME,
+  STORAGE_MESSAGES,
 } from "@/utils/constants";
 import { Button } from "@/components/InputBar/Button";
 import { useAlert } from "@/hooks/useAlert";
 import { redirectLogin } from "@/services/myoauth.ts";
 import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext.tsx";
 import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
-import { MenuStatusContext } from "@/contexts/MenuStatusContext.tsx";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [rows, setRows] = useState(1);
@@ -98,12 +97,17 @@ export function InputBar() {
 
   return (
     <div className={styles.bar}>
-      <MenuButton menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <MenuButton
+        menuOpen={menuOpen}
+        setMenuOpen={setMenuOpen}
+        menuButtonRef={menuButtonRef}
+      />
       <ToolMenu
         messages={messages}
         dispatch={dispatch}
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
+        menuButtonRef={menuButtonRef}
       />
       <Input
         inputRef={inputRef}
@@ -243,21 +247,14 @@ function ToolMenu({
   dispatch,
   menuOpen,
   setMenuOpen,
+  menuButtonRef,
 }: {
   messages: Message[];
   dispatch: Dispatch<MessageActions>;
   menuOpen: boolean;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
+  menuButtonRef: React.RefObject<HTMLButtonElement>;
 }) {
-  const [menuStatus] = useContext(MenuStatusContext)!;
-  useEffect(() => {
-    if (!menuStatus) {
-      setTimeout(() => {
-        setMenuOpen(false);
-      }, MENU_ANIMATION_TIME);
-    }
-  }, [menuStatus, setMenuOpen]);
-
   const [alert, setAlert] = useState("");
   useAlert(alert, setAlert, 1500);
 
@@ -277,8 +274,16 @@ function ToolMenu({
     setAlert("Loaded successfully!");
   }
 
+  let top = 0;
+  let left = 0;
+  if (menuButtonRef && menuButtonRef.current) {
+    const temp = menuButtonRef.current.getBoundingClientRect();
+    top = temp.top;
+    left = temp.left;
+  }
+
   return menuOpen ? (
-    <Menu upside={true}>
+    <Menu upside={true} setMenuOpen={setMenuOpen} top={top} left={left}>
       <>
         <MenuItem onClick={saveState} setMenuOpen={setMenuOpen}>
           <div className={styles.textButton}>
@@ -302,9 +307,11 @@ function ToolMenu({
 function MenuButton({
   menuOpen,
   setMenuOpen,
+  menuButtonRef,
 }: {
   menuOpen: boolean;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
+  menuButtonRef: React.RefObject<HTMLButtonElement>;
 }) {
   return (
     <Button
@@ -313,6 +320,7 @@ function MenuButton({
       onClick={() => {
         setMenuOpen(true);
       }}
+      myRef={menuButtonRef}
     >
       {menuOpen ? <FaHorse /> : <FaHorseHead />}
     </Button>

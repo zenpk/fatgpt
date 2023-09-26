@@ -7,20 +7,18 @@ import {
   MessageActionTypes,
   MessageContext,
 } from "@/contexts/MessageContext";
-import {
+import React, {
   Dispatch,
   RefObject,
   SetStateAction,
   useContext,
-  useEffect,
+  useRef,
   useState,
 } from "react";
 import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext";
 import { generateMd } from "@/utils/markdown";
 import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
 import { BsFillPencilFill, BsFillTrash3Fill } from "react-icons/bs";
-import { MenuStatusContext } from "@/contexts/MenuStatusContext.tsx";
-import { MENU_ANIMATION_TIME } from "@/utils/constants.ts";
 
 export function Bubble({
   msg,
@@ -30,6 +28,7 @@ export function Bubble({
   parentRef: RefObject<HTMLDivElement>;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const avatarRef = useRef<HTMLImageElement>(null);
 
   const className = msg.isUser
     ? ` ${styles.bubbleUser}`
@@ -45,8 +44,17 @@ export function Bubble({
       style={{ zIndex: `${9999 - (msg.id ?? 0)}` }}
       className={`${className} ${styles.bubble}`}
     >
-      <Avatar isUser={msg.isUser} setMenuOpen={setMenuOpen} />
-      <ToolMenu msg={msg} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <Avatar
+        isUser={msg.isUser}
+        setMenuOpen={setMenuOpen}
+        avatarRef={avatarRef}
+      />
+      <ToolMenu
+        msg={msg}
+        menuOpen={menuOpen}
+        setMenuOpen={setMenuOpen}
+        avatarRef={avatarRef}
+      />
       {msg.isUser && (
         <pre className={`${styles.textBox} ${styles.textBoxUser}`}>
           {msg.msg}
@@ -65,9 +73,11 @@ export function Bubble({
 function Avatar({
   isUser,
   setMenuOpen,
+  avatarRef,
 }: {
   isUser: boolean;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
+  avatarRef: React.RefObject<HTMLImageElement>;
 }) {
   const src = isUser ? user : bot;
   // const width = useWidth();
@@ -85,6 +95,7 @@ function Avatar({
       onClick={() => {
         setMenuOpen(true);
       }}
+      ref={avatarRef}
     />
   );
 }
@@ -93,20 +104,13 @@ function ToolMenu({
   msg,
   menuOpen,
   setMenuOpen,
+  avatarRef,
 }: {
   msg: Message;
   menuOpen: boolean;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
+  avatarRef: React.RefObject<HTMLImageElement>;
 }) {
-  const [menuStatus] = useContext(MenuStatusContext)!;
-  useEffect(() => {
-    if (!menuStatus) {
-      setTimeout(() => {
-        setMenuOpen(false);
-      }, MENU_ANIMATION_TIME);
-    }
-  }, [menuStatus, setMenuOpen]);
-
   const [, dispatch] = useContext(MessageContext)!;
 
   function handleDelete() {
@@ -117,8 +121,25 @@ function ToolMenu({
     }
   }
 
+  let top = 0;
+  let left = 0;
+  let right = 0;
+  if (avatarRef && avatarRef.current) {
+    const temp = avatarRef.current.getBoundingClientRect();
+    top = temp.top;
+    left = temp.left;
+    right = temp.right;
+  }
+
   return menuOpen ? (
-    <Menu upside={false}>
+    <Menu
+      upside={false}
+      setMenuOpen={setMenuOpen}
+      top={top}
+      left={left}
+      right={right}
+      rightSide={msg.isUser}
+    >
       <>
         <MenuItem onClick={handleDelete} setMenuOpen={setMenuOpen}>
           <div className={inputBarStyles.textButton}>
