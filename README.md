@@ -1,18 +1,19 @@
-# FatGPT 
+# FatGPT
 
 Frontend wrapper of ChatGPT
 
 ## Showcase
 
-![1](./img/1.png)
+![preview](./img/preview.png)
 
 ## Architecture
 
-![2](./img/2.png)
+![structure](./img/structure.png)
 
 FatGPT relies on the projects below:
 
-1. Authentication: [simple-auth](https://github.com/zenpk/simple-auth)
+1. OAuth2.0: [my-oauth](https://github.com/zenpk/my-oauth)
 2. WebSocket for streaming the messages: [ws-gpt](https://github.com/zenpk/ws-gpt)
 
-This project is built for my own convenience, so you shouldn't expect to host it without any issues. If you have any interest, feel free to contact me :)
+This project is built for my own convenience, so you shouldn't expect to host it without any issues. If you happen to be
+interested, feel free to contact me :)
