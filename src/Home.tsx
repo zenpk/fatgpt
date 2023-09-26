@@ -4,7 +4,7 @@ import { MessageContext } from "@/contexts/MessageContext";
 import { Bubble } from "@/components/Bubble/Bubble";
 import { InputBar } from "@/components/InputBar/InputBar";
 import { sendTest } from "@/services/wsgpt.ts";
-import { STORAGE_ACCESS_TOKEN } from "@/utils/constants.ts";
+import { STORAGE_ACCESS_TOKEN, TEXTAREA_ID } from "@/utils/constants.ts";
 import { redirectLogin } from "@/services/myoauth.ts";
 
 export function Home() {
@@ -13,6 +13,7 @@ export function Home() {
 
   // scroll to the bottom
   useEffect(() => {
+    console.log("cufk");
     if (divRef && divRef.current) {
       divRef.current.scrollTop = divRef.current.scrollHeight;
     }
@@ -27,7 +28,7 @@ export function Home() {
     <div className={styles.background}>
       <h1 className={styles.title}>FatGPT</h1>
       <div className={styles.card}>
-        <div className={styles.textArea} ref={divRef}>
+        <div id={TEXTAREA_ID} className={styles.textArea} ref={divRef}>
           {messages.map((msg) => {
             return <Bubble key={msg.id} msg={msg} parentRef={divRef} />;
           })}

@@ -19,6 +19,7 @@ import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext";
 import { generateMd } from "@/utils/markdown";
 import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
 import { BsFillPencilFill, BsFillTrash3Fill } from "react-icons/bs";
+import { getBound } from "@/utils/boundRect.ts";
 
 export function Bubble({
   msg,
@@ -121,15 +122,7 @@ function ToolMenu({
     }
   }
 
-  let top = 0;
-  let left = 0;
-  let right = 0;
-  if (avatarRef && avatarRef.current) {
-    const temp = avatarRef.current.getBoundingClientRect();
-    top = temp.top;
-    left = temp.left;
-    right = temp.right;
-  }
+  const { top: top, left: left, right: right } = getBound(avatarRef);
 
   return menuOpen ? (
     <Menu

@@ -37,6 +37,47 @@ export function MessageContextProvider({
   children: React.ReactNode;
 }) {
   const defaultValue: Message[] = [];
+  const testValue: Message[] = [
+    { id: 1, isUser: true, msg: "hello" },
+    {
+      id: 2,
+      isUser: false,
+      msg:
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n" +
+        "asopfjopegjoprwgjopwr\n\n",
+    },
+  ];
 
   function reducer(state: Message[], action: MessageActions) {
     if (action.type === MessageActionTypes.AddUser) {
@@ -104,7 +145,8 @@ export function MessageContextProvider({
     return state;
   }
 
-  const stateAndReducer = React.useReducer(reducer, defaultValue);
+  // const stateAndReducer = React.useReducer(reducer, defaultValue);
+  const stateAndReducer = React.useReducer(reducer, testValue);
 
   return (
     <MessageContext.Provider value={stateAndReducer}>

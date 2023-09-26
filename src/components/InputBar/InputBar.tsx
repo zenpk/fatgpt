@@ -36,6 +36,7 @@ import { useAlert } from "@/hooks/useAlert";
 import { redirectLogin } from "@/services/myoauth.ts";
 import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext.tsx";
 import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
+import { getBound } from "@/utils/boundRect.ts";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -62,12 +63,20 @@ export function InputBar() {
           msg: inputRef.current.value,
         });
         inputRef.current.value = "";
-        inputRef.current.focus(); // not working
+        inputRef.current.focus();
+        inputRef.current.select();
         setRows(1);
         setTriggerWsgpt((prev) => prev + 1);
       }
     }
   }
+
+  useEffect(() => {
+    if (inputRef && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [inputRef]);
 
   useEffect(() => {
     if (triggerWsgpt > 0) {
@@ -274,13 +283,7 @@ function ToolMenu({
     setAlert("Loaded successfully!");
   }
 
-  let top = 0;
-  let left = 0;
-  if (menuButtonRef && menuButtonRef.current) {
-    const temp = menuButtonRef.current.getBoundingClientRect();
-    top = temp.top;
-    left = temp.left;
-  }
+  const { top: top, left: left } = getBound(menuButtonRef);
 
   return menuOpen ? (
     <Menu upside={true} setMenuOpen={setMenuOpen} top={top} left={left}>
