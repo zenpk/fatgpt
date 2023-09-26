@@ -55,7 +55,7 @@ export function chatWithWsGpt(
 
   socket.onmessage = async (evt: MessageEvent<string>) => {
     const resp = evt.data.toString();
-    if (resp === Signals.Error) {
+    if (resp.startsWith(Signals.Error)) {
       socket.close();
       dispatch({
         type: MessageActionTypes.EditBot,
@@ -64,7 +64,7 @@ export function chatWithWsGpt(
       setButtonDisabled(false);
       return;
     }
-    if (resp === Signals.TokenFailed) {
+    if (resp.startsWith(Signals.TokenFailed)) {
       socket.close();
       await refresh();
       if (!window.localStorage.getItem(STORAGE_ACCESS_TOKEN)) {
@@ -78,6 +78,7 @@ export function chatWithWsGpt(
       }
       return;
     }
+    // Signals.Done doesn't need startsWith()
     if (resp === Signals.Done) {
       socket.close();
       setButtonDisabled(false);

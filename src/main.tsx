@@ -8,6 +8,7 @@ import { ForceUpdateBubbleContextProvider } from "./contexts/ForceUpdateBubbleCo
 import { MessageContextProvider } from "./contexts/MessageContext.tsx";
 import { Home } from "./Home.tsx";
 import { authorization } from "@/services/myoauth.ts";
+import { MenuCloseContextProvider } from "@/contexts/MenuStatusContext.tsx";
 
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get("authorizationCode")) {
@@ -15,11 +16,13 @@ if (urlParams.get("authorizationCode")) {
 } else {
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-      <ForceUpdateBubbleContextProvider>
-        <MessageContextProvider>
-          <Home />
-        </MessageContextProvider>
-      </ForceUpdateBubbleContextProvider>
+      <MenuCloseContextProvider>
+        <ForceUpdateBubbleContextProvider>
+          <MessageContextProvider>
+            <Home />
+          </MessageContextProvider>
+        </ForceUpdateBubbleContextProvider>
+      </MenuCloseContextProvider>
     </React.StrictMode>
   );
 }

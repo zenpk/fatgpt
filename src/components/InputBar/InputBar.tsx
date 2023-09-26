@@ -30,12 +30,14 @@ import {
   KeyNames,
   STORAGE_MESSAGES,
   STORAGE_ACCESS_TOKEN,
+  MENU_ANIMATION_TIME,
 } from "@/utils/constants";
 import { Button } from "@/components/InputBar/Button";
 import { useAlert } from "@/hooks/useAlert";
 import { redirectLogin } from "@/services/myoauth.ts";
 import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext.tsx";
 import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
+import { MenuStatusContext } from "@/contexts/MenuStatusContext.tsx";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -247,6 +249,15 @@ function ToolMenu({
   menuOpen: boolean;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
 }) {
+  const [menuStatus] = useContext(MenuStatusContext)!;
+  useEffect(() => {
+    if (!menuStatus) {
+      setTimeout(() => {
+        setMenuOpen(false);
+      }, MENU_ANIMATION_TIME);
+    }
+  }, [menuStatus, setMenuOpen]);
+
   const [alert, setAlert] = useState("");
   useAlert(alert, setAlert, 1500);
 
@@ -300,7 +311,7 @@ function MenuButton({
       basicClassName={`${styles.send} ${styles.buttonFlex}`}
       downClassName={`${styles.send} ${styles.sendDark} ${styles.buttonFlex}`}
       onClick={() => {
-        setMenuOpen((prev) => !prev);
+        setMenuOpen(true);
       }}
     >
       {menuOpen ? <FaHorse /> : <FaHorseHead />}

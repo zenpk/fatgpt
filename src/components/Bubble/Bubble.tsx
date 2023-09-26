@@ -12,12 +12,15 @@ import {
   RefObject,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext";
 import { generateMd } from "@/utils/markdown";
 import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
 import { BsFillPencilFill, BsFillTrash3Fill } from "react-icons/bs";
+import { MenuStatusContext } from "@/contexts/MenuStatusContext.tsx";
+import { MENU_ANIMATION_TIME } from "@/utils/constants.ts";
 
 export function Bubble({
   msg,
@@ -38,7 +41,10 @@ export function Bubble({
   }
 
   return (
-    <div className={`${className} ${styles.bubble}`}>
+    <div
+      style={{ zIndex: `${9999 - (msg.id ?? 0)}` }}
+      className={`${className} ${styles.bubble}`}
+    >
       <Avatar isUser={msg.isUser} setMenuOpen={setMenuOpen} />
       <ToolMenu msg={msg} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
       {msg.isUser && (
@@ -77,7 +83,7 @@ function Avatar({
       height={roundedWidth}
       className={styles.avatar}
       onClick={() => {
-        setMenuOpen((prev) => !prev);
+        setMenuOpen(true);
       }}
     />
   );
@@ -92,6 +98,15 @@ function ToolMenu({
   menuOpen: boolean;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
 }) {
+  const [menuStatus] = useContext(MenuStatusContext)!;
+  useEffect(() => {
+    if (!menuStatus) {
+      setTimeout(() => {
+        setMenuOpen(false);
+      }, MENU_ANIMATION_TIME);
+    }
+  }, [menuStatus, setMenuOpen]);
+
   const [, dispatch] = useContext(MessageContext)!;
 
   function handleDelete() {

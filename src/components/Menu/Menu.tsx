@@ -1,7 +1,15 @@
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { Button } from "@/components/InputBar/Button.tsx";
 import styles from "./Menu.module.css";
 import inputBarStyles from "@/components/InputBar/InputBar.module.css";
+import { MenuStatusContext } from "@/contexts/MenuStatusContext.tsx";
 
 export function Menu({
   upside,
@@ -11,9 +19,19 @@ export function Menu({
   children: ReactNode;
 }) {
   const [className, setClassName] = useState(styles.menu);
-  setTimeout(() => {
-    setClassName(`${styles.menu} ${styles.menuAppear}`);
-  }, 0);
+  const [menuStatus, setMenuStatus] = useContext(MenuStatusContext)!;
+
+  useEffect(() => {
+    setMenuStatus(true);
+  }, [setMenuStatus]);
+
+  useEffect(() => {
+    if (!menuStatus) {
+      setClassName(styles.menu);
+    } else {
+      setClassName(`${styles.menu} ${styles.menuAppear}`);
+    }
+  }, [menuStatus]);
 
   return (
     <div className={upside ? className : `${className} ${styles.downside}`}>

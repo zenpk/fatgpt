@@ -187,6 +187,7 @@ function handleAuthResp(resp: AxiosResponse<AuthorizeResp>, isAuth: boolean) {
     window.localStorage.setItem(STORAGE_ACCESS_TOKEN, resp.data.accessToken);
     window.localStorage.setItem(STORAGE_REFRESH_TOKEN, resp.data.refreshToken);
   }
+  // handle the authorization request that uses the code
   if (isAuth) {
     const url = window.location.href;
     window.localStorage.removeItem(STORAGE_VERIFIER);

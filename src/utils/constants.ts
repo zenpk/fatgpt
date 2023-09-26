@@ -7,6 +7,8 @@ export const SOCKET_CONNECTION_TIMEOUT = 180_000;
 export const SOCKET_ESTABLISH_TIMEOUT = 12_000;
 export const DOT_INTERVAL = 500;
 
+export const MENU_ANIMATION_TIME = 200;
+
 export enum KeyNames {
   Shift = "Shift",
   Enter = "Enter",
