@@ -145,8 +145,8 @@ export function MessageContextProvider({
     return state;
   }
 
-  // const stateAndReducer = React.useReducer(reducer, defaultValue);
-  const stateAndReducer = React.useReducer(reducer, testValue);
+  const stateAndReducer = React.useReducer(reducer, defaultValue);
+  // const stateAndReducer = React.useReducer(reducer, testValue);
 
   return (
     <MessageContext.Provider value={stateAndReducer}>
