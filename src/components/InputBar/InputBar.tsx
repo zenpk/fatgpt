@@ -211,7 +211,7 @@ function Send({
     <Button
       basicClassName={`${styles.send} ${styles.buttonFlex}`}
       downClassName={`${styles.send} ${styles.buttonFlex} ${styles.sendDark}`}
-      disabledClassName={`${styles.send} ${styles.buttonFlex} ${styles.sendDisabled}`}
+      disabledClassName={`${styles.send} ${styles.buttonFlex} ${styles.buttonDisabled}`}
       onClick={handleSend}
       disabled={disabled}
     >
@@ -242,7 +242,7 @@ function Retry({
     <Button
       basicClassName={`${styles.send} ${styles.buttonFlex} ${styles.retry}`}
       downClassName={`${styles.send} ${styles.buttonFlex} ${styles.retryDark}`}
-      disabledClassName={`${styles.send} ${styles.buttonFlex} ${styles.sendDisabled}`}
+      disabledClassName={`${styles.send} ${styles.buttonFlex} ${styles.buttonDisabled}`}
       disabled={disabled}
       onClick={onClick}
     >

@@ -19,26 +19,29 @@ import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext";
 import { generateMd } from "@/utils/markdown";
 import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
 import { BsFillPencilFill, BsFillTrash3Fill } from "react-icons/bs";
-import { getBound } from "@/utils/boundRect.ts";
 
-export function Bubble({
-  msg,
-  parentRef,
-}: {
-  msg: Message;
-  parentRef: RefObject<HTMLDivElement>;
-}) {
+type Position = {
+  top: number;
+  left: number;
+  right?: number;
+  bottom?: number;
+};
+
+export function Bubble({ msg }: { msg: Message }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const avatarRef = useRef<HTMLImageElement>(null);
+  const [position, setPosition] = useState<Position>({
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  });
 
   const className = msg.isUser
     ? ` ${styles.bubbleUser}`
     : ` ${styles.bubbleBot}`;
   const forceUpdate = useContext(ForceUpdateBubbleContext);
   const md = generateMd(msg.msg);
-  if (parentRef && parentRef.current) {
-    parentRef.current.scrollTop = parentRef.current.scrollHeight;
-  }
 
   return (
     <div
@@ -49,12 +52,13 @@ export function Bubble({
         isUser={msg.isUser}
         setMenuOpen={setMenuOpen}
         avatarRef={avatarRef}
+        setPosition={setPosition}
       />
       <ToolMenu
         msg={msg}
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
-        avatarRef={avatarRef}
+        position={position}
       />
       {msg.isUser && (
         <pre className={`${styles.textBox} ${styles.textBoxUser}`}>
@@ -75,16 +79,23 @@ function Avatar({
   isUser,
   setMenuOpen,
   avatarRef,
+  setPosition,
 }: {
   isUser: boolean;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
   avatarRef: React.RefObject<HTMLImageElement>;
+  setPosition: Dispatch<SetStateAction<Position>>;
 }) {
   const src = isUser ? user : bot;
   // const width = useWidth();
   // if (width < 0) return;
   // const roundedWidth = Math.round(width / 50);
   const roundedWidth = 24;
+
+  function handleClick(evt: React.MouseEvent) {
+    setMenuOpen(true);
+    setPosition({ top: evt.clientY, left: evt.clientX, right: evt.clientX });
+  }
 
   return (
     <img
@@ -93,9 +104,7 @@ function Avatar({
       width={roundedWidth}
       height={roundedWidth}
       className={styles.avatar}
-      onClick={() => {
-        setMenuOpen(true);
-      }}
+      onClick={handleClick}
       ref={avatarRef}
     />
   );
@@ -105,12 +114,12 @@ function ToolMenu({
   msg,
   menuOpen,
   setMenuOpen,
-  avatarRef,
+  position,
 }: {
   msg: Message;
   menuOpen: boolean;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
-  avatarRef: React.RefObject<HTMLImageElement>;
+  position: Position;
 }) {
   const [, dispatch] = useContext(MessageContext)!;
 
@@ -122,15 +131,13 @@ function ToolMenu({
     }
   }
 
-  const { top: top, left: left, right: right } = getBound(avatarRef);
-
   return menuOpen ? (
     <Menu
       upside={false}
       setMenuOpen={setMenuOpen}
-      top={top}
-      left={left}
-      right={right}
+      top={position.top}
+      left={position.left}
+      right={position.right}
       rightSide={msg.isUser}
     >
       <>

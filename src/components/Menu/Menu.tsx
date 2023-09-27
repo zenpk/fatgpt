@@ -8,7 +8,7 @@ import React, {
 import { Button } from "@/components/InputBar/Button.tsx";
 import styles from "./Menu.module.css";
 import inputBarStyles from "@/components/InputBar/InputBar.module.css";
-import { MENU_ANIMATION_TIME, TEXTAREA_ID } from "@/utils/constants.ts";
+import { MENU_ANIMATION_TIME, BACKGROUND_ID } from "@/utils/constants.ts";
 import { createPortal } from "react-dom";
 
 export function Menu({
@@ -60,7 +60,7 @@ export function Menu({
         {children}
       </div>
     </>,
-    document.getElementById(TEXTAREA_ID)!
+    document.getElementById(BACKGROUND_ID)!
   );
 }
 

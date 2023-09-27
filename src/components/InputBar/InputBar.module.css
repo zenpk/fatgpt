@@ -50,7 +50,7 @@
   background-color: var(--retry-color-darker);
 }
 
-.sendDisabled {
+.buttonDisabled {
   background-color: var(--grey);
   color: var(--grey-darker);
 }

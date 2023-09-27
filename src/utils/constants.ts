@@ -9,7 +9,7 @@ export const DOT_INTERVAL = 500;
 
 export const MENU_ANIMATION_TIME = 200;
 
-export const TEXTAREA_ID = "textArea";
+export const BACKGROUND_ID = "background";
 
 export enum KeyNames {
   Shift = "Shift",
