@@ -68,15 +68,25 @@ export function MenuItem({
   children,
   onClick,
   setMenuOpen,
+  basicClassName,
+  downClassName,
 }: {
   children: ReactNode;
   onClick: () => void;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
+  basicClassName?: string;
+  downClassName?: string;
 }) {
   return (
     <Button
-      basicClassName={`${inputBarStyles.send} ${inputBarStyles.textButton}`}
-      downClassName={`${inputBarStyles.send} ${inputBarStyles.textButton}`}
+      basicClassName={
+        `${styles.buttonShadow} ${inputBarStyles.button} ${inputBarStyles.buttonText} ` +
+        (basicClassName ?? "")
+      }
+      downClassName={
+        `${styles.buttonShadow} ${inputBarStyles.button} ${inputBarStyles.buttonText} ` +
+        (downClassName ?? inputBarStyles.sendDark)
+      }
       onClick={() => {
         onClick();
         setMenuOpen(false);

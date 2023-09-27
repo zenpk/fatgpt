@@ -209,9 +209,9 @@ function Send({
 }) {
   return (
     <Button
-      basicClassName={`${styles.send} ${styles.buttonFlex}`}
-      downClassName={`${styles.send} ${styles.buttonFlex} ${styles.sendDark}`}
-      disabledClassName={`${styles.send} ${styles.buttonFlex} ${styles.buttonDisabled}`}
+      basicClassName={`${styles.button} ${styles.buttonSquareFlex}`}
+      downClassName={`${styles.button} ${styles.buttonSquareFlex} ${styles.sendDark}`}
+      disabledClassName={`${styles.button} ${styles.buttonSquareFlex} ${styles.buttonDisabled}`}
       onClick={handleSend}
       disabled={disabled}
     >
@@ -240,9 +240,9 @@ function Retry({
 
   return (
     <Button
-      basicClassName={`${styles.send} ${styles.buttonFlex} ${styles.retry}`}
-      downClassName={`${styles.send} ${styles.buttonFlex} ${styles.retryDark}`}
-      disabledClassName={`${styles.send} ${styles.buttonFlex} ${styles.buttonDisabled}`}
+      basicClassName={`${styles.button} ${styles.buttonSquareFlex} ${styles.retry}`}
+      downClassName={`${styles.button} ${styles.buttonSquareFlex} ${styles.retryDark}`}
+      disabledClassName={`${styles.button} ${styles.buttonSquareFlex} ${styles.buttonDisabled}`}
       disabled={disabled}
       onClick={onClick}
     >
@@ -289,16 +289,16 @@ function ToolMenu({
     <Menu upside={true} setMenuOpen={setMenuOpen} top={top} left={left}>
       <>
         <MenuItem onClick={saveState} setMenuOpen={setMenuOpen}>
-          <div className={styles.textButton}>
+          <>
             <FaFloppyDisk />
             Save
-          </div>
+          </>
         </MenuItem>
         <MenuItem onClick={loadState} setMenuOpen={setMenuOpen}>
-          <div className={styles.textButton}>
+          <>
             <FaCartFlatbedSuitcase />
             Load
-          </div>
+          </>
         </MenuItem>
       </>
     </Menu>
@@ -318,8 +318,8 @@ function MenuButton({
 }) {
   return (
     <Button
-      basicClassName={`${styles.send} ${styles.buttonFlex}`}
-      downClassName={`${styles.send} ${styles.sendDark} ${styles.buttonFlex}`}
+      basicClassName={`${styles.button} ${styles.buttonSquareFlex}`}
+      downClassName={`${styles.button} ${styles.sendDark} ${styles.buttonSquareFlex}`}
       onClick={() => {
         setMenuOpen(true);
       }}

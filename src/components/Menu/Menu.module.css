@@ -31,3 +31,7 @@
   left: 0;
   z-index: 10;
 }
+
+.buttonShadow {
+  box-shadow: 3px 3px 6px #aaa;
+}

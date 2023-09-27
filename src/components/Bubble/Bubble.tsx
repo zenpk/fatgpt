@@ -141,11 +141,16 @@ function ToolMenu({
       rightSide={msg.isUser}
     >
       <>
-        <MenuItem onClick={handleDelete} setMenuOpen={setMenuOpen}>
-          <div className={inputBarStyles.textButton}>
+        <MenuItem
+          onClick={handleDelete}
+          setMenuOpen={setMenuOpen}
+          basicClassName={`${inputBarStyles.whiteMenuButton}`}
+          downClassName={`${inputBarStyles.whiteMenuButton} ${inputBarStyles.whiteMenuButtonDark}`}
+        >
+          <>
             <BsFillTrash3Fill />
             Delete
-          </div>
+          </>
         </MenuItem>
       </>
     </Menu>
