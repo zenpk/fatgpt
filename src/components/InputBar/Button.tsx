@@ -18,18 +18,26 @@ export function Button({
   myRef?: React.RefObject<HTMLButtonElement>;
 }) {
   const [className, setClassName] = React.useState(basicClassName);
+  const [isDown, setIsDown] = React.useState(false);
 
   function handleDown() {
+    setIsDown(true);
     setClassName(downClassName);
   }
 
   function handleUp() {
-    setClassName(basicClassName);
-    onClick();
+    if (isDown) {
+      setClassName(basicClassName);
+      onClick();
+    }
+    setIsDown(false);
   }
 
   function handleLeave() {
-    setClassName(basicClassName);
+    if (isDown) {
+      setClassName(basicClassName);
+    }
+    setIsDown(false);
   }
 
   useEffect(() => {
