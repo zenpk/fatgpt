@@ -29,6 +29,7 @@ export function chatWithWsGpt(
 ) {
   const dotInterval = setInterval(() => {
     dispatch({ type: MessageActionTypes.UpdateBot, msg: "." });
+    forceUpdateBubble();
   }, DOT_INTERVAL);
 
   const connectionTimeout = setTimeout(() => {
@@ -37,6 +38,7 @@ export function chatWithWsGpt(
       type: MessageActionTypes.EditBot,
       msg: "WebSocket Connection Timeout :(",
     });
+    forceUpdateBubble();
     setButtonDisabled(false);
   }, SOCKET_ESTABLISH_TIMEOUT);
 
@@ -45,6 +47,7 @@ export function chatWithWsGpt(
 
   socket.onopen = () => {
     dispatch({ type: MessageActionTypes.EditBot, msg: "" });
+    forceUpdateBubble();
     clearTimeout(connectionTimeout);
     clearInterval(dotInterval);
     socket.send(JSON.stringify(reqMessage));
@@ -61,6 +64,7 @@ export function chatWithWsGpt(
         type: MessageActionTypes.EditBot,
         msg: resp.slice(Signals.Error.length),
       });
+      forceUpdateBubble();
       setButtonDisabled(false);
       return;
     }
@@ -74,6 +78,7 @@ export function chatWithWsGpt(
           type: MessageActionTypes.EditBot,
           msg: "Token refreshed, please resend the message.",
         });
+        forceUpdateBubble();
         setButtonDisabled(false);
       }
       return;
