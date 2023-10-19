@@ -23,12 +23,15 @@ export type AuthorizeReq = {
   authorizationCode: string;
 };
 
-export type AuthorizeResp = {
+export type CommonResp = {
   ok: boolean;
   msg: string;
+};
+
+export type AuthorizeResp = {
   accessToken: string;
   refreshToken: string;
-};
+} & CommonResp;
 
 export type RefreshReq = {
   clientId: string;
@@ -36,10 +39,9 @@ export type RefreshReq = {
   refreshToken: string;
 };
 
-export type VerifyResp = {
-  ok: boolean;
-  msg: string;
-};
+export type RefreshResp = {
+  accessToken: string;
+} & CommonResp;
 
 export type PublicJwk = {
   kty: string;
@@ -91,11 +93,11 @@ class MyOAuthSdk {
     return axios.post(`${this.endpoint}/api/auth/authorize`, req);
   }
 
-  refresh(req: RefreshReq): Promise<AxiosResponse<AuthorizeResp>> {
+  refresh(req: RefreshReq): Promise<AxiosResponse<RefreshResp>> {
     return axios.post(`${this.endpoint}/api/auth/refresh`, req);
   }
 
-  verify(accessToken: string): Promise<AxiosResponse<VerifyResp>> {
+  verify(accessToken: string): Promise<AxiosResponse<CommonResp>> {
     return axios.post(`${this.endpoint}/api/auth/verify`, {
       accessToken: accessToken,
     });
@@ -179,13 +181,19 @@ export async function refresh() {
   }
 }
 
-function handleAuthResp(resp: AxiosResponse<AuthorizeResp>, isAuth: boolean) {
+function handleAuthResp(
+  resp: AxiosResponse<AuthorizeResp | RefreshResp>,
+  isAuth: boolean
+) {
   if (!resp.data.ok) {
     console.log(`Authorization failed: ${resp.data.msg}`);
     window.localStorage.removeItem(STORAGE_ACCESS_TOKEN);
   } else {
+    if (Object.prototype.hasOwnProperty.call(resp.data, "refreshToken")) {
+      const data = resp.data as AuthorizeResp;
+      window.localStorage.setItem(STORAGE_REFRESH_TOKEN, data.refreshToken);
+    }
     window.localStorage.setItem(STORAGE_ACCESS_TOKEN, resp.data.accessToken);
-    window.localStorage.setItem(STORAGE_REFRESH_TOKEN, resp.data.refreshToken);
   }
   // handle the authorization request that uses the code
   if (isAuth) {
