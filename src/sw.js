@@ -1,5 +1,7 @@
-const version = "v1";
+const lastVersion = "v1";
+const currentVersion = "v2";
 self.addEventListener("install", (event) => {
+  event.waitUntil(caches.delete(lastVersion));
   // event.waitUntil(
   //   caches.open(version).then((cache) => {
   //     for (const asset of coreAssets) {
@@ -24,7 +26,7 @@ self.addEventListener("fetch", (event) => {
         return (
           response ??
           fetch(request).then((response) => {
-            caches.open(version).then((cache) => {
+            caches.open(currentVersion).then((cache) => {
               cache.put(request, response.clone());
             });
             return response;
