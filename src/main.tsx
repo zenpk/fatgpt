@@ -10,8 +10,18 @@ import { Home } from "./Home.tsx";
 import { authorization } from "@/services/myoauth.ts";
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("../sw.js");
+  navigator.serviceWorker
+    .register("./sw.js", { scope: "/" })
+    .then((registration) => {
+      console.log(`${JSON.stringify(registration)} register succeeded`);
+    })
+    .catch((error) => {
+      console.error(
+        `Service worker registration failed with ${JSON.stringify(error)}`
+      );
+    });
 }
+
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get("authorizationCode")) {
   authorization();
