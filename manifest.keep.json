@@ -4,7 +4,7 @@
   "theme_color": "#99bbdd",
   "background_color": "#ffffff",
   "display": "standalone",
-  "scope": "/",
+  "scope": "http://localhost:5173",
   "start_url": "http://localhost:5173",
   "description": "FatGPT is a frontend wrapper of ChatGPT",
   "orientation": "any",
