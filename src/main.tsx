@@ -9,6 +9,9 @@ import { MessageContextProvider } from "./contexts/MessageContext.tsx";
 import { Home } from "./Home.tsx";
 import { authorization } from "@/services/myoauth.ts";
 
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("../sw.js");
+}
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get("authorizationCode")) {
   authorization();

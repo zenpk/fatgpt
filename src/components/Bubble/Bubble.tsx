@@ -1,7 +1,7 @@
 import styles from "./Bubble.module.css";
 import inputBarStyles from "@/components/InputBar/InputBar.module.css";
-import bot from "@/public/openai.png";
-import user from "@/public/user.png";
+import bot from "@/public/bot.png";
+import user from "@/public/me.png";
 import {
   Message,
   MessageActionTypes,
@@ -9,7 +9,6 @@ import {
 } from "@/contexts/MessageContext";
 import React, {
   Dispatch,
-  RefObject,
   SetStateAction,
   useContext,
   useRef,
@@ -18,7 +17,7 @@ import React, {
 import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext";
 import { generateMd } from "@/utils/markdown";
 import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
-import { BsFillPencilFill, BsFillTrash3Fill } from "react-icons/bs";
+import { BsFillTrash3Fill } from "react-icons/bs";
 
 type Position = {
   top: number;

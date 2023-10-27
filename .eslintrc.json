@@ -4,9 +4,6 @@
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react/jsx-runtime",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
@@ -25,6 +22,27 @@
     "@typescript-eslint",
     "react",
     "react-hooks"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "extends": [
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+      ]
+    },
+    {
+      "files": [
+        "sw.js"
+      ],
+      "env": {
+        "serviceworker": true
+      }
+    }
   ],
   "root": true
 }

@@ -5,13 +5,13 @@
   "background_color": "#ffffff",
   "display": "standalone",
   "scope": "/",
-  "start_url": "",
+  "start_url": "http://localhost:5173",
   "description": "FatGPT is a frontend wrapper of ChatGPT",
   "orientation": "any",
   "icons": [
     {
-      "src": "./src/",
-      "sizes": "1024x1024"
+      "src": "./src/public/bot.png",
+      "sizes": "512x512"
     }
   ]
 }
