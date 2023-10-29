@@ -4,13 +4,12 @@
   "theme_color": "#99bbdd",
   "background_color": "#ffffff",
   "display": "standalone",
-  "scope": "/",
-  "start_url": "/",
+  "start_url": ".",
   "description": "FatGPT is a frontend wrapper of ChatGPT",
   "orientation": "any",
   "icons": [
     {
-      "src": "./src/public/bot.png",
+      "src": "/src/public/bot.png",
       "type": "image/png",
       "sizes": "512x512"
     }

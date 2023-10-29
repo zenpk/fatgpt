@@ -1,5 +1,5 @@
-const lastVersion = "v1";
-const currentVersion = "v2";
+const lastVersion = "v2";
+const currentVersion = "v2.1";
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.delete(lastVersion));
   self.skipWaiting();
