@@ -2,6 +2,7 @@ const lastVersion = "v1";
 const currentVersion = "v2";
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.delete(lastVersion));
+  self.skipWaiting();
   // event.waitUntil(
   //   caches.open(version).then((cache) => {
   //     for (const asset of coreAssets) {
