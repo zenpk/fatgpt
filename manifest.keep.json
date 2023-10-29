@@ -1,12 +1,12 @@
 {
   "name": "FatGPT",
   "short_name": "FatGPT",
+  "description": "FatGPT is a frontend wrapper of ChatGPT",
   "theme_color": "#99bbdd",
   "background_color": "#ffffff",
   "display": "standalone",
-  "start_url": ".",
-  "description": "FatGPT is a frontend wrapper of ChatGPT",
   "orientation": "any",
+  "start_url": "/",
   "icons": [
     {
       "src": "/src/public/bot.png",
