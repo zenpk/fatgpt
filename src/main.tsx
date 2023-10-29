@@ -13,12 +13,12 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("./sw.js", { scope: "/" })
     .then((registration) => {
-      console.log(`${JSON.stringify(registration)} register succeeded`);
+      console.log(`serviceWorker register succeeded`);
+      console.log(registration);
     })
     .catch((error) => {
-      console.error(
-        `Service worker registration failed with ${JSON.stringify(error)}`
-      );
+      console.error(`serviceWorker registration failed`);
+      console.log(error);
     });
 }
 
