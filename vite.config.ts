@@ -12,7 +12,7 @@ export default defineConfig({
         name: "FatGPT",
         short_name: "FatGPT",
         description: "FatGPT is a frontend wrapper of ChatGPT",
-        theme_color: "#e9eefb",
+        theme_color: "#e8eef7",
         background_color: "#ffffff",
         display: "standalone",
         orientation: "any",
