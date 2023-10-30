@@ -9,18 +9,18 @@ import { MessageContextProvider } from "./contexts/MessageContext.tsx";
 import { Home } from "./Home.tsx";
 import { authorization } from "@/services/myoauth.ts";
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("./sw.js", { scope: "/" })
-    .then((registration) => {
-      console.log(`serviceWorker register succeeded`);
-      console.log(registration);
-    })
-    .catch((error) => {
-      console.error(`serviceWorker registration failed`);
-      console.log(error);
-    });
-}
+// if ("serviceWorker" in navigator) {
+//   navigator.serviceWorker
+//     .register("./sw.js", { scope: "/" })
+//     .then((registration) => {
+//       console.log(`serviceWorker register succeeded`);
+//       console.log(registration);
+//     })
+//     .catch((error) => {
+//       console.error(`serviceWorker registration failed`);
+//       console.log(error);
+//     });
+// }
 
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get("authorizationCode")) {
