@@ -8,6 +8,8 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      registerType: "autoUpdate",
+      injectRegister: "auto",
       manifest: {
         name: "FatGPT",
         short_name: "FatGPT",
