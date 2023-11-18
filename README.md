@@ -4,7 +4,9 @@ Frontend wrapper of ChatGPT
 
 ## Showcase
 
-![preview](./img/preview.png)
+![preview1](./img/preview1.png)
+
+![preview2](./img/preview2.png)
 
 ## Architecture
 
