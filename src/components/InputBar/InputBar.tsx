@@ -15,6 +15,7 @@ import {
   FaHorse,
   FaHorseHead,
   FaPaperPlane,
+  FaRegSquare,
 } from "react-icons/fa6";
 import {
   Message,
@@ -46,6 +47,7 @@ export function InputBar() {
   const [rows, setRows] = useState(1);
   const [menuOpen, setMenuOpen] = useState(false);
   const [triggerWsgpt, setTriggerWsgpt] = useState(0);
+  const [wsGptSocket, setWsGptSocket] = useState<WebSocket | null>(null);
 
   const [messages, dispatch] = useContext(MessageContext)!;
   const forceUpdateBubble = useContext(ForceUpdateBubbleContext);
@@ -93,12 +95,14 @@ export function InputBar() {
         type: MessageActionTypes.AddBot,
         msg: "",
       });
-      chatWithWsGpt(
-        token,
-        transformed,
-        dispatch,
-        setButtonDisabled,
-        forceUpdateBubble
+      setWsGptSocket(
+        chatWithWsGpt(
+          token,
+          transformed,
+          dispatch,
+          setButtonDisabled,
+          forceUpdateBubble
+        )
       );
       setInputDisabled(false);
     }
@@ -118,6 +122,16 @@ export function InputBar() {
         setMenuOpen={setMenuOpen}
         menuButtonRef={menuButtonRef}
       />
+      {buttonDisabled && (
+        <Stop wsGptSocket={wsGptSocket} setButtonDisabled={setButtonDisabled} />
+      )}
+      {messages.length > 0 && !buttonDisabled && (
+        <Retry
+          setTriggerWsgpt={setTriggerWsgpt}
+          messages={messages}
+          dispatch={dispatch}
+        />
+      )}
       <Input
         inputRef={inputRef}
         handleSend={handleSend}
@@ -125,14 +139,6 @@ export function InputBar() {
         rows={rows}
         setRows={setRows}
       />
-      {messages.length > 0 && (
-        <Retry
-          disabled={buttonDisabled}
-          setTriggerWsgpt={setTriggerWsgpt}
-          messages={messages}
-          dispatch={dispatch}
-        />
-      )}
       <Send handleSend={handleSend} disabled={buttonDisabled} />
     </div>
   );
@@ -221,12 +227,10 @@ function Send({
 }
 
 function Retry({
-  disabled,
   setTriggerWsgpt,
   messages,
   dispatch,
 }: {
-  disabled: boolean;
   setTriggerWsgpt: Dispatch<SetStateAction<number>>;
   messages: Message[];
   dispatch: React.Dispatch<MessageActions>;
@@ -242,11 +246,34 @@ function Retry({
     <Button
       basicClassName={`${styles.button} ${styles.buttonSquareFlex} ${styles.retry}`}
       downClassName={`${styles.button} ${styles.buttonSquareFlex} ${styles.retryDark}`}
-      disabledClassName={`${styles.button} ${styles.buttonSquareFlex} ${styles.buttonDisabled}`}
-      disabled={disabled}
       onClick={onClick}
     >
       <FaArrowRotateRight />
+    </Button>
+  );
+}
+
+function Stop({
+  wsGptSocket,
+  setButtonDisabled,
+}: {
+  wsGptSocket: WebSocket | null;
+  setButtonDisabled: Dispatch<SetStateAction<boolean>>;
+}) {
+  function onClick() {
+    if (wsGptSocket) {
+      wsGptSocket.close();
+      setButtonDisabled(false);
+    }
+  }
+
+  return (
+    <Button
+      basicClassName={`${styles.button} ${styles.buttonSquareFlex} ${styles.stop}`}
+      downClassName={`${styles.button} ${styles.buttonSquareFlex} ${styles.stopDark}`}
+      onClick={onClick}
+    >
+      <FaRegSquare />
     </Button>
   );
 }

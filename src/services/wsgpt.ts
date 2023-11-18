@@ -102,6 +102,7 @@ export function chatWithWsGpt(
     clearTimeout(connectionTimeout);
     clearInterval(dotInterval);
   };
+  return socket;
 }
 
 export function sendTest() {

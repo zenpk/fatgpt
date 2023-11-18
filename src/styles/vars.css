@@ -22,6 +22,8 @@ html {
   --code-color: #a9b7c6;
   --retry-color: #f8ccaf;
   --retry-color-darker: #cea282;
+  --stop-color: #e59393;
+  --stop-color-darker: #b77d7d;
 
   --bg-grey: #f0f0f0;
   --bg-grey-darker: #e0e0e0;

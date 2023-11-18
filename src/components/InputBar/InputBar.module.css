@@ -50,6 +50,14 @@
   background-color: var(--retry-color-darker);
 }
 
+.stop {
+  background-color: var(--stop-color);
+}
+
+.stopDark {
+  background-color: var(--stop-color-darker);
+}
+
 .buttonDisabled {
   background-color: var(--grey);
   color: var(--grey-darker);
