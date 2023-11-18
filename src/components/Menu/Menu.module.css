@@ -1,11 +1,11 @@
 .menu {
   position: fixed;
-  border-radius: 0.25rem;
+  border-radius: var(--small-radius);
   height: auto;
   width: max-content;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
+  align-items: flex-start;
   flex-flow: column;
   opacity: 0;
   transition: all ease 200ms;

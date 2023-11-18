@@ -8,6 +8,7 @@ import { ForceUpdateBubbleContextProvider } from "./contexts/ForceUpdateBubbleCo
 import { MessageContextProvider } from "./contexts/MessageContext.tsx";
 import { Home } from "./Home.tsx";
 import { authorization } from "@/services/myoauth.ts";
+import { PersonaContextProvider } from "@/contexts/PersonaContext.tsx";
 
 // if ("serviceWorker" in navigator) {
 //   navigator.serviceWorker
@@ -30,7 +31,9 @@ if (urlParams.get("authorizationCode")) {
     <React.StrictMode>
       <ForceUpdateBubbleContextProvider>
         <MessageContextProvider>
-          <Home />
+          <PersonaContextProvider>
+            <Home />
+          </PersonaContextProvider>
         </MessageContextProvider>
       </ForceUpdateBubbleContextProvider>
     </React.StrictMode>

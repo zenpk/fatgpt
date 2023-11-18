@@ -42,7 +42,7 @@ export function Menu({
     }, MENU_ANIMATION_TIME);
   }
 
-  const calcTop = upside ? `calc(${top}px - 8rem)` : `calc(${top}px + 2rem)`;
+  const calcTop = upside ? `calc(${top}px - 11rem)` : `calc(${top}px + 2rem)`;
   const position = rightSide
     ? {
         top: calcTop,

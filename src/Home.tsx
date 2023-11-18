@@ -4,7 +4,7 @@ import { MessageContext } from "@/contexts/MessageContext";
 import { Bubble } from "@/components/Bubble/Bubble";
 import { InputBar } from "@/components/InputBar/InputBar";
 import { sendTest } from "@/services/wsgpt.ts";
-import { STORAGE_ACCESS_TOKEN, BACKGROUND_ID } from "@/utils/constants.ts";
+import { BACKGROUND_ID, STORAGE_ACCESS_TOKEN } from "@/utils/constants.ts";
 import { redirectLogin } from "@/services/myoauth.ts";
 
 export function Home() {

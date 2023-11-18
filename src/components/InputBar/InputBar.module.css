@@ -9,7 +9,7 @@
   box-shadow: none;
   font-size: var(--s-1);
   font-family: "Noto Sans SC", sans-serif;
-  border-radius: 0.25rem;
+  border-radius: var(--small-radius);
   color: var(--grey-darker);
   resize: none;
   overflow: auto;
@@ -34,7 +34,7 @@
 .button {
   height: var(--button-size);
   background-color: var(--crew);
-  border-radius: 0.25rem;
+  border-radius: var(--small-radius);
   user-select: none;
 }
 

@@ -22,8 +22,8 @@ html {
   --code-color: #a9b7c6;
   --retry-color: #f8ccaf;
   --retry-color-darker: #cea282;
-  --stop-color: #e59393;
-  --stop-color-darker: #b77d7d;
+  --stop-color: #eea9a9;
+  --stop-color-darker: #bd8b8b;
 
   --bg-grey: #f0f0f0;
   --bg-grey-darker: #e0e0e0;
@@ -43,8 +43,10 @@ html {
   --header-height: 64px;
   --header-bg: 248, 248, 248;
   --header-shadow-color: #cccccc;
-  --header-shadow-radius: 10px;
   --header-z-index: 999;
+
+  --small-radius: 0.25rem;
+  --big-radius: 0.5rem;
 
   --toc-width: 28vw;
   --side-padding: 10vw;

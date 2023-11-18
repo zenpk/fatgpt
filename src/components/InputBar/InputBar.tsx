@@ -16,6 +16,7 @@ import {
   FaHorseHead,
   FaPaperPlane,
   FaRegSquare,
+  FaUserPen,
 } from "react-icons/fa6";
 import {
   Message,
@@ -31,6 +32,7 @@ import {
   KeyNames,
   STORAGE_ACCESS_TOKEN,
   STORAGE_MESSAGES,
+  STORAGE_PERSONA,
 } from "@/utils/constants";
 import { Button } from "@/components/InputBar/Button";
 import { useAlert } from "@/hooks/useAlert";
@@ -38,6 +40,8 @@ import { redirectLogin } from "@/services/myoauth.ts";
 import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext.tsx";
 import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
 import { getBound } from "@/utils/boundRect.ts";
+import { PersonaContext } from "@/contexts/PersonaContext.tsx";
+import { PopupInput } from "@/components/PopupInput/PopupInput.tsx";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -48,8 +52,10 @@ export function InputBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [triggerWsgpt, setTriggerWsgpt] = useState(0);
   const [wsGptSocket, setWsGptSocket] = useState<WebSocket | null>(null);
+  const [showPopupInput, setShowPopupInput] = useState(false);
 
   const [messages, dispatch] = useContext(MessageContext)!;
+  const [persona, setPersona] = useContext(PersonaContext)!;
   const forceUpdateBubble = useContext(ForceUpdateBubbleContext);
 
   function handleSend() {
@@ -90,7 +96,7 @@ export function InputBar() {
       setInputDisabled(true);
       setButtonDisabled(true);
 
-      const transformed = transform(messages);
+      const transformed = transform(messages, persona);
       dispatch({
         type: MessageActionTypes.AddBot,
         msg: "",
@@ -110,6 +116,15 @@ export function InputBar() {
 
   return (
     <div className={styles.bar}>
+      {showPopupInput && (
+        <PopupInput
+          title={"Edit FatGPT's identity"}
+          placeholder={"e.g. You are a Go programmer."}
+          value={persona}
+          setValue={setPersona}
+          setShowPopupInput={setShowPopupInput}
+        />
+      )}
       <MenuButton
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
@@ -121,6 +136,9 @@ export function InputBar() {
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
         menuButtonRef={menuButtonRef}
+        setShowPopupInput={setShowPopupInput}
+        persona={persona}
+        setPersona={setPersona}
       />
       {buttonDisabled && (
         <Stop wsGptSocket={wsGptSocket} setButtonDisabled={setButtonDisabled} />
@@ -284,18 +302,25 @@ function ToolMenu({
   menuOpen,
   setMenuOpen,
   menuButtonRef,
+  setShowPopupInput,
+  persona,
+  setPersona,
 }: {
   messages: Message[];
   dispatch: Dispatch<MessageActions>;
   menuOpen: boolean;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
   menuButtonRef: React.RefObject<HTMLButtonElement>;
+  setShowPopupInput: Dispatch<SetStateAction<boolean>>;
+  persona: string;
+  setPersona: Dispatch<SetStateAction<string>>;
 }) {
   const [alert, setAlert] = useState("");
   useAlert(alert, setAlert, 1500);
 
   function saveState() {
     window.localStorage.setItem(STORAGE_MESSAGES, JSON.stringify(messages));
+    window.localStorage.setItem(STORAGE_PERSONA, persona);
     setAlert("Saved successfully!");
   }
 
@@ -307,7 +332,15 @@ function ToolMenu({
     }
     const saved = JSON.parse(state) as Message[];
     dispatch({ type: MessageActionTypes.LoadState, saved: saved });
+    const persona = window.localStorage.getItem(STORAGE_PERSONA);
+    if (persona) {
+      setPersona(persona);
+    }
     setAlert("Loaded successfully!");
+  }
+
+  function openPopupInput() {
+    setShowPopupInput(true);
   }
 
   const { top: top, left: left } = getBound(menuButtonRef);
@@ -325,6 +358,12 @@ function ToolMenu({
           <>
             <FaCartFlatbedSuitcase />
             Load
+          </>
+        </MenuItem>
+        <MenuItem onClick={openPopupInput} setMenuOpen={setMenuOpen}>
+          <>
+            <FaUserPen />
+            Set Persona
           </>
         </MenuItem>
       </>
@@ -357,8 +396,11 @@ function MenuButton({
   );
 }
 
-function transform(messages: Message[]) {
+function transform(messages: Message[], persona: string) {
   const transformed: ChatCompletionRequestMessage[] = [];
+  if (persona.length > 0) {
+    transformed.push({ role: "system", content: persona });
+  }
   for (const msg of messages) {
     const role = msg.isUser ? "user" : "assistant";
     transformed.push({ role: role, content: msg.msg });

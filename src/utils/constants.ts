@@ -2,6 +2,7 @@ export const STORAGE_ACCESS_TOKEN = "accessToken";
 export const STORAGE_REFRESH_TOKEN = "refreshToken";
 export const STORAGE_MESSAGES = "messages";
 export const STORAGE_VERIFIER = "verifier";
+export const STORAGE_PERSONA = "persona";
 
 export const SOCKET_CONNECTION_TIMEOUT = 180_000;
 export const SOCKET_ESTABLISH_TIMEOUT = 12_000;
@@ -14,6 +15,7 @@ export const BACKGROUND_ID = "background";
 export enum KeyNames {
   Shift = "Shift",
   Enter = "Enter",
+  Escape = "Escape",
 }
 
 export enum Signals {
