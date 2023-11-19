@@ -8,6 +8,8 @@ Frontend wrapper of ChatGPT
 
 ![preview2](./img/preview2.png)
 
+![preview3](./img/preview3.png)
+
 ## Architecture
 
 ![structure](./img/structure.png)
