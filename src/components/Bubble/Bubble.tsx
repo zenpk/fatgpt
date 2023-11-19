@@ -30,7 +30,8 @@ type Position = {
 
 export function Bubble({ msg }: { msg: Message }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [msgForPopup, setMsgForPopup] = useState<string>("");
+  const [msgForPopup, setMsgForPopup] = useState("");
+  const [md, setMd] = useState("");
   const [popupInputOpen, setPopupInputOpen] = useState(false);
   const avatarRef = useRef<HTMLImageElement>(null);
   const [position, setPosition] = useState<Position>({
@@ -48,6 +49,7 @@ export function Bubble({ msg }: { msg: Message }) {
   const forceUpdate = useContext(ForceUpdateBubbleContext);
 
   useEffect(() => {
+    setMd(generateMd(msg.msg));
     setMsgForPopup(msg.msg);
   }, [msg.msg]);
 
@@ -99,7 +101,7 @@ export function Bubble({ msg }: { msg: Message }) {
       {!msg.isUser && (
         <div
           className={styles.textBox}
-          dangerouslySetInnerHTML={{ __html: generateMd(msgForPopup) }}
+          dangerouslySetInnerHTML={{ __html: md }}
         ></div>
       )}
     </div>

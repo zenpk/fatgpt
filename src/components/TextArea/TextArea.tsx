@@ -46,7 +46,7 @@ export function TextArea({
   }, [handleChange]);
 
   useEffect(() => {
-    if (isMobile && placeholderForMobile) {
+    if (isMobile && placeholderForMobile !== undefined) {
       setPlaceholderFinal(placeholderForMobile);
     } else if (placeholder) {
       setPlaceholderFinal(placeholder);
