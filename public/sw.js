@@ -1,3 +1,4 @@
+// not used
 const lastVersion = "v2.1";
 const currentVersion = "v2.2";
 self.addEventListener("install", (event) => {
