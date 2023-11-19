@@ -24,6 +24,8 @@ html {
   --retry-color-darker: #cea282;
   --stop-color: #eea9a9;
   --stop-color-darker: #bd8b8b;
+  --cancel-color: #a9a9a9;
+  --cancel-color-darker: #606060;
 
   --bg-grey: #f0f0f0;
   --bg-grey-darker: #e0e0e0;

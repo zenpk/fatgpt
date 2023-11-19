@@ -13,8 +13,9 @@ export enum MessageActionTypes {
   EditBot,
   UpdateBot,
   DeleteBot,
-  LoadState,
   DeleteId,
+  UpdateId,
+  LoadState,
 }
 
 export type MessageActions =
@@ -25,6 +26,7 @@ export type MessageActions =
   | { type: MessageActionTypes.UpdateBot; msg: string }
   | { type: MessageActionTypes.DeleteBot }
   | { type: MessageActionTypes.DeleteId; id: number }
+  | { type: MessageActionTypes.UpdateId; id: number; msg: string }
   | { type: MessageActionTypes.LoadState; saved: Message[] };
 
 export const MessageContext = React.createContext<
@@ -134,6 +136,15 @@ export function MessageContextProvider({
       for (let i = 0; i < state.length; i++) {
         if (state[i].id === action.id) {
           state.splice(i, 1);
+          break;
+        }
+      }
+      return [...state];
+    }
+    if (action.type === MessageActionTypes.UpdateId) {
+      for (let i = 0; i < state.length; i++) {
+        if (state[i].id === action.id) {
+          state[i].msg = action.msg;
           break;
         }
       }

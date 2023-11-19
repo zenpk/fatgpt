@@ -11,13 +11,15 @@ import React, {
   Dispatch,
   SetStateAction,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from "react";
 import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext";
 import { generateMd } from "@/utils/markdown";
 import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
-import { BsFillTrash3Fill } from "react-icons/bs";
+import { BsFillPencilFill, BsFillTrash3Fill } from "react-icons/bs";
+import { PopupInput } from "@/components/PopupInput/PopupInput.tsx";
 
 type Position = {
   top: number;
@@ -28,6 +30,8 @@ type Position = {
 
 export function Bubble({ msg }: { msg: Message }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [msgForPopup, setMsgForPopup] = useState<string>("");
+  const [popupInputOpen, setPopupInputOpen] = useState(false);
   const avatarRef = useRef<HTMLImageElement>(null);
   const [position, setPosition] = useState<Position>({
     top: 0,
@@ -36,17 +40,44 @@ export function Bubble({ msg }: { msg: Message }) {
     bottom: 0,
   });
 
+  const [, dispatch] = useContext(MessageContext)!;
+
   const className = msg.isUser
     ? ` ${styles.bubbleUser}`
     : ` ${styles.bubbleBot}`;
   const forceUpdate = useContext(ForceUpdateBubbleContext);
-  const md = generateMd(msg.msg);
+
+  useEffect(() => {
+    setMsgForPopup(msg.msg);
+  }, [msg.msg]);
+
+  useEffect(() => {
+    if (msgForPopup !== msg.msg && msgForPopup !== "") {
+      if (msg.id) {
+        dispatch({
+          type: MessageActionTypes.UpdateId,
+          id: msg.id,
+          msg: msgForPopup,
+        });
+      } else {
+        alert("Something went wrong");
+      }
+    }
+  }, [msgForPopup]);
 
   return (
     <div
       style={{ zIndex: `${9999 - (msg.id ?? 0)}` }}
       className={`${className} ${styles.bubble}`}
     >
+      {popupInputOpen && (
+        <PopupInput
+          title={"Edit Message"}
+          value={msgForPopup}
+          setValue={setMsgForPopup}
+          setShowPopupInput={setPopupInputOpen}
+        />
+      )}
       <Avatar
         isUser={msg.isUser}
         setMenuOpen={setMenuOpen}
@@ -58,6 +89,7 @@ export function Bubble({ msg }: { msg: Message }) {
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
         position={position}
+        setPopupInputOpen={setPopupInputOpen}
       />
       {msg.isUser && (
         <pre className={`${styles.textBox} ${styles.textBoxUser}`}>
@@ -67,7 +99,7 @@ export function Bubble({ msg }: { msg: Message }) {
       {!msg.isUser && (
         <div
           className={styles.textBox}
-          dangerouslySetInnerHTML={{ __html: md }}
+          dangerouslySetInnerHTML={{ __html: generateMd(msgForPopup) }}
         ></div>
       )}
     </div>
@@ -114,11 +146,13 @@ function ToolMenu({
   menuOpen,
   setMenuOpen,
   position,
+  setPopupInputOpen,
 }: {
   msg: Message;
   menuOpen: boolean;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
   position: Position;
+  setPopupInputOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const [, dispatch] = useContext(MessageContext)!;
 
@@ -149,6 +183,17 @@ function ToolMenu({
           <>
             <BsFillTrash3Fill />
             Delete
+          </>
+        </MenuItem>
+        <MenuItem
+          onClick={() => setPopupInputOpen(true)}
+          setMenuOpen={setMenuOpen}
+          basicClassName={`${inputBarStyles.whiteMenuButton}`}
+          downClassName={`${inputBarStyles.whiteMenuButton} ${inputBarStyles.whiteMenuButtonDark}`}
+        >
+          <>
+            <BsFillPencilFill />
+            Edit
           </>
         </MenuItem>
       </>

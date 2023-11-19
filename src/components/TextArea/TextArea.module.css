@@ -1,0 +1,25 @@
+.input {
+  box-shadow: none;
+  font-size: var(--s-1);
+  font-family: "Noto Sans SC", sans-serif;
+  border-radius: var(--small-radius);
+  color: var(--grey-darker);
+  resize: none;
+  overflow: auto;
+  line-height: 1.5;
+  padding: 0.5rem;
+  border: solid 1px var(--crew-darker);
+  background: none;
+  flex: 8;
+  /*white-space: nowrap;*/
+}
+
+.input:focus {
+  outline: none;
+  border: solid 1px black;
+  color: black;
+}
+
+.input::placeholder {
+  color: #c0c0c0;
+}

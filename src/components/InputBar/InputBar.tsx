@@ -1,6 +1,5 @@
 import React, {
   Dispatch,
-  RefObject,
   SetStateAction,
   useContext,
   useEffect,
@@ -29,7 +28,6 @@ import {
   chatWithWsGpt,
 } from "@/services/wsgpt.ts";
 import {
-  KeyNames,
   STORAGE_ACCESS_TOKEN,
   STORAGE_MESSAGES,
   STORAGE_PERSONA,
@@ -42,6 +40,7 @@ import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
 import { getBound } from "@/utils/boundRect.ts";
 import { PersonaContext } from "@/contexts/PersonaContext.tsx";
 import { PopupInput } from "@/components/PopupInput/PopupInput.tsx";
+import { TextArea } from "@/components/TextArea/TextArea.tsx";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -118,7 +117,7 @@ export function InputBar() {
     <div className={styles.bar}>
       {showPopupInput && (
         <PopupInput
-          title={"Edit FatGPT's identity"}
+          title={"Edit FatGPT's Identity"}
           placeholder={"e.g. You are a Go programmer."}
           value={persona}
           setValue={setPersona}
@@ -150,77 +149,18 @@ export function InputBar() {
           dispatch={dispatch}
         />
       )}
-      <Input
+      <TextArea
         inputRef={inputRef}
-        handleSend={handleSend}
+        handleEnter={handleSend}
         disabled={inputDisabled}
         rows={rows}
         setRows={setRows}
+        placeholder={"(Press Shift + Enter to add a new line)"}
+        placeholderForMobile={""}
+        maxRows={10}
       />
       <Send handleSend={handleSend} disabled={buttonDisabled} />
     </div>
-  );
-}
-
-function Input({
-  inputRef,
-  handleSend,
-  disabled,
-  rows,
-  setRows,
-}: {
-  inputRef: RefObject<HTMLTextAreaElement> | null;
-  handleSend: () => void;
-  disabled: boolean;
-  rows: number;
-  setRows: Dispatch<SetStateAction<number>>;
-}) {
-  const maxRows = 10;
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    setIsMobile(
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      )
-    );
-  }, []);
-
-  function handleKeyDown(evt: React.KeyboardEvent) {
-    if (evt.shiftKey && evt.key === KeyNames.Enter) {
-      return;
-    }
-    if (evt.ctrlKey && evt.key === KeyNames.Enter) {
-      return;
-    }
-    if (evt.key === KeyNames.Enter && !isMobile) {
-      evt.preventDefault();
-      handleSend();
-    }
-  }
-
-  function handleChange() {
-    if (inputRef && inputRef.current) {
-      const newLineCount =
-        (inputRef.current.value.match(/[\n\r]/g) || []).length + 1;
-      if (newLineCount <= maxRows) {
-        setRows(newLineCount);
-      } else {
-        setRows(maxRows);
-      }
-    }
-  }
-
-  return (
-    <textarea
-      placeholder={!isMobile ? "(Press Shift + Enter to add a new line)" : ""}
-      className={styles.input}
-      ref={inputRef}
-      onKeyDown={handleKeyDown}
-      disabled={disabled}
-      rows={rows}
-      onChange={handleChange}
-    />
   );
 }
 

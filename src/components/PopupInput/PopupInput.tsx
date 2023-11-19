@@ -1,9 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styles from "./PopupInput.module.css";
 import inputBarStyles from "@/components/InputBar/InputBar.module.css";
 import { BACKGROUND_ID, KeyNames } from "@/utils/constants.ts";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/InputBar/Button.tsx";
+import { TextArea } from "@/components/TextArea/TextArea.tsx";
 
 export function PopupInput({
   title,
@@ -20,6 +21,7 @@ export function PopupInput({
 }) {
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const dialogRef = React.useRef<HTMLDialogElement>(null);
+  const [rows, setRows] = useState(1);
   useEffect(() => {
     if (dialogRef.current) {
       dialogRef.current.showModal();
@@ -34,16 +36,9 @@ export function PopupInput({
   }
 
   function handleOk() {
-    if (inputRef.current && inputRef.current.value) {
+    if (inputRef.current) {
       setValue(inputRef.current.value);
       closeModal();
-    }
-  }
-
-  function handleKeyDown(evt: React.KeyboardEvent) {
-    if (evt.key === KeyNames.Enter) {
-      evt.preventDefault();
-      handleOk();
     }
   }
 
@@ -67,20 +62,31 @@ export function PopupInput({
         }}
       >
         <h1>{title}</h1>
-        <textarea
+        <TextArea
           placeholder={placeholder ?? ""}
-          ref={inputRef}
+          inputRef={inputRef}
           defaultValue={value}
           className={inputBarStyles.input}
-          onKeyDown={handleKeyDown}
+          handleEnter={handleOk}
+          rows={rows}
+          setRows={setRows}
         />
-        <Button
-          basicClassName={`${styles.button} ${inputBarStyles.button}`}
-          downClassName={`${styles.button} ${inputBarStyles.button} ${inputBarStyles.sendDark}`}
-          onClick={handleOk}
-        >
-          OK
-        </Button>
+        <div className={styles.buttonContainer}>
+          <Button
+            basicClassName={`${styles.button} ${inputBarStyles.button} ${inputBarStyles.buttonCancel}`}
+            downClassName={`${styles.button} ${inputBarStyles.button} ${inputBarStyles.buttonCancelDark}`}
+            onClick={closeModal}
+          >
+            Cancel
+          </Button>
+          <Button
+            basicClassName={`${styles.button} ${inputBarStyles.button}`}
+            downClassName={`${styles.button} ${inputBarStyles.button} ${inputBarStyles.sendDark}`}
+            onClick={handleOk}
+          >
+            OK
+          </Button>
+        </div>
       </div>
     </dialog>,
     document.getElementById(BACKGROUND_ID)!
