@@ -167,6 +167,7 @@ function ToolMenu({
       top={position.top}
       left={position.left}
       right={position.right}
+      offset={2}
       rightSide={msg.isUser}
     >
       <>

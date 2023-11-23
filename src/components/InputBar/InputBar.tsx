@@ -15,6 +15,7 @@ import {
   FaHorseHead,
   FaPaperPlane,
   FaRegSquare,
+  FaTrashCan,
   FaUserPen,
 } from "react-icons/fa6";
 import {
@@ -117,7 +118,7 @@ export function InputBar() {
     <div className={styles.bar}>
       {showPopupInput && (
         <PopupInput
-          title={"Edit FatGPT's Identity"}
+          title={"Set FatGPT's Identity"}
           placeholder={"e.g. You are a Go programmer."}
           value={persona}
           setValue={setPersona}
@@ -279,6 +280,10 @@ function ToolMenu({
     setAlert("Loaded successfully!");
   }
 
+  function clearAll() {
+    dispatch({ type: MessageActionTypes.DeleteAll });
+  }
+
   function openPopupInput() {
     setShowPopupInput(true);
   }
@@ -286,7 +291,13 @@ function ToolMenu({
   const { top: top, left: left } = getBound(menuButtonRef);
 
   return menuOpen ? (
-    <Menu upside={true} setMenuOpen={setMenuOpen} top={top} left={left}>
+    <Menu
+      upside={true}
+      setMenuOpen={setMenuOpen}
+      top={top}
+      left={left}
+      offset={14}
+    >
       <>
         <MenuItem onClick={saveState} setMenuOpen={setMenuOpen}>
           <>
@@ -298,6 +309,12 @@ function ToolMenu({
           <>
             <FaCartFlatbedSuitcase />
             Load
+          </>
+        </MenuItem>
+        <MenuItem onClick={clearAll} setMenuOpen={setMenuOpen}>
+          <>
+            <FaTrashCan />
+            Clear
           </>
         </MenuItem>
         <MenuItem onClick={openPopupInput} setMenuOpen={setMenuOpen}>

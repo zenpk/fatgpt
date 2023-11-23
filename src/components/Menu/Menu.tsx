@@ -8,7 +8,7 @@ import React, {
 import { Button } from "@/components/InputBar/Button.tsx";
 import styles from "./Menu.module.css";
 import inputBarStyles from "@/components/InputBar/InputBar.module.css";
-import { MENU_ANIMATION_TIME, BACKGROUND_ID } from "@/utils/constants.ts";
+import { BACKGROUND_ID, MENU_ANIMATION_TIME } from "@/utils/constants.ts";
 import { createPortal } from "react-dom";
 
 export function Menu({
@@ -17,6 +17,7 @@ export function Menu({
   top = 0,
   left = 0,
   right = 0,
+  offset,
   rightSide = false,
   children,
 }: {
@@ -25,6 +26,7 @@ export function Menu({
   top: number;
   left?: number;
   right?: number;
+  offset: number;
   rightSide?: boolean;
   children: ReactNode;
 }) {
@@ -42,7 +44,9 @@ export function Menu({
     }, MENU_ANIMATION_TIME);
   }
 
-  const calcTop = upside ? `calc(${top}px - 11rem)` : `calc(${top}px + 2rem)`;
+  const calcTop = upside
+    ? `calc(${top}px - ${offset}rem)`
+    : `calc(${top}px + ${offset}rem)`;
   const position = rightSide
     ? {
         top: calcTop,

@@ -15,6 +15,7 @@ export enum MessageActionTypes {
   DeleteBot,
   DeleteId,
   UpdateId,
+  DeleteAll,
   LoadState,
 }
 
@@ -27,6 +28,7 @@ export type MessageActions =
   | { type: MessageActionTypes.DeleteBot }
   | { type: MessageActionTypes.DeleteId; id: number }
   | { type: MessageActionTypes.UpdateId; id: number; msg: string }
+  | { type: MessageActionTypes.DeleteAll }
   | { type: MessageActionTypes.LoadState; saved: Message[] };
 
 export const MessageContext = React.createContext<
@@ -149,6 +151,9 @@ export function MessageContextProvider({
         }
       }
       return [...state];
+    }
+    if (action.type === MessageActionTypes.DeleteAll) {
+      return [];
     }
     if (action.type === MessageActionTypes.LoadState) {
       return action.saved;
