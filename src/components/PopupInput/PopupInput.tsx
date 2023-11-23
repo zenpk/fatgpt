@@ -12,12 +12,14 @@ export function PopupInput({
   setShowPopupInput,
   value,
   placeholder,
+  setNotification,
 }: {
   title: string;
   setValue: Dispatch<SetStateAction<string>>;
   setShowPopupInput: Dispatch<SetStateAction<boolean>>;
   value?: string;
   placeholder?: string;
+  setNotification?: () => void;
 }) {
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const dialogRef = React.useRef<HTMLDialogElement>(null);
@@ -39,6 +41,9 @@ export function PopupInput({
     if (inputRef.current) {
       setValue(inputRef.current.value);
       closeModal();
+      if (setNotification) {
+        setNotification();
+      }
     }
   }
 

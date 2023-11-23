@@ -6,6 +6,7 @@ import { InputBar } from "@/components/InputBar/InputBar";
 import { sendTest } from "@/services/wsgpt.ts";
 import { BACKGROUND_ID, STORAGE_ACCESS_TOKEN } from "@/utils/constants.ts";
 import { redirectLogin } from "@/services/myoauth.ts";
+import { Notification } from "@/components/Notification/Notification.tsx";
 
 export function Home() {
   const [messages] = useContext(MessageContext)!;
@@ -34,6 +35,7 @@ export function Home() {
 
   return (
     <div id={BACKGROUND_ID} className={styles.background}>
+      <Notification />
       <h1 className={styles.title}>FatGPT</h1>
       <div className={styles.card}>
         <div className={styles.textArea} ref={divRef}>

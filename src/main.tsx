@@ -9,6 +9,7 @@ import { MessageContextProvider } from "./contexts/MessageContext.tsx";
 import { Home } from "./Home.tsx";
 import { authorization } from "@/services/myoauth.ts";
 import { PersonaContextProvider } from "@/contexts/PersonaContext.tsx";
+import { NotificationContextProvider } from "@/contexts/NotificationContext.tsx";
 
 // if ("serviceWorker" in navigator) {
 //   navigator.serviceWorker
@@ -32,7 +33,9 @@ if (urlParams.get("authorizationCode")) {
       <ForceUpdateBubbleContextProvider>
         <MessageContextProvider>
           <PersonaContextProvider>
-            <Home />
+            <NotificationContextProvider>
+              <Home />
+            </NotificationContextProvider>
           </PersonaContextProvider>
         </MessageContextProvider>
       </ForceUpdateBubbleContextProvider>

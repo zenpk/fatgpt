@@ -34,7 +34,6 @@ import {
   STORAGE_PERSONA,
 } from "@/utils/constants";
 import { Button } from "@/components/InputBar/Button";
-import { useAlert } from "@/hooks/useAlert";
 import { redirectLogin } from "@/services/myoauth.ts";
 import { ForceUpdateBubbleContext } from "@/contexts/ForceUpdateBubbleContext.tsx";
 import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
@@ -42,6 +41,7 @@ import { getBound } from "@/utils/boundRect.ts";
 import { PersonaContext } from "@/contexts/PersonaContext.tsx";
 import { PopupInput } from "@/components/PopupInput/PopupInput.tsx";
 import { TextArea } from "@/components/TextArea/TextArea.tsx";
+import { useNotificationContext } from "@/contexts/NotificationContext.tsx";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -56,6 +56,7 @@ export function InputBar() {
 
   const [messages, dispatch] = useContext(MessageContext)!;
   const [persona, setPersona] = useContext(PersonaContext)!;
+  const [, setNotification] = useNotificationContext();
   const forceUpdateBubble = useContext(ForceUpdateBubbleContext);
 
   function handleSend() {
@@ -123,6 +124,9 @@ export function InputBar() {
           value={persona}
           setValue={setPersona}
           setShowPopupInput={setShowPopupInput}
+          setNotification={() => {
+            setNotification({ success: true, msg: "Persona set" });
+          }}
         />
       )}
       <MenuButton
@@ -256,19 +260,20 @@ function ToolMenu({
   persona: string;
   setPersona: Dispatch<SetStateAction<string>>;
 }) {
-  const [alert, setAlert] = useState("");
-  useAlert(alert, setAlert, 1500);
+  // const [alert, setAlert] = useState("");
+  // useAlert(alert, setAlert, 1500);
+  const [, setNotification] = useNotificationContext();
 
   function saveState() {
     window.localStorage.setItem(STORAGE_MESSAGES, JSON.stringify(messages));
     window.localStorage.setItem(STORAGE_PERSONA, persona);
-    setAlert("Saved successfully!");
+    setNotification({ success: true, msg: "All data saved" });
   }
 
   function loadState() {
     const state = window.localStorage.getItem(STORAGE_MESSAGES);
     if (state === null) {
-      setAlert("No saved state!");
+      setNotification({ success: false, msg: "No saved data" });
       return;
     }
     const saved = JSON.parse(state) as Message[];
@@ -277,11 +282,12 @@ function ToolMenu({
     if (persona) {
       setPersona(persona);
     }
-    setAlert("Loaded successfully!");
+    setNotification({ success: true, msg: "Data loaded from localStorage" });
   }
 
   function clearAll() {
     dispatch({ type: MessageActionTypes.DeleteAll });
+    setNotification({ success: true, msg: "Messages cleared" });
   }
 
   function openPopupInput() {

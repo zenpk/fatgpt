@@ -1,0 +1,42 @@
+.modal {
+  --animation-time: 500ms;
+  animation: fadeIn ease var(--animation-time);
+  opacity: 1;
+  transform: translate(-50%, 0);
+
+  z-index: 999;
+  background: white;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
+  width: fit-content;
+  max-width: 80%;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  border-radius: var(--small-radius);
+
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.modalRemove {
+  --remove-animation-time: 500ms;
+  --remove-delay-time: 2000ms;
+  animation: fadeIn ease var(--remove-animation-time) reverse forwards;
+  animation-delay: var(--remove-delay-time);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
