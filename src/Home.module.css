@@ -61,7 +61,7 @@
 .inputBar {
   position: absolute;
   bottom: 0;
-  z-index: 999;
+  z-index: 100;
   width: 100%;
   padding: 1rem;
   box-sizing: border-box;

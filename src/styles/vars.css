@@ -42,11 +42,6 @@ html {
   --s-5-responsive: calc(0.8rem + 1vw);
   --s-title: 10vw;
 
-  --header-height: 64px;
-  --header-bg: 248, 248, 248;
-  --header-shadow-color: #cccccc;
-  --header-z-index: 999;
-
   --small-radius: 0.25rem;
   --big-radius: 0.5rem;
 

@@ -63,7 +63,7 @@ export function Bubble({ msg }: { msg: Message }) {
 
   return (
     <div
-      style={{ zIndex: `${9999 - (msg.id ?? 0)}` }}
+      // style={{ zIndex: `${9999 - (msg.id ?? 0)}` }}
       className={`${className} ${styles.bubble}`}
     >
       {popupInputOpen && (
