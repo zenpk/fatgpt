@@ -83,6 +83,16 @@ export function chatWithWsGpt(
       }
       return;
     }
+    if (resp.startsWith(Signals.GuestQuotaExceeded)) {
+      socket.close();
+      dispatch({
+        type: MessageActionTypes.EditBot,
+        msg: "Guest quota exceeded, please register or wait for tomorrow :)",
+      });
+      forceUpdateBubble();
+      setButtonDisabled(false);
+      return;
+    }
     // Signals.Done doesn't need startsWith()
     if (resp === Signals.Done) {
       socket.close();

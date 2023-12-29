@@ -27,5 +27,6 @@ export enum Signals {
   Error = "[FATGPT]-[ERROR]",
   Done = "[FATGPT]-[DONE]", // get [DONE] from OpenAI
   TokenFailed = "[FATGPT]-[TOKEN]", // token verification failed in parse message process
+  GuestQuotaExceeded = "[FATGPT]-[GUESTQUOTA]",
   Pass = "[FATGPT]-[PASS]", // pass the parse message process
 }
