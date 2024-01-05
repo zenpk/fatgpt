@@ -20,6 +20,7 @@ import { generateMd } from "@/utils/markdown";
 import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
 import { BsFillPencilFill, BsFillTrash3Fill } from "react-icons/bs";
 import { PopupInput } from "@/components/PopupInput/PopupInput.tsx";
+import { useDark } from "@/hooks/useDark.ts";
 
 type Position = {
   top: number;
@@ -45,6 +46,9 @@ export function Bubble({ msg }: { msg: Message }) {
   const className = msg.isUser
     ? ` ${styles.bubbleUser}`
     : ` ${styles.bubbleBot}`;
+  const darkClassName = msg.isUser
+    ? styles.bubbleUserDark
+    : styles.bubbleBotDark;
   const forceUpdate = useContext(ForceUpdateBubbleContext);
 
   useEffect(() => {
@@ -64,7 +68,7 @@ export function Bubble({ msg }: { msg: Message }) {
   return (
     <div
       // style={{ zIndex: `${9999 - (msg.id ?? 0)}` }}
-      className={`${className} ${styles.bubble}`}
+      className={useDark(`${className} ${styles.bubble}`, darkClassName)}
     >
       {popupInputOpen && (
         <PopupInput
@@ -130,7 +134,7 @@ function Avatar({
       alt={"avatar"}
       width={roundedWidth}
       height={roundedWidth}
-      className={styles.avatar}
+      className={useDark(styles.avatar, styles.avatarDark)}
       onClick={handleClick}
       ref={avatarRef}
     />

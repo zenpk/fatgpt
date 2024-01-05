@@ -22,6 +22,11 @@
   gap: 0.25rem;
 }
 
+.modalDark {
+  background: #65666c;
+  box-shadow: 0 6px 10px 0 #000000;
+}
+
 .modalRemove {
   --remove-animation-time: 500ms;
   --remove-delay-time: 2000ms;

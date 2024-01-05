@@ -4,6 +4,7 @@ import { BiCheckCircle, BiXCircle } from "react-icons/bi";
 import styles from "./Notification.module.css";
 import { useNotificationContext } from "../../contexts/NotificationContext.tsx";
 import { BACKGROUND_ID } from "@/utils/constants.ts";
+import { useDark } from "@/hooks/useDark.ts";
 
 export function Notification() {
   const [show, setShow] = useState(false);
@@ -45,13 +46,14 @@ export function Notification() {
       );
     }
   }, [className, notificationMsg]);
+  const finalClassName = useDark(className, styles.modalDark);
 
   return (
     <>
       {show &&
         createPortal(
           <div
-            className={className}
+            className={finalClassName}
             style={
               {
                 "--remove-delay-time": `${removeDelayTime}ms`,

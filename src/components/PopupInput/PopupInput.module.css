@@ -15,6 +15,11 @@
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.2);
 }
 
+.dialogDark {
+  background-color: var(--dark-background);
+  color: var(--dark-font);
+}
+
 .dialog::backdrop {
   background-color: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(2px);

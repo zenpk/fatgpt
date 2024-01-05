@@ -33,8 +33,17 @@
   background: rgba(218, 223, 231, 0.6);
 }
 
+.bubbleUserDark {
+  color: var(--dark-font);
+  background: rgba(0, 0, 0, 0.1);
+}
+
 .bubbleBot {
   /*background: rgba(220, 220, 220, 0.6);*/
+}
+
+.bubbleBotDark {
+  color: var(--dark-font);
 }
 
 .textBox {
@@ -60,4 +69,8 @@
   user-select: none;
   -webkit-user-drag: none;
   cursor: pointer;
+}
+
+.avatarDark {
+  filter: invert(80%);
 }

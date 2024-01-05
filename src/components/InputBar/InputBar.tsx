@@ -17,6 +17,8 @@ import {
   FaRegSquare,
   FaTrashCan,
   FaUserPen,
+  FaMoon,
+  FaSun,
 } from "react-icons/fa6";
 import {
   Message,
@@ -29,9 +31,11 @@ import {
   chatWithWsGpt,
 } from "@/services/wsgpt.ts";
 import {
+  DARK_THEME_NAME,
   STORAGE_ACCESS_TOKEN,
   STORAGE_MESSAGES,
   STORAGE_PERSONA,
+  STORAGE_THEME,
 } from "@/utils/constants";
 import { Button } from "@/components/InputBar/Button";
 import { redirectLogin } from "@/services/myoauth.ts";
@@ -42,6 +46,7 @@ import { PersonaContext } from "@/contexts/PersonaContext.tsx";
 import { PopupInput } from "@/components/PopupInput/PopupInput.tsx";
 import { TextArea } from "@/components/TextArea/TextArea.tsx";
 import { useNotificationContext } from "@/contexts/NotificationContext.tsx";
+import { ThemeContext } from "@/contexts/ThemeContext.tsx";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -133,6 +138,7 @@ export function InputBar() {
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
         menuButtonRef={menuButtonRef}
+        disabled={buttonDisabled}
       />
       <ToolMenu
         messages={messages}
@@ -296,13 +302,25 @@ function ToolMenu({
 
   const { top: top, left: left } = getBound(menuButtonRef);
 
+  const [theme, setTheme] = useContext(ThemeContext)!;
+
+  function toggleThemeStorage() {
+    if (theme === DARK_THEME_NAME) {
+      window.localStorage.removeItem(STORAGE_THEME);
+      setTheme(null);
+    } else {
+      window.localStorage.setItem(STORAGE_THEME, DARK_THEME_NAME);
+      setTheme(DARK_THEME_NAME);
+    }
+  }
+
   return menuOpen ? (
     <Menu
       upside={true}
       setMenuOpen={setMenuOpen}
       top={top}
       left={left}
-      offset={14}
+      offset={17}
     >
       <>
         <MenuItem onClick={saveState} setMenuOpen={setMenuOpen}>
@@ -329,6 +347,21 @@ function ToolMenu({
             Set Persona
           </>
         </MenuItem>
+        <MenuItem onClick={toggleThemeStorage} setMenuOpen={setMenuOpen}>
+          <>
+            {theme === DARK_THEME_NAME ? (
+              <>
+                <FaSun />
+                Use Light Theme
+              </>
+            ) : (
+              <>
+                <FaMoon />
+                Use Dark Theme
+              </>
+            )}
+          </>
+        </MenuItem>
       </>
     </Menu>
   ) : (
@@ -340,19 +373,23 @@ function MenuButton({
   menuOpen,
   setMenuOpen,
   menuButtonRef,
+  disabled,
 }: {
   menuOpen: boolean;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
   menuButtonRef: React.RefObject<HTMLButtonElement>;
+  disabled: boolean;
 }) {
   return (
     <Button
       basicClassName={`${styles.button} ${styles.buttonSquareFlex}`}
       downClassName={`${styles.button} ${styles.sendDark} ${styles.buttonSquareFlex}`}
+      disabledClassName={`${styles.button} ${styles.buttonSquareFlex} ${styles.buttonDisabled}`}
       onClick={() => {
         setMenuOpen(true);
       }}
       myRef={menuButtonRef}
+      disabled={disabled}
     >
       {menuOpen ? <FaHorse /> : <FaHorseHead />}
     </Button>

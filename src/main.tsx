@@ -10,6 +10,7 @@ import { Home } from "./Home.tsx";
 import { authorization } from "@/services/myoauth.ts";
 import { PersonaContextProvider } from "@/contexts/PersonaContext.tsx";
 import { NotificationContextProvider } from "@/contexts/NotificationContext.tsx";
+import { ThemeContextProvider } from "@/contexts/ThemeContext.tsx";
 
 // if ("serviceWorker" in navigator) {
 //   navigator.serviceWorker
@@ -34,7 +35,9 @@ if (urlParams.get("authorizationCode")) {
         <MessageContextProvider>
           <PersonaContextProvider>
             <NotificationContextProvider>
-              <Home />
+              <ThemeContextProvider>
+                <Home />
+              </ThemeContextProvider>
             </NotificationContextProvider>
           </PersonaContextProvider>
         </MessageContextProvider>

@@ -91,7 +91,7 @@ img {
 *::-webkit-scrollbar-thumb {
   border-radius: var(--big-radius);
   background-color: rgba(140, 178, 204, 0.3);
-  border: 1px solid rgba(140, 178, 204, 0.7);
+  /*border: 1px solid rgba(140, 178, 204, 0.7);*/
 }
 
 *::selection {
@@ -183,4 +183,8 @@ td {
 
 tbody > tr:last-child > td {
   border-bottom: none;
+}
+
+.dark {
+  filter: brightness(50%);
 }

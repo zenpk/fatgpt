@@ -7,6 +7,7 @@ import { sendTest } from "@/services/wsgpt.ts";
 import { BACKGROUND_ID, STORAGE_ACCESS_TOKEN } from "@/utils/constants.ts";
 import { redirectLogin } from "@/services/myoauth.ts";
 import { Notification } from "@/components/Notification/Notification.tsx";
+import { useDark } from "@/hooks/useDark.ts";
 
 export function Home() {
   const [messages] = useContext(MessageContext)!;
@@ -34,16 +35,19 @@ export function Home() {
   }, []);
 
   return (
-    <div id={BACKGROUND_ID} className={styles.background}>
+    <div
+      id={BACKGROUND_ID}
+      className={useDark(styles.background, styles.bodyDark)}
+    >
       <Notification />
-      <h1 className={styles.title}>FatGPT</h1>
-      <div className={styles.card}>
+      <h1 className={useDark(styles.title, styles.titleDark)}>FatGPT</h1>
+      <div className={useDark(styles.card, styles.cardDark)}>
         <div className={styles.textArea} ref={divRef}>
           {messages.map((msg) => {
             return <Bubble key={msg.id} msg={msg} />;
           })}
         </div>
-        <div className={styles.inputBar}>
+        <div className={useDark(styles.inputBar, styles.inputBarDark)}>
           <InputBar />
         </div>
       </div>

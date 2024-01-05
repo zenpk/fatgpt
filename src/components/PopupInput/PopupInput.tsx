@@ -5,6 +5,7 @@ import { BACKGROUND_ID, KeyNames } from "@/utils/constants.ts";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/InputBar/Button.tsx";
 import { TextArea } from "@/components/TextArea/TextArea.tsx";
+import { useDark } from "@/hooks/useDark.ts";
 
 export function PopupInput({
   title,
@@ -59,7 +60,11 @@ export function PopupInput({
   }, [dialogRef]);
 
   return createPortal(
-    <dialog className={styles.dialog} ref={dialogRef} onClick={closeModal}>
+    <dialog
+      className={useDark(styles.dialog, styles.dialogDark)}
+      ref={dialogRef}
+      onClick={closeModal}
+    >
       <div
         className={styles.container}
         onClick={(e) => {

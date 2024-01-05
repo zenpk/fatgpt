@@ -3,6 +3,8 @@ export const STORAGE_REFRESH_TOKEN = "refreshToken";
 export const STORAGE_MESSAGES = "messages";
 export const STORAGE_VERIFIER = "verifier";
 export const STORAGE_PERSONA = "persona";
+export const STORAGE_THEME = "theme";
+export const DARK_THEME_NAME = "dark";
 
 export const SOCKET_CONNECTION_TIMEOUT = 180_000;
 export const SOCKET_ESTABLISH_TIMEOUT = 12_000;

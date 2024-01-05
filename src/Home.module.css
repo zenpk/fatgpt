@@ -5,6 +5,18 @@
   z-index: 0;
 }
 
+.bodyDark {
+  background: var(--dark-background);
+}
+
+.bodyDark::selection, .bodyDark *::selection {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.bodyDark table, .bodyDark tr, .bodyDark th, .bodyDark td {
+  border-color: var(--dark-font);
+}
+
 .title {
   display: block;
   position: relative;
@@ -20,8 +32,11 @@
   user-select: none;
 }
 
+.titleDark {
+  color: rgba(100, 100, 100, 0.03);
+}
+
 .card {
-  --card-backgroud: #343541;
   position: fixed;
   top: 0;
   left: 50%;
@@ -32,6 +47,10 @@
   background-color: var(--grey-card);
   height: 100%;
   z-index: 1;
+}
+
+.cardDark {
+  background-color: rgba(0, 0, 0, 0.03);
 }
 
 @media only screen and (max-width: 1280px) {
@@ -69,4 +88,9 @@
   box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
   background-color: rgba(255, 255, 255, 0.7);
+}
+
+.inputBarDark {
+  background: #23252a;
+  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.5);
 }

@@ -31,6 +31,9 @@ html {
   --bg-grey-darker: #e0e0e0;
   --bg-grey-very-dark: #bbbbbb;
 
+  --dark-background: #25282c;
+  --dark-font: #bcbec4;
+
   --s-0: calc(0.6rem + 0.3vw);
   --s-1: calc(1rem);
   --s-2: calc(1rem + 0.3vw);

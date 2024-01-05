@@ -7,10 +7,11 @@ import React, {
 } from "react";
 import { KeyNames } from "@/utils/constants.ts";
 import styles from "./TextArea.module.css";
+import { useDark } from "@/hooks/useDark.ts";
 
 export function TextArea({
   inputRef,
-  className,
+  className = "",
   handleEnter,
   handleEscape,
   rows,
@@ -43,7 +44,7 @@ export function TextArea({
       )
     );
     handleChange();
-  }, [handleChange]);
+  }, []);
 
   useEffect(() => {
     if (isMobile && placeholderForMobile !== undefined) {
@@ -91,7 +92,7 @@ export function TextArea({
   return (
     <textarea
       placeholder={placeholderFinal}
-      className={`${styles.input} ${className ?? ""}`}
+      className={useDark(`${styles.input} ${className}`, styles.inputDark)}
       ref={inputRef}
       onKeyDown={handleKeyDown}
       defaultValue={defaultValue ?? ""}

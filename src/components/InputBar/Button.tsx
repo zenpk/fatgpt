@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useDark } from "@/hooks/useDark.ts";
 
 export function Button({
   basicClassName,
@@ -50,7 +51,7 @@ export function Button({
 
   return (
     <button
-      className={className}
+      className={useDark(className, "dark")}
       onMouseDown={handleDown}
       onMouseUp={handleUp}
       onMouseLeave={handleLeave}
