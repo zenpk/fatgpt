@@ -24,7 +24,7 @@ export function chatWithWsGpt(
   token: string,
   gptMessages: ChatCompletionRequestMessage[],
   dispatch: React.Dispatch<MessageActions>,
-  setButtonDisabled: Dispatch<SetStateAction<boolean>>,
+  setConnectWsGpt: Dispatch<SetStateAction<boolean>>,
   forceUpdateBubble: () => void
 ) {
   const dotInterval = setInterval(() => {
@@ -39,7 +39,7 @@ export function chatWithWsGpt(
       msg: "WebSocket Connection Timeout :(",
     });
     forceUpdateBubble();
-    setButtonDisabled(false);
+    setConnectWsGpt(false);
   }, SOCKET_ESTABLISH_TIMEOUT);
 
   const reqMessage: ReqMessage = { token: token, messages: gptMessages };
@@ -65,7 +65,7 @@ export function chatWithWsGpt(
         msg: resp.slice(Signals.Error.length),
       });
       forceUpdateBubble();
-      setButtonDisabled(false);
+      setConnectWsGpt(false);
       return;
     }
     if (resp.startsWith(Signals.TokenFailed)) {
@@ -79,7 +79,7 @@ export function chatWithWsGpt(
           msg: "Token refreshed, please resend the message.",
         });
         forceUpdateBubble();
-        setButtonDisabled(false);
+        setConnectWsGpt(false);
       }
       return;
     }
@@ -90,13 +90,13 @@ export function chatWithWsGpt(
         msg: "Guest quota exceeded, please register or wait for tomorrow :)",
       });
       forceUpdateBubble();
-      setButtonDisabled(false);
+      setConnectWsGpt(false);
       return;
     }
     // Signals.Done doesn't need startsWith()
     if (resp === Signals.Done) {
       socket.close();
-      setButtonDisabled(false);
+      setConnectWsGpt(false);
       return;
     }
     dispatch({ type: MessageActionTypes.UpdateBot, msg: resp });
@@ -111,6 +111,7 @@ export function chatWithWsGpt(
   socket.onclose = () => {
     clearTimeout(connectionTimeout);
     clearInterval(dotInterval);
+    setConnectWsGpt(false);
   };
   return socket;
 }

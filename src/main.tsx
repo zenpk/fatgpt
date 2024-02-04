@@ -11,6 +11,7 @@ import { authorization } from "@/services/myoauth.ts";
 import { PersonaContextProvider } from "@/contexts/PersonaContext.tsx";
 import { NotificationContextProvider } from "@/contexts/NotificationContext.tsx";
 import { ThemeContextProvider } from "@/contexts/ThemeContext.tsx";
+import { ConnectWsGptContextProvider } from "@/contexts/ConnectWsGptContext.tsx";
 
 // if ("serviceWorker" in navigator) {
 //   navigator.serviceWorker
@@ -36,7 +37,9 @@ if (urlParams.get("authorizationCode")) {
           <PersonaContextProvider>
             <NotificationContextProvider>
               <ThemeContextProvider>
-                <Home />
+                <ConnectWsGptContextProvider>
+                  <Home />
+                </ConnectWsGptContextProvider>
               </ThemeContextProvider>
             </NotificationContextProvider>
           </PersonaContextProvider>

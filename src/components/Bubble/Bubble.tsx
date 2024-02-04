@@ -21,6 +21,7 @@ import { Menu, MenuItem } from "@/components/Menu/Menu.tsx";
 import { BsFillPencilFill, BsFillTrash3Fill } from "react-icons/bs";
 import { PopupInput } from "@/components/PopupInput/PopupInput.tsx";
 import { useDark } from "@/hooks/useDark.ts";
+import { ConnectWsGptContext } from "@/contexts/ConnectWsGptContext.tsx";
 
 type Position = {
   top: number;
@@ -117,6 +118,7 @@ function Avatar({
   avatarRef: React.RefObject<HTMLImageElement>;
   setPosition: Dispatch<SetStateAction<Position>>;
 }) {
+  const [connectWsGpt] = useContext(ConnectWsGptContext)!;
   const src = isUser ? user : bot;
   // const width = useWidth();
   // if (width < 0) return;
@@ -135,7 +137,7 @@ function Avatar({
       width={roundedWidth}
       height={roundedWidth}
       className={useDark(styles.avatar, styles.avatarDark)}
-      onClick={handleClick}
+      onClick={connectWsGpt ? undefined : handleClick} // disable click when connecting to wsgpt
       ref={avatarRef}
     />
   );

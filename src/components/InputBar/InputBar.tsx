@@ -47,25 +47,25 @@ import { PopupInput } from "@/components/PopupInput/PopupInput.tsx";
 import { TextArea } from "@/components/TextArea/TextArea.tsx";
 import { useNotificationContext } from "@/contexts/NotificationContext.tsx";
 import { ThemeContext } from "@/contexts/ThemeContext.tsx";
+import { ConnectWsGptContext } from "@/contexts/ConnectWsGptContext.tsx";
 
 export function InputBar() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [inputDisabled, setInputDisabled] = useState(false);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
   const [rows, setRows] = useState(1);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [triggerWsgpt, setTriggerWsgpt] = useState(0);
   const [wsGptSocket, setWsGptSocket] = useState<WebSocket | null>(null);
   const [showPopupInput, setShowPopupInput] = useState(false);
 
   const [messages, dispatch] = useContext(MessageContext)!;
   const [persona, setPersona] = useContext(PersonaContext)!;
+  const [connectWsGpt, setConnectWsGpt] = useContext(ConnectWsGptContext)!;
   const [, setNotification] = useNotificationContext();
   const forceUpdateBubble = useContext(ForceUpdateBubbleContext);
 
   function handleSend() {
-    if (buttonDisabled || inputDisabled) {
+    if (connectWsGpt || inputDisabled) {
       return;
     }
     if (inputRef && inputRef.current) {
@@ -80,7 +80,7 @@ export function InputBar() {
         inputRef.current.focus();
         inputRef.current.select();
         setRows(1);
-        setTriggerWsgpt((prev) => prev + 1);
+        setConnectWsGpt(true);
       }
     }
   }
@@ -93,15 +93,13 @@ export function InputBar() {
   }, [inputRef]);
 
   useEffect(() => {
-    if (triggerWsgpt > 0) {
+    if (connectWsGpt) {
       const token = window.localStorage.getItem(STORAGE_ACCESS_TOKEN);
       if (token === null) {
         redirectLogin();
         return;
       }
       setInputDisabled(true);
-      setButtonDisabled(true);
-
       const transformed = transform(messages, persona);
       dispatch({
         type: MessageActionTypes.AddBot,
@@ -112,13 +110,13 @@ export function InputBar() {
           token,
           transformed,
           dispatch,
-          setButtonDisabled,
+          setConnectWsGpt,
           forceUpdateBubble
         )
       );
       setInputDisabled(false);
     }
-  }, [triggerWsgpt]);
+  }, [connectWsGpt]);
 
   return (
     <div className={styles.bar}>
@@ -138,7 +136,7 @@ export function InputBar() {
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
         menuButtonRef={menuButtonRef}
-        disabled={buttonDisabled}
+        disabled={connectWsGpt}
       />
       <ToolMenu
         messages={messages}
@@ -150,12 +148,10 @@ export function InputBar() {
         persona={persona}
         setPersona={setPersona}
       />
-      {buttonDisabled && (
-        <Stop wsGptSocket={wsGptSocket} setButtonDisabled={setButtonDisabled} />
-      )}
-      {messages.length > 0 && !buttonDisabled && (
+      {connectWsGpt && <Stop wsGptSocket={wsGptSocket} />}
+      {messages.length > 0 && !connectWsGpt && (
         <Retry
-          setTriggerWsgpt={setTriggerWsgpt}
+          setTriggerWsgpt={setConnectWsGpt}
           messages={messages}
           dispatch={dispatch}
         />
@@ -170,7 +166,7 @@ export function InputBar() {
         placeholderForMobile={""}
         maxRows={10}
       />
-      <Send handleSend={handleSend} disabled={buttonDisabled} />
+      <Send handleSend={handleSend} disabled={connectWsGpt} />
     </div>
   );
 }
@@ -200,7 +196,7 @@ function Retry({
   messages,
   dispatch,
 }: {
-  setTriggerWsgpt: Dispatch<SetStateAction<number>>;
+  setTriggerWsgpt: Dispatch<SetStateAction<boolean>>;
   messages: Message[];
   dispatch: React.Dispatch<MessageActions>;
 }) {
@@ -208,7 +204,7 @@ function Retry({
     if (messages && !messages[messages.length - 1].isUser) {
       dispatch({ type: MessageActionTypes.DeleteBot });
     }
-    setTriggerWsgpt((prev) => prev + 1);
+    setTriggerWsgpt(true);
   }
 
   return (
@@ -222,17 +218,10 @@ function Retry({
   );
 }
 
-function Stop({
-  wsGptSocket,
-  setButtonDisabled,
-}: {
-  wsGptSocket: WebSocket | null;
-  setButtonDisabled: Dispatch<SetStateAction<boolean>>;
-}) {
+function Stop({ wsGptSocket }: { wsGptSocket: WebSocket | null }) {
   function onClick() {
     if (wsGptSocket) {
       wsGptSocket.close();
-      setButtonDisabled(false);
     }
   }
 
