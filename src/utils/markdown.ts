@@ -1,4 +1,6 @@
 import MarkdownIt from "markdown-it";
+import texMath from "markdown-it-texmath";
+import katex from "katex";
 import hljs from "highlight.js";
 
 export function generateMd(raw: string) {
@@ -13,6 +15,10 @@ export function generateMd(raw: string) {
       }
       return "";
     },
+  }).use(texMath, {
+    engine: katex,
+    delimiters: "brackets",
+    katexOptions: { macros: { "\\RR": "\\mathbb{R}" } },
   });
   return md.render(raw);
 }

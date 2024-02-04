@@ -188,3 +188,8 @@ tbody > tr:last-child > td {
 .dark {
   filter: brightness(50%);
 }
+
+/* hide katex html */
+.katex-html {
+  display: none;
+}
