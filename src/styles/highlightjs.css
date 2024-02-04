@@ -19,11 +19,11 @@ code.hljs {
 }
 
 .hljs-punctuation, .hljs-tag {
-  color: #444a
+  color: #b2995a
 }
 
 .hljs-tag .hljs-attr, .hljs-tag .hljs-name {
-  color: #444
+  color: #b2995a
 }
 
 .hljs-attribute, .hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-name, .hljs-selector-tag {
