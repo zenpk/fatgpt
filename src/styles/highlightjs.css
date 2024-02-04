@@ -1,1 +1,68 @@
-pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{color:#ddd;background:#303030}.hljs-keyword,.hljs-link,.hljs-literal,.hljs-section,.hljs-selector-tag{color:#fff}.hljs-addition,.hljs-attribute,.hljs-built_in,.hljs-bullet,.hljs-name,.hljs-string,.hljs-symbol,.hljs-template-tag,.hljs-template-variable,.hljs-title,.hljs-type,.hljs-variable{color:#d88}.hljs-comment,.hljs-deletion,.hljs-meta,.hljs-quote{color:#979797}.hljs-doctag,.hljs-keyword,.hljs-literal,.hljs-name,.hljs-section,.hljs-selector-tag,.hljs-strong,.hljs-title,.hljs-type{font-weight:700}.hljs-emphasis{font-style:italic}
+/* copied from https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css */
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em
+}
+
+code.hljs {
+  padding: 3px 5px
+}
+
+.hljs {
+  background: #f3f3f3;
+  color: #444
+}
+
+.hljs-comment {
+  color: #818888
+}
+
+.hljs-punctuation, .hljs-tag {
+  color: #444a
+}
+
+.hljs-tag .hljs-attr, .hljs-tag .hljs-name {
+  color: #444
+}
+
+.hljs-attribute, .hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-name, .hljs-selector-tag {
+  font-weight: 700
+}
+
+.hljs-deletion, .hljs-quote, .hljs-selector-class, .hljs-selector-id, .hljs-string, .hljs-template-tag, .hljs-type {
+  color: #5b9852
+}
+
+.hljs-number {
+  color: #a1d3d5
+}
+
+.hljs-section, .hljs-title {
+  color: #dc7171;
+  font-weight: 700
+}
+
+.hljs-link, .hljs-operator, .hljs-regexp, .hljs-selector-attr, .hljs-selector-pseudo, .hljs-symbol, .hljs-template-variable, .hljs-variable {
+  color: #ab5656
+}
+
+.hljs-literal {
+  color: #7cbd67
+}
+
+.hljs-addition, .hljs-built_in, .hljs-bullet {
+  color: #529ac0
+}
+
+.hljs-meta, .hljs-code {
+  color: #a88165
+}
+
+.hljs-emphasis {
+  font-style: italic
+}
+
+.hljs-strong {
+  font-weight: 700
+}
