@@ -1,5 +1,9 @@
 import MarkdownIt from "markdown-it";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import texMath from "markdown-it-texmath";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import katex from "katex";
 import hljs from "highlight.js";
 
