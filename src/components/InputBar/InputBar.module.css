@@ -13,7 +13,7 @@
   color: black;
 }
 
-.sendDark {
+.sendDark:active {
   background-color: var(--crew-darker);
 }
 
@@ -21,7 +21,7 @@
   background-color: var(--retry-color);
 }
 
-.retryDark {
+.retryDark:active {
   background-color: var(--retry-color-darker);
 }
 
@@ -29,7 +29,7 @@
   background-color: var(--stop-color);
 }
 
-.stopDark {
+.stopDark:active {
   background-color: var(--stop-color-darker);
 }
 
@@ -37,7 +37,7 @@
   background-color: var(--cancel-color);
 }
 
-.buttonCancelDark {
+.buttonCancelDark:active {
   background-color: var(--cancel-color-darker);
 }
 
@@ -70,6 +70,6 @@
   background: rgba(255, 255, 255, 0.95);
 }
 
-.whiteMenuButtonDark {
+.whiteMenuButtonDark:active {
   background: var(--grey);
 }

@@ -19,42 +19,19 @@ export function Button({
   myRef?: React.RefObject<HTMLButtonElement>;
 }) {
   const [className, setClassName] = React.useState(basicClassName);
-  const [isDown, setIsDown] = React.useState(false);
-
-  function handleDown() {
-    setIsDown(true);
-    setClassName(downClassName);
-  }
-
-  function handleUp() {
-    if (isDown) {
-      setClassName(basicClassName);
-      onClick();
-    }
-    setIsDown(false);
-  }
-
-  function handleLeave() {
-    if (isDown) {
-      setClassName(basicClassName);
-    }
-    setIsDown(false);
-  }
 
   useEffect(() => {
     if (disabled) {
-      setClassName(disabledClassName);
+      setClassName(`${disabledClassName} ${downClassName}`);
     } else {
-      setClassName(basicClassName);
+      setClassName(`${basicClassName} ${downClassName}`);
     }
   }, [basicClassName, disabled, disabledClassName]);
 
   return (
     <button
       className={useDark(className, "dark")}
-      onMouseDown={handleDown}
-      onMouseUp={handleUp}
-      onMouseLeave={handleLeave}
+      onClick={onClick}
       disabled={disabled}
       ref={myRef}
     >
