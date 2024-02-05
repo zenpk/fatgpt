@@ -15,9 +15,12 @@ export const MENU_ANIMATION_TIME = 200;
 export const BACKGROUND_ID = "background";
 
 export enum KeyNames {
-  Shift = "Shift",
   Enter = "Enter",
   Escape = "Escape",
+  B = "b",
+  E = "e",
+  F = "f",
+  U = "u",
 }
 
 export enum Signals {

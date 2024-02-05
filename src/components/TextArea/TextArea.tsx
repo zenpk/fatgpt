@@ -55,12 +55,14 @@ export function TextArea({
   }, [isMobile, placeholder, placeholderForMobile]);
 
   function handleKeyDown(evt: React.KeyboardEvent) {
+    // new line
     if (evt.shiftKey && evt.key === KeyNames.Enter) {
       return;
     }
     if (evt.ctrlKey && evt.key === KeyNames.Enter) {
       return;
     }
+    // send
     if (evt.key === KeyNames.Enter && !isMobile) {
       evt.preventDefault();
       evt.stopPropagation();
@@ -70,6 +72,71 @@ export function TextArea({
       evt.preventDefault();
       evt.stopPropagation();
       handleEscape();
+    }
+    // handle terminal gestures
+    // clear
+    if (evt.ctrlKey && evt.key === KeyNames.U) {
+      if (inputRef && inputRef.current) {
+        inputRef.current.value = "";
+      }
+      evt.preventDefault();
+      evt.stopPropagation();
+    }
+    // move the cursor to the end
+    if (evt.ctrlKey && evt.key === KeyNames.E) {
+      if (inputRef && inputRef.current) {
+        inputRef.current.setSelectionRange(
+          inputRef.current.value.length,
+          inputRef.current.value.length
+        );
+      }
+      evt.preventDefault();
+      evt.stopPropagation();
+    }
+    // move the cursor forward by a word
+    if (evt.altKey && evt.key === KeyNames.F) {
+      if (inputRef && inputRef.current) {
+        const currentPos = inputRef.current.selectionStart;
+        if (currentPos === inputRef.current.value.length) return;
+        const startsWithSpace = inputRef.current.value[currentPos] === " ";
+        for (let i = currentPos; i < inputRef.current.value.length; i++) {
+          if ((inputRef.current.value[i] === " ") !== startsWithSpace) {
+            inputRef.current.setSelectionRange(i, i);
+            break;
+          }
+          if (i === inputRef.current.value.length - 1) {
+            inputRef.current.setSelectionRange(i + 1, i + 1);
+          }
+        }
+      }
+      evt.preventDefault();
+      evt.stopPropagation();
+    }
+    // move the cursor backward by a word
+    if (evt.altKey && evt.key === KeyNames.B) {
+      if (inputRef && inputRef.current) {
+        let currentPos = inputRef.current.selectionStart;
+        if (currentPos === 0) return;
+        if (currentPos === inputRef.current.value.length) {
+          currentPos -= 1;
+        }
+        if (currentPos <= 1) {
+          inputRef.current.setSelectionRange(0, 0);
+          return;
+        }
+        const startsWithSpace = inputRef.current.value[currentPos - 1] === " ";
+        for (let i = currentPos; i > 0; i--) {
+          if ((inputRef.current.value[i - 1] === " ") !== startsWithSpace) {
+            inputRef.current.setSelectionRange(i, i);
+            break;
+          }
+          if (i === 1) {
+            inputRef.current.setSelectionRange(0, 0);
+          }
+        }
+      }
+      evt.preventDefault();
+      evt.stopPropagation();
     }
   }
 
