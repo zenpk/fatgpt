@@ -117,9 +117,6 @@ export function TextArea({
       if (inputRef && inputRef.current) {
         let currentPos = inputRef.current.selectionStart;
         if (currentPos === 0) return;
-        if (currentPos === inputRef.current.value.length) {
-          currentPos -= 1;
-        }
         if (currentPos <= 1) {
           inputRef.current.setSelectionRange(0, 0);
           return;
