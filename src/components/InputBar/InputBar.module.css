@@ -3,6 +3,9 @@
   gap: 0.5rem;
   width: 100%;
   justify-content: space-between;
+  resize: block;
+  box-sizing: border-box;
+  padding: 1rem;
 }
 
 .button {
@@ -72,4 +75,14 @@
 
 .whiteMenuButtonDark:active {
   background: var(--grey);
+}
+
+.resizer {
+  height: 8px;
+  opacity: 0;
+  cursor: ns-resize;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }

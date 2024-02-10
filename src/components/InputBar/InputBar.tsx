@@ -48,8 +48,10 @@ import { TextArea } from "@/components/TextArea/TextArea.tsx";
 import { useNotificationContext } from "@/contexts/NotificationContext.tsx";
 import { ThemeContext } from "@/contexts/ThemeContext.tsx";
 import { ConnectWsGptContext } from "@/contexts/ConnectWsGptContext.tsx";
+import { Resizer } from "@/components/InputBar/Resizer.tsx";
 
 export function InputBar() {
+  const selfRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [inputDisabled, setInputDisabled] = useState(false);
@@ -119,7 +121,8 @@ export function InputBar() {
   }, [connectWsGpt]);
 
   return (
-    <div className={styles.bar}>
+    <div className={styles.bar} ref={selfRef}>
+      <Resizer target={selfRef} />
       {showPopupInput && (
         <PopupInput
           title={"Set FatGPT's Identity"}
