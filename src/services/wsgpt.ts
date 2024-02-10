@@ -39,7 +39,6 @@ export function chatWithWsGpt(
       msg: "WebSocket Connection Timeout :(",
     });
     forceUpdateBubble();
-    setConnectWsGpt(false);
   }, SOCKET_ESTABLISH_TIMEOUT);
 
   const reqMessage: ReqMessage = { token: token, messages: gptMessages };
@@ -65,7 +64,6 @@ export function chatWithWsGpt(
         msg: resp.slice(Signals.Error.length),
       });
       forceUpdateBubble();
-      setConnectWsGpt(false);
       return;
     }
     if (resp.startsWith(Signals.TokenFailed)) {
@@ -79,7 +77,6 @@ export function chatWithWsGpt(
           msg: "Token refreshed, please resend the message.",
         });
         forceUpdateBubble();
-        setConnectWsGpt(false);
       }
       return;
     }
@@ -90,13 +87,11 @@ export function chatWithWsGpt(
         msg: "Guest quota exceeded, please register or wait for tomorrow :)",
       });
       forceUpdateBubble();
-      setConnectWsGpt(false);
       return;
     }
     // Signals.Done doesn't need startsWith()
     if (resp === Signals.Done) {
       socket.close();
-      setConnectWsGpt(false);
       return;
     }
     dispatch({ type: MessageActionTypes.UpdateBot, msg: resp });
