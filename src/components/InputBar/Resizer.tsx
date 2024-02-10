@@ -40,7 +40,9 @@ export function Resizer({
     if (target && target.current) {
       let newHeight = -(e.clientY - startY);
       if (minH && newHeight < minH) {
-        newHeight = minH;
+        // min height -> default height, unset inline height
+        target.current.style.height = "";
+        return;
       }
       if (maxH && newHeight > maxH) {
         newHeight = maxH;

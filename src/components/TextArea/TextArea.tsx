@@ -115,7 +115,7 @@ export function TextArea({
     // move the cursor backward by a word
     if (evt.altKey && evt.key === KeyNames.B) {
       if (inputRef && inputRef.current) {
-        let currentPos = inputRef.current.selectionStart;
+        const currentPos = inputRef.current.selectionStart;
         if (currentPos === 0) return;
         if (currentPos <= 1) {
           inputRef.current.setSelectionRange(0, 0);
