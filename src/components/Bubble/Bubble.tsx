@@ -1,7 +1,7 @@
 import styles from "./Bubble.module.css";
 import inputBarStyles from "@/components/InputBar/InputBar.module.css";
-import bot from "../../../public/bot.png";
-import user from "../../../public/user.png";
+import bot from "@/bot-40x40.png";
+import user from "@/user-40x40.png";
 import {
   Message,
   MessageActionTypes,
