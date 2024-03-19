@@ -1,7 +1,7 @@
 .input {
   box-shadow: none;
   font-size: var(--s-1);
-  font-family: "Noto Sans SC", sans-serif;
+  font-family: sans-serif;
   border-radius: var(--small-radius);
   color: var(--grey-darker);
   resize: none;

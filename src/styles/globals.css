@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Kalam:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap');
+@font-face {
+  font-family: "kalam";
+  src: url("kalam-regular-webfont.woff2");
+}
 
 button {
   all: unset;
@@ -13,7 +16,7 @@ button:focus {
 }
 
 html {
-  font-family: "Noto Sans SC", sans-serif;
+  font-family: sans-serif;
   height: 100%;
   overflow: auto;
 }
@@ -31,7 +34,12 @@ main {
   display: block;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   display: block;
   font-weight: bold;
 }
@@ -100,7 +108,8 @@ img {
 
 /* for markdown */
 
-ul, ol {
+ul,
+ol {
   display: block;
   margin: 0 0 1rem 0;
   padding: 0;
@@ -121,7 +130,8 @@ li > p {
   display: inline;
 }
 
-pre, code {
+pre,
+code {
   background-color: rgba(0, 0, 0, 0.75);
   border-radius: var(--small-radius);
   color: #a9b7c6;
@@ -167,13 +177,15 @@ thead > tr {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-th, td {
+th,
+td {
   border-right: solid 1px black;
   border-bottom: solid 2px black;
   padding: 0.5rem 1rem;
 }
 
-td:last-child, th:last-child {
+td:last-child,
+th:last-child {
   border-right: none;
 }
 
