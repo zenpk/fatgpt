@@ -1,6 +1,6 @@
 @font-face {
   font-family: "kalam";
-  src: url("kalam-regular-webfont.woff2") format("woff2");
+  src: url("kalam-regular-webfont.woff") format("woff");
 }
 
 button {
